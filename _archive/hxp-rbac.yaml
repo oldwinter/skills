@@ -1,0 +1,53 @@
+---
+# ClusterRole: 集群全部资源的只读权限
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-readonly
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+
+---
+# ClusterRoleBinding: 绑定 hxp 用户到只读权限
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hxp-cluster-readonly
+subjects:
+- kind: User
+  name: hxp
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-readonly
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Role: logging namespace 的完全权限
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: logging-admin
+  namespace: logging
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+# RoleBinding: 绑定 hxp 用户到 logging namespace 的管理员权限
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hxp-logging-admin
+  namespace: logging
+subjects:
+- kind: User
+  name: hxp
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: logging-admin
+  apiGroup: rbac.authorization.k8s.io

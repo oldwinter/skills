@@ -6,11 +6,12 @@ A comprehensive collection of skills for Claude Code, organized by category.
 
 ```
 skills/
-├── coding-common-skills/    # General coding and development skills
-├── devops-skills/           # DevOps and infrastructure skills
-├── lenny-skills/            # Product management & leadership skills (86 skills)
-├── obsidian-skills/         # Obsidian note-taking skills
-├── writing-skills/          # Writing and content skills
+├── coding-common-skills/    # General coding and development skills (6 skills)
+├── devops-skills/           # DevOps and infrastructure skills (12 skills)
+├── lenny-skills/            # Product management & leadership skills (90 skills)
+├── obsidian-skills/         # Obsidian note-taking skills (5 skills)
+├── writing-skills/          # Writing and content skills (1 skill)
+├── _archive/                # Archived/temporary files
 └── README.md                # This file
 ```
 
@@ -25,12 +26,14 @@ General development tools and best practices:
 - **vercel-react-best-practices** - React/Next.js performance optimization
 - **web-design-guidelines** - UI/UX best practices and accessibility
 
-### ⚙️ DevOps Skills (10 skills)
+### ⚙️ DevOps Skills (12 skills)
 Infrastructure, CI/CD, and cloud operations:
 - **api-billing-service-onboarding** - AWS billing/quota monitoring integration
 - **argocd-cli** - GitOps deployments with ArgoCD
 - **aws-cli** - AWS service management
 - **aws-cost-explorer** - AWS cost analysis
+- **aws-support-case** - AWS Support case management (NEW)
+- **eks-user-rbac** - EKS user RBAC management (NEW)
 - **eksctl** - AWS EKS cluster management
 - **github-cli** - GitHub operations via CLI
 - **gitlab-cli** - GitLab operations via CLI
@@ -38,7 +41,7 @@ Infrastructure, CI/CD, and cloud operations:
 - **kubectl** - Kubernetes cluster operations
 - **sync-to-prod** - Environment synchronization
 
-### 🎯 Lenny Skills (86 skills)
+### 🎯 Lenny Skills (90 skills)
 Product management and leadership skills from [Lenny's Newsletter](https://refoundai.com/lenny-skills/):
 
 #### Product Management (22 skills)
@@ -76,12 +79,13 @@ Design Systems, Running Design Reviews
 
 [View all Lenny Skills →](./lenny-skills/README.md)
 
-### 📝 Obsidian Skills (4 skills)
+### 📝 Obsidian Skills (5 skills)
 Note-taking and knowledge management:
 - **json-canvas** - Work with Obsidian Canvas files
 - **obsidian-bases** - Obsidian fundamentals
 - **obsidian-dashboard** - Vault statistics and overview
 - **obsidian-markdown** - Advanced markdown features
+- **tasknotes** - Task management integrated with Obsidian (NEW)
 
 ### ✍️ Writing Skills (1 skill)
 Content creation and refinement:
@@ -89,11 +93,12 @@ Content creation and refinement:
 
 ## 📊 Statistics
 
-- **Total Skills**: 107
+- **Total Skills**: 114
 - **Categories**: 5 main categories
-- **Lenny Skills**: 86 product management & leadership skills
-- **DevOps Tools**: 10 infrastructure and cloud skills
+- **Lenny Skills**: 90 product management & leadership skills
+- **DevOps Tools**: 12 infrastructure and cloud skills
 - **Development Tools**: 6 coding and best practice skills
+- **Obsidian Skills**: 5 note-taking and knowledge management skills
 
 ## 🚀 Usage
 
@@ -117,5 +122,5 @@ Skills are sourced from various providers:
 
 ---
 
-**Last Updated**: 2026-01-21
-**Total Skills**: 107
+**Last Updated**: 2026-01-23
+**Total Skills**: 114
