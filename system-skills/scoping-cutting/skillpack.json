@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Product Management",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "scoping-cutting",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/scoping-cutting",
+    "skill_md_url": "https://refoundai.com/skills/scoping-cutting/SKILL.md"
+  },
+  "version": "0.1.0"
+}

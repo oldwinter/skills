@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Engineering",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "design-engineering",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/design-engineering",
+    "skill_md_url": "https://refoundai.com/skills/design-engineering/SKILL.md"
+  },
+  "version": "0.1.0"
+}

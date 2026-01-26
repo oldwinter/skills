@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Leadership",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "evaluating-trade-offs",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/evaluating-trade-offs",
+    "skill_md_url": "https://refoundai.com/skills/evaluating-trade-offs/SKILL.md"
+  },
+  "version": "0.1.0"
+}

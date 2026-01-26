@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Career",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "managing-imposter-syndrome",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/managing-imposter-syndrome",
+    "skill_md_url": "https://refoundai.com/skills/managing-imposter-syndrome/SKILL.md"
+  },
+  "version": "0.1.0"
+}

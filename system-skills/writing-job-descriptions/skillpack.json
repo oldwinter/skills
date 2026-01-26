@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Hiring & Teams",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "writing-job-descriptions",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/writing-job-descriptions",
+    "skill_md_url": "https://refoundai.com/skills/writing-job-descriptions/SKILL.md"
+  },
+  "version": "0.1.0"
+}

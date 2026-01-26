@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Engineering",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "managing-tech-debt",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/managing-tech-debt",
+    "skill_md_url": "https://refoundai.com/skills/managing-tech-debt/SKILL.md"
+  },
+  "version": "0.1.0"
+}

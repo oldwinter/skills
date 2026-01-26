@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "AI & Technology",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "building-with-llms",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/building-with-llms",
+    "skill_md_url": "https://refoundai.com/skills/building-with-llms/SKILL.md"
+  },
+  "version": "0.1.0"
+}

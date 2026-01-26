@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Engineering",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "platform-infrastructure",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/platform-infrastructure",
+    "skill_md_url": "https://refoundai.com/skills/platform-infrastructure/SKILL.md"
+  },
+  "version": "0.1.0"
+}

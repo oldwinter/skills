@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Product Management",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "writing-specs-designs",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/writing-specs-designs",
+    "skill_md_url": "https://refoundai.com/skills/writing-specs-designs/SKILL.md"
+  },
+  "version": "0.1.0"
+}

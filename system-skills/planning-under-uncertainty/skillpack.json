@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Leadership",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "planning-under-uncertainty",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/planning-under-uncertainty",
+    "skill_md_url": "https://refoundai.com/skills/planning-under-uncertainty/SKILL.md"
+  },
+  "version": "0.1.0"
+}

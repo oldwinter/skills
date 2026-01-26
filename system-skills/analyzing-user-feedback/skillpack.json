@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Product Management",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "analyzing-user-feedback",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/analyzing-user-feedback",
+    "skill_md_url": "https://refoundai.com/skills/analyzing-user-feedback/SKILL.md"
+  },
+  "version": "0.1.0"
+}

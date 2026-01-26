@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Leadership",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "coaching-pms",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/coaching-pms",
+    "skill_md_url": "https://refoundai.com/skills/coaching-pms/SKILL.md"
+  },
+  "version": "0.1.0"
+}

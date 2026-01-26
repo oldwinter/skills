@@ -10,6 +10,7 @@ skills/
 ├── devops-skills/           # DevOps and infrastructure skills (12 skills)
 ├── lenny-skills/            # Product management & leadership skills (90 skills)
 ├── obsidian-skills/         # Obsidian note-taking skills (5 skills)
+├── system-skills/           # System-wide skills synced from ~/.agents/skills (110+ skills)
 ├── writing-skills/          # Writing and content skills (1 skill)
 ├── _archive/                # Archived/temporary files
 └── README.md                # This file
@@ -91,14 +92,46 @@ Note-taking and knowledge management:
 Content creation and refinement:
 - **humanizer-zh** - Remove AI-generated patterns from Chinese text
 
+### 🔄 System Skills Manager (110+ skills)
+Sync and manage skills between repository and system:
+
+#### Sync Tool
+- **sync-skills-manager** - Sync skills between ~/.agents/skills and repository
+
+#### Usage
+```bash
+# Preview changes
+./system-skills/sync-skills-manager/sync-skills.sh diff
+
+# Pull new skills from system to repo
+./system-skills/sync-skills-manager/sync-skills.sh pull
+
+# Push all repo skills to system
+./system-skills/sync-skills-manager/sync-skills.sh push
+
+# Or use npx add-skill directly
+npx add-skill . --all --global
+```
+
+#### Categories in System
+All skills from system include:
+- AI & Product (AI evals, product strategy, building with LLMs)
+- Engineering (design systems, technical roadmaps, managing tech debt)
+- Leadership (coaching, delegation, running effective meetings)
+- Communication (presentations, stakeholder alignment)
+- Growth & Marketing (user onboarding, retention, positioning)
+- Career (interviews, job descriptions, career transitions)
+- And 100+ more...
+
 ## 📊 Statistics
 
-- **Total Skills**: 114
-- **Categories**: 5 main categories
+- **Total Skills**: 220+
+- **Categories**: 6 main categories
 - **Lenny Skills**: 90 product management & leadership skills
 - **DevOps Tools**: 12 infrastructure and cloud skills
 - **Development Tools**: 6 coding and best practice skills
 - **Obsidian Skills**: 5 note-taking and knowledge management skills
+- **System Skills**: 110+ skills synced from ~/.agents/skills
 
 ## 🚀 Usage
 
@@ -122,5 +155,5 @@ Skills are sourced from various providers:
 
 ---
 
-**Last Updated**: 2026-01-23
-**Total Skills**: 114
+**Last Updated**: 2026-01-27
+**Total Skills**: 220+

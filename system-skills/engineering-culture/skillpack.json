@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Engineering",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "engineering-culture",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/engineering-culture",
+    "skill_md_url": "https://refoundai.com/skills/engineering-culture/SKILL.md"
+  },
+  "version": "0.1.0"
+}

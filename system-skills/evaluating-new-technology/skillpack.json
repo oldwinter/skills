@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "AI & Technology",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "evaluating-new-technology",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/evaluating-new-technology",
+    "skill_md_url": "https://refoundai.com/skills/evaluating-new-technology/SKILL.md"
+  },
+  "version": "0.1.0"
+}

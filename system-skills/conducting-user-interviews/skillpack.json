@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Product Management",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "conducting-user-interviews",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/conducting-user-interviews",
+    "skill_md_url": "https://refoundai.com/skills/conducting-user-interviews/SKILL.md"
+  },
+  "version": "0.1.0"
+}

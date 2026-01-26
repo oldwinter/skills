@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Design",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "design-systems",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/design-systems",
+    "skill_md_url": "https://refoundai.com/skills/design-systems/SKILL.md"
+  },
+  "version": "0.1.0"
+}

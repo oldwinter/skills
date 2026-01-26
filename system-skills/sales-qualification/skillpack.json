@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Sales & GTM",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "sales-qualification",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/sales-qualification",
+    "skill_md_url": "https://refoundai.com/skills/sales-qualification/SKILL.md"
+  },
+  "version": "0.1.0"
+}

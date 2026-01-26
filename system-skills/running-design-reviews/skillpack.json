@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Design",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "running-design-reviews",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/running-design-reviews",
+    "skill_md_url": "https://refoundai.com/skills/running-design-reviews/SKILL.md"
+  },
+  "version": "0.1.0"
+}

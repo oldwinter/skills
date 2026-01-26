@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Product Management",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "defining-product-vision",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/defining-product-vision",
+    "skill_md_url": "https://refoundai.com/skills/defining-product-vision/SKILL.md"
+  },
+  "version": "0.1.0"
+}

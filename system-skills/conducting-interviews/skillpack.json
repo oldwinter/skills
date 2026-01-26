@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Hiring & Teams",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "conducting-interviews",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/conducting-interviews",
+    "skill_md_url": "https://refoundai.com/skills/conducting-interviews/SKILL.md"
+  },
+  "version": "0.1.0"
+}

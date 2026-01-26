@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Sales & GTM",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "partnership-bd",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/partnership-bd",
+    "skill_md_url": "https://refoundai.com/skills/partnership-bd/SKILL.md"
+  },
+  "version": "0.1.0"
+}
