@@ -2,23 +2,22 @@
 
 A comprehensive collection of skills for Claude Code, organized by category.
 
-## 📂 Directory Structure
+## Directory Structure
 
 ```
 skills/
 ├── coding-common-skills/    # General coding and development skills (6 skills)
 ├── devops-skills/           # DevOps and infrastructure skills (12 skills)
-├── lenny-skills/            # Product management & leadership skills (90 skills)
 ├── obsidian-skills/         # Obsidian note-taking skills (5 skills)
-├── system-skills/           # System-wide skills synced from ~/.agents/skills (110+ skills)
+├── system-skills/           # System-wide skills synced from ~/.agents/skills (102 skills)
 ├── writing-skills/          # Writing and content skills (1 skill)
 ├── _archive/                # Archived/temporary files
 └── README.md                # This file
 ```
 
-## 📚 Skills by Category
+## Skills by Category
 
-### 🖥️ Coding Common Skills (6 skills)
+### Coding Common Skills (6 skills)
 General development tools and best practices:
 - **changelog-generator** - Automatically create changelogs from git commits
 - **justfile** - Command automation with Just
@@ -27,14 +26,13 @@ General development tools and best practices:
 - **vercel-react-best-practices** - React/Next.js performance optimization
 - **web-design-guidelines** - UI/UX best practices and accessibility
 
-### ⚙️ DevOps Skills (12 skills)
+### DevOps Skills (12 skills)
 Infrastructure, CI/CD, and cloud operations:
 - **api-billing-service-onboarding** - AWS billing/quota monitoring integration
 - **argocd-cli** - GitOps deployments with ArgoCD
 - **aws-cli** - AWS service management
 - **aws-cost-explorer** - AWS cost analysis
-- **aws-support-case** - AWS Support case management (NEW)
-- **eks-user-rbac** - EKS user RBAC management (NEW)
+- **aws-support-case** - AWS Support case management
 - **eksctl** - AWS EKS cluster management
 - **github-cli** - GitHub operations via CLI
 - **gitlab-cli** - GitLab operations via CLI
@@ -42,63 +40,99 @@ Infrastructure, CI/CD, and cloud operations:
 - **kubectl** - Kubernetes cluster operations
 - **sync-to-prod** - Environment synchronization
 
-### 🎯 Lenny Skills (90 skills)
-Product management and leadership skills from [Lenny's Newsletter](https://refoundai.com/lenny-skills/):
-
-#### Product Management (22 skills)
-Writing North Star Metrics, Defining Product Vision, Prioritizing Roadmap, Setting OKRs & Goals, Competitive Analysis, Writing PRDs, Problem Definition, Writing Specs & Designs, Scoping & Cutting, Working Backwards, Conducting User Interviews, Designing Surveys, Analyzing User Feedback, Usability Testing, Shipping Products, Managing Timelines, Developing Product Taste, Product Operations, Behavioral Product Design, Startup Ideation, Dogfooding, Startup Pivoting
-
-#### Leadership (14 skills)
-Running Effective 1:1s, Having Difficult Conversations, Delegating Work, Managing Up, Running Decision Processes, Planning Under Uncertainty, Evaluating Trade-offs, Post-mortems & Retrospectives, Cross-functional Collaboration, Systems Thinking, Energy Management, Coaching Product Managers, Organizational Design, Organizational Transformation
-
-#### Hiring & Teams (6 skills)
-Writing Job Descriptions, Conducting Interviews, Evaluating Candidates, Onboarding New Hires, Building Team Culture, Designing Team Rituals
-
-#### AI & Technology (6 skills)
-AI Product Strategy, Building with LLMs, Evaluating New Technology, Platform Strategy, Vibe Coding, AI Evaluation (Evals)
-
-#### Communication (5 skills)
-Giving Presentations, Written Communication, Stakeholder Alignment, Running Offsites, Running Effective Meetings
-
-#### Growth (6 skills)
-Measuring Product-Market Fit, Designing Growth Loops, Pricing Strategy, Retention & Engagement, Marketplace Liquidity Management, User Onboarding
-
-#### Marketing (6 skills)
-Positioning & Messaging, Brand Storytelling, Launch Marketing, Content Marketing, Community Building, Media Relations
-
-#### Career (7 skills)
-Building a Promotion Case, Negotiating Offers, Finding Mentors & Sponsors, Career Transitions, Managing Imposter Syndrome, Personal Productivity, Fundraising Strategy
-
-#### Sales & GTM (7 skills)
-Founder Sales, Building Sales Team, Enterprise Sales, Partnership & BD, Product-Led Sales Strategy, Sales Compensation Design, Sales Qualification
-
-#### Engineering (5 skills)
-Technical Roadmaps, Managing Tech Debt, Platform & Infrastructure, Engineering Culture, Design Engineering
-
-#### Design (2 skills)
-Design Systems, Running Design Reviews
-
-[View all Lenny Skills →](./lenny-skills/README.md)
-
-### 📝 Obsidian Skills (5 skills)
+### Obsidian Skills (5 skills)
 Note-taking and knowledge management:
 - **json-canvas** - Work with Obsidian Canvas files
 - **obsidian-bases** - Obsidian fundamentals
 - **obsidian-dashboard** - Vault statistics and overview
 - **obsidian-markdown** - Advanced markdown features
-- **tasknotes** - Task management integrated with Obsidian (NEW)
+- **tasknotes** - Task management integrated with Obsidian
 
-### ✍️ Writing Skills (1 skill)
+### Writing Skills (1 skill)
 Content creation and refinement:
 - **humanizer-zh** - Remove AI-generated patterns from Chinese text
 
-### 🔄 System Skills Manager (110+ skills)
-Sync and manage skills between repository and system:
+### System Skills (102 skills)
+Skills synced from `~/.agents/skills/`, organized into categories:
+
+#### AI Skills (4 skills)
+- **ai-evals** - AI evaluation and benchmarking
+- **ai-product-strategy** - AI product planning
+- **building-with-llms** - LLM integration patterns
+- **vibe-coding** - AI-assisted coding practices
+
+#### Product Skills (28 skills)
+- **analyzing-user-feedback**, **behavioral-product-design**, **competitive-analysis**
+- **conducting-user-interviews**, **defining-product-vision**, **designing-growth-loops**
+- **designing-surveys**, **dogfooding**, **measuring-product-market-fit**
+- **platform-strategy**, **positioning-messaging**, **pricing-strategy**
+- **prioritizing-roadmap**, **problem-definition**, **product-led-sales**
+- **product-operations**, **product-taste-intuition**, **retention-engagement**
+- **scoping-cutting**, **shipping-products**, **startup-ideation**
+- **startup-pivoting**, **usability-testing**, **user-onboarding**
+- **working-backwards**, **writing-north-star-metrics**, **writing-prds**
+- **writing-specs-designs**
+
+#### Leadership Skills (23 skills)
+- **building-team-culture**, **coaching-pms**, **cross-functional-collaboration**
+- **delegating-work**, **energy-management**, **engineering-culture**
+- **evaluating-trade-offs**, **having-difficult-conversations**
+- **managing-timelines**, **managing-up**, **organizational-design**
+- **organizational-transformation**, **planning-under-uncertainty**
+- **post-mortems-retrospectives**, **running-decision-processes**
+- **running-design-reviews**, **running-effective-1-1s**, **running-effective-meetings**
+- **running-offsites**, **setting-okrs-goals**, **stakeholder-alignment**
+- **systems-thinking**, **team-rituals**
+
+#### Career Skills (10 skills)
+- **building-a-promotion-case**, **career-transitions**, **conducting-interviews**
+- **evaluating-candidates**, **finding-mentors-sponsors**, **managing-imposter-syndrome**
+- **negotiating-offers**, **onboarding-new-hires**, **personal-productivity**
+- **writing-job-descriptions**
+
+#### Communication Skills (2 skills)
+- **fundraising**, **giving-presentations**, **written-communication**
+
+#### Marketing Skills (6 skills)
+- **brand-storytelling**, **community-building**, **content-marketing**
+- **launch-marketing**, **media-relations**, **marketplace-liquidity**
+
+#### Sales Skills (6 skills)
+- **building-sales-team**, **enterprise-sales**, **founder-sales**
+- **partnership-bd**, **sales-compensation**, **sales-qualification**
+
+#### Engineering Skills (6 skills)
+- **design-engineering**, **design-systems**, **evaluating-new-technology**
+- **managing-tech-debt**, **platform-infrastructure**, **technical-roadmaps**
+
+#### Tools Skills (8 skills)
+- **lenny-skillpack-creator**, **sync-skills-manager**
+- Plus: changelog-generator, justfile, skill-creator, skills-readme-updater
+- vercel-react-best-practices, web-design-guidelines
 
 #### Sync Tool
-- **sync-skills-manager** - Sync skills between ~/.agents/skills and repository
+- **sync-skills-manager** - Sync skills between system and repository
 
-#### Usage
+## Statistics
+
+- **Total Skills**: 136+
+- **Categories**: 6 main categories
+- **System Skills**: 102 skills in 11 subcategories
+- **DevOps Tools**: 12 infrastructure and cloud skills
+- **Development Tools**: 6 coding and best practice skills
+- **Obsidian Skills**: 5 note-taking and knowledge management skills
+
+## Usage
+
+All skills are installed in `~/.agents/skills/` and can be used directly with Claude Code.
+
+To use a skill, reference it in your conversation with Claude Code, for example:
+- "Use the changelog-generator skill to create a changelog"
+- "Help me with writing-north-star-metrics"
+- "Run kubectl to check pod status"
+
+## Sync Commands
+
 ```bash
 # Preview changes
 ./system-skills/sync-skills-manager/sync-skills.sh diff
@@ -113,40 +147,11 @@ Sync and manage skills between repository and system:
 npx add-skill . --all --global
 ```
 
-#### Categories in System
-All skills from system include:
-- AI & Product (AI evals, product strategy, building with LLMs)
-- Engineering (design systems, technical roadmaps, managing tech debt)
-- Leadership (coaching, delegation, running effective meetings)
-- Communication (presentations, stakeholder alignment)
-- Growth & Marketing (user onboarding, retention, positioning)
-- Career (interviews, job descriptions, career transitions)
-- And 100+ more...
+## Maintenance
 
-## 📊 Statistics
+This repository is synchronized with the local `~/.agents/skills/` directory. Any changes made here will be reflected in your Claude Code installation.
 
-- **Total Skills**: 220+
-- **Categories**: 6 main categories
-- **Lenny Skills**: 90 product management & leadership skills
-- **DevOps Tools**: 12 infrastructure and cloud skills
-- **Development Tools**: 6 coding and best practice skills
-- **Obsidian Skills**: 5 note-taking and knowledge management skills
-- **System Skills**: 110+ skills synced from ~/.agents/skills
-
-## 🚀 Usage
-
-All skills are installed in `~/.claude/skills/` and can be used directly with Claude Code.
-
-To use a skill, reference it in your conversation with Claude Code, for example:
-- "Use the changelog-generator skill to create a changelog"
-- "Help me with writing-north-star-metrics"
-- "Run kubectl to check pod status"
-
-## 🔄 Maintenance
-
-This repository is synchronized with the local `~/.claude/skills/` directory. Any changes made here will be reflected in your Claude Code installation.
-
-## 📄 License
+## License
 
 Skills are sourced from various providers:
 - **Lenny Skills**: From [Refound AI](https://refoundai.com/lenny-skills/)
@@ -156,4 +161,4 @@ Skills are sourced from various providers:
 ---
 
 **Last Updated**: 2026-01-27
-**Total Skills**: 220+
+**Total Skills**: 136+
