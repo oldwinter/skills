@@ -2,6 +2,28 @@
 
 A comprehensive collection of skills for Claude Code, organized by category.
 
+---
+
+## Quick Install (New Machine)
+
+**On a new computer, run these 3 commands to install all skills:**
+
+```bash
+# 1. Clone this repository
+git clone https://github.com/oldwinter/skills.git ~/code/skills
+cd ~/code/skills
+
+# 2. Install npx add-skill (if not already installed)
+npm install -g add-skill
+
+# 3. Install ALL skills to system (for all AI agents)
+npx add-skill . --all --global
+```
+
+That's it! All 116+ skills will be installed to `~/.agents/skills/` and available to Claude Code, Cline, Cursor, and other AI agents.
+
+---
+
 ## Directory Structure
 
 ```
@@ -9,7 +31,7 @@ skills/
 ├── coding-common-skills/    # General coding and development skills (6 skills)
 ├── devops-skills/           # DevOps and infrastructure skills (12 skills)
 ├── obsidian-skills/         # Obsidian note-taking skills (5 skills)
-├── system-skills/           # System-wide skills synced from ~/.agents/skills (102 skills)
+├── system-skills/           # System-wide skills synced from ~/.agents/skills (116 skills)
 ├── writing-skills/          # Writing and content skills (1 skill)
 ├── _archive/                # Archived/temporary files
 └── README.md                # This file
@@ -52,7 +74,7 @@ Note-taking and knowledge management:
 Content creation and refinement:
 - **humanizer-zh** - Remove AI-generated patterns from Chinese text
 
-### System Skills (102 skills)
+### System Skills (116 skills)
 Skills synced from `~/.agents/skills/`, organized into categories:
 
 #### AI Skills (4 skills)
@@ -90,12 +112,13 @@ Skills synced from `~/.agents/skills/`, organized into categories:
 - **negotiating-offers**, **onboarding-new-hires**, **personal-productivity**
 - **writing-job-descriptions**
 
-#### Communication Skills (2 skills)
+#### Communication Skills (3 skills)
 - **fundraising**, **giving-presentations**, **written-communication**
 
-#### Marketing Skills (6 skills)
-- **brand-storytelling**, **community-building**, **content-marketing**
-- **launch-marketing**, **media-relations**, **marketplace-liquidity**
+#### Marketing Skills (8 skills)
+- **audit-website**, **brand-storytelling**, **community-building**
+- **content-marketing**, **launch-marketing**, **media-relations**
+- **marketplace-liquidity**, **seo-audit**
 
 #### Sales Skills (6 skills)
 - **building-sales-team**, **enterprise-sales**, **founder-sales**
@@ -105,19 +128,22 @@ Skills synced from `~/.agents/skills/`, organized into categories:
 - **design-engineering**, **design-systems**, **evaluating-new-technology**
 - **managing-tech-debt**, **platform-infrastructure**, **technical-roadmaps**
 
-#### Tools Skills (8 skills)
-- **lenny-skillpack-creator**, **sync-skills-manager**
-- Plus: changelog-generator, justfile, skill-creator, skills-readme-updater
-- vercel-react-best-practices, web-design-guidelines
+#### Tools Skills (14 skills)
+- **agent-browser**, **changelog-generator**, **justfile**
+- **lenny-skillpack-creator**, **remotion-best-practices**
+- **skill-creator**, **skills-readme-updater**, **supabase-postgres-best-practices**
+- **sync-skills-manager**, **sync-to-prod**, **ui-ux-pro-max**
+- **vercel-react-best-practices**, **web-design-guidelines**
 
-#### Sync Tool
-- **sync-skills-manager** - Sync skills between system and repository
+#### Obsidian Skills (6 skills)
+- **json-canvas**, **notebooklm**, **obsidian-bases**
+- **obsidian-dashboard**, **obsidian-markdown**, **tasknotes**
 
 ## Statistics
 
-- **Total Skills**: 136+
+- **Total Skills**: 116+
 - **Categories**: 6 main categories
-- **System Skills**: 102 skills in 11 subcategories
+- **System Skills**: 116 skills in 11 subcategories
 - **DevOps Tools**: 12 infrastructure and cloud skills
 - **Development Tools**: 6 coding and best practice skills
 - **Obsidian Skills**: 5 note-taking and knowledge management skills
@@ -137,14 +163,27 @@ To use a skill, reference it in your conversation with Claude Code, for example:
 # Preview changes
 ./system-skills/sync-skills-manager/sync-skills.sh diff
 
-# Pull new skills from system to repo
+# Pull new skills from system to repo (incremental sync)
 ./system-skills/sync-skills-manager/sync-skills.sh pull
 
-# Push all repo skills to system
-./system-skills/sync-skills-manager/sync-skills.sh push
-
-# Or use npx add-skill directly
+# Push all repo skills to system (for new machine setup)
 npx add-skill . --all --global
+
+# Or use the helper script
+./system-skills/sync-skills-manager/sync-skills.sh push
+```
+
+## Adding New Skills
+
+```bash
+# Install a skill from GitHub
+npx add-skill owner/repo/skill-name --global --yes
+
+# Sync it to this repository
+./system-skills/sync-skills-manager/sync-skills.sh pull
+
+# Commit and push
+git add -A && git commit -m "Add new skill" && git push
 ```
 
 ## Maintenance
@@ -161,4 +200,4 @@ Skills are sourced from various providers:
 ---
 
 **Last Updated**: 2026-01-27
-**Total Skills**: 136+
+**Total Skills**: 116+
