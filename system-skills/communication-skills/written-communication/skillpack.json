@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Communication",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "written-communication",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/written-communication",
+    "skill_md_url": "https://refoundai.com/skills/written-communication/SKILL.md"
+  },
+  "version": "0.1.0"
+}
