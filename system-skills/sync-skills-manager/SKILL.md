@@ -1,81 +1,63 @@
 # Sync Skills Manager
 
-Manage synchronization between repository skills and system-wide skills.
-
-## Usage
-
-### Incremental Update: System → Repository
-```bash
-# Pull only new/changed skills from system to repo
-npx add-skill ~/.agents/skills --sync --merge
-
-# Or use the helper script
-./sync-skills.sh pull
-```
-
-### Full Sync: Repository → System
-```bash
-# Install all repo skills to system globally
-npx add-skill . --all --global
-
-# Or use the helper script
-./sync-skills.sh push
-```
-
-### Dry Run (Preview Changes)
-```bash
-./sync-skills.sh diff
-```
+Manage synchronization between repository skills and local/system skill directories.
 
 ## Scripts
 
-### `sync-skills.sh`
+### `sync-skills.sh` (legacy 2-way)
+
+Sync between `~/.agents/skills` and `./system-skills` categories.
 
 | Command | Description |
 |---------|-------------|
-| `./sync-skills.sh diff` | Preview changes without applying |
-| `./sync-skills.sh pull` | Sync system → repository (add new skills) |
-| `./sync-skills.sh push` | Sync repository → system (install all) |
-| `./sync-skills.sh status` | Show current sync status |
+| `./sync-skills.sh diff` | Preview system-only skills |
+| `./sync-skills.sh pull` | Sync `~/.agents/skills` -> repo (add new skills) |
+| `./sync-skills.sh push` | Install repo skills to system via `add-skill` |
+| `./sync-skills.sh status` | Show sync status |
 
-## Sync Strategy
+### `sync-skills-3way.sh` (recommended)
 
-- **Pull**: Only adds new skills, never overwrites existing repo skills
-- **Push**: Installs all skills from repo to system (overwrites if exists)
-- **Diff**: Shows which skills exist in system but not in repo
+Incremental 3-way sync across:
+
+- `~/.codex/skills` (including `.system`)
+- `~/.agents/skills`
+- `~/.agent/skills`
+- repository skills tree
+
+Key behavior:
+
+- Incremental only (`rsync --update`), never deletes files.
+- New skills missing in repo are added to `system-skills/tools-skills/`.
+- For duplicate skill names in repo, the newest `SKILL.md` copy is treated as canonical for repo -> local sync.
+
+| Command | Description |
+|---------|-------------|
+| `./sync-skills-3way.sh sync` | Run 3-way incremental sync (default) |
+| `./sync-skills-3way.sh status` | Show counts and name-level diffs |
+| `./sync-skills-3way.sh help` | Show usage |
+
+## Usage
+
+### Daily 3-way sync
+```bash
+./sync-skills-3way.sh sync
+```
+
+### Quick status check
+```bash
+./sync-skills-3way.sh status
+```
 
 ## Configuration
 
-Edit `sync-config.json` to customize sync behavior:
+`sync-skills.sh` uses `sync-config.json`:
 
 ```json
 {
   "system_skills_path": "~/.agents/skills",
   "repo_skills_path": "./system-skills",
-  "exclude_patterns": [".git", "node_modules"],
-  "sync_mode": "incremental"
+  "exclude_patterns": ["sync-skills-manager"],
+  "sync_mode": "incremental",
+  "default_command": "diff"
 }
-```
-
-## Examples
-
-### Daily Workflow
-```bash
-# Check what's new in system
-./sync-skills.sh diff
-
-# Pull new skills to repo
-./sync-skills.sh pull
-
-# Commit changes
-git add -A && git commit -m "sync: add new skills from system"
-```
-
-### After Adding New Skill to Repo
-```bash
-# Install to system for all agents
-./sync-skills.sh push
-
-# Or manually
-npx add-skill . --all --global
 ```

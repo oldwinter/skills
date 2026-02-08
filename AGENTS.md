@@ -61,10 +61,15 @@ Notes:
 ./system-skills/sync-skills-manager/sync-skills.sh pull     # alias: auto
 ./system-skills/sync-skills-manager/sync-skills.sh push
 ./system-skills/sync-skills-manager/sync-skills.sh status
+./sync-skills-3way.sh sync
+./sync-skills-3way.sh status
+./system-skills/sync-skills-manager/sync-skills-3way.sh sync
+./system-skills/sync-skills-manager/sync-skills-3way.sh status
 ```
 
 Notes:
 - `push` runs `npx add-skill .. --all --global` and can overwrite your system skills install.
+- `sync-skills-3way.sh` performs incremental sync across `~/.codex/skills`, `~/.agents/skills`, `~/.agent/skills`, and repo without deleting files.
 
 #### Install all skills (repo → system)
 ```bash

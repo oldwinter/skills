@@ -160,6 +160,16 @@ To use a skill, reference it in your conversation with Claude Code, for example:
 ## Sync Commands
 
 ```bash
+# 3-way incremental sync (recommended)
+./sync-skills-3way.sh sync
+# (equivalent)
+./system-skills/sync-skills-manager/sync-skills-3way.sh sync
+
+# 3-way status
+./sync-skills-3way.sh status
+# (equivalent)
+./system-skills/sync-skills-manager/sync-skills-3way.sh status
+
 # Preview changes
 ./system-skills/sync-skills-manager/sync-skills.sh diff
 
