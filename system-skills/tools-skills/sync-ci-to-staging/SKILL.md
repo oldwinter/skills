@@ -1,3 +1,8 @@
+---
+name: sync-ci-to-staging
+description: Sync CI environment business configurations to staging with safe deployment guidance.
+---
+
 # Sync CI to Staging Skill
 
 此 skill 提供将 Kubernetes kustomization 配置从 CI 环境同步到 Staging 环境的工作流，用于 simplex-gitops 仓库。

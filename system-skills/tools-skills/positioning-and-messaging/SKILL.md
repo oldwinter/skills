@@ -1,3 +1,8 @@
+---
+name: positioning-and-messaging
+description: Create product positioning and messaging frameworks with validation and iteration guidance.
+---
+
 # Positioning & Messaging
 
 **Category:** Marketing

@@ -1,3 +1,8 @@
+---
+name: designing-team-rituals
+description: Design lightweight team rituals and operating cadence for consistent execution and alignment.
+---
+
 # Designing Team Rituals
 
 **Category:** Hiring & Teams

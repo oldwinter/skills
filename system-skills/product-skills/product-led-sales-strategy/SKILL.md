@@ -1,3 +1,8 @@
+---
+name: product-led-sales-strategy
+description: Design a product-led sales motion from usage signals to sales handoff and conversion.
+---
+
 # Product-Led Sales Strategy
 
 **Category:** Sales & GTM

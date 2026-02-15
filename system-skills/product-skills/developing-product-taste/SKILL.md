@@ -1,3 +1,8 @@
+---
+name: developing-product-taste
+description: Develop product taste through critique, calibration exercises, and experiment loops.
+---
+
 # Developing Product Taste
 
 **Category:** Product Management

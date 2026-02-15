@@ -1,3 +1,8 @@
+---
+name: retention-and-engagement
+description: Improve activation, retention, and engagement through hypothesis-driven growth experiments.
+---
+
 # Retention & Engagement
 
 **Category:** Growth

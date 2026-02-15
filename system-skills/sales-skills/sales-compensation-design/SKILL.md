@@ -1,3 +1,8 @@
+---
+name: sales-compensation-design
+description: Design sales compensation plans aligned with quotas, incentives, and long-term business outcomes.
+---
+
 # Sales Compensation Design
 
 **Category:** Sales & GTM

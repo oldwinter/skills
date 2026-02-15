@@ -1,3 +1,8 @@
+---
+name: coaching-product-managers
+description: Coach product managers with evidence-based feedback, growth plans, and operating cadence.
+---
+
 # Coaching Product Managers
 
 **Category:** Leadership

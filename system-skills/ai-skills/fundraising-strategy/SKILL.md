@@ -1,3 +1,8 @@
+---
+name: fundraising-strategy
+description: Plan early-stage fundraising strategy, investor pipeline, and process execution.
+---
+
 # Fundraising Strategy
 
 **Category:** Career

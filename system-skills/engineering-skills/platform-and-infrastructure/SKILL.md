@@ -1,3 +1,8 @@
+---
+name: platform-and-infrastructure
+description: Plan platform and infrastructure improvements for reliability, scale, and developer velocity.
+---
+
 # Platform & Infrastructure
 
 **Category:** Engineering

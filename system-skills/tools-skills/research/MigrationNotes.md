@@ -12,35 +12,35 @@ Successfully migrated 4 research commands to the research skill's workflows dire
 
 ### 1. Claude WebSearch Research
 - **Source:** `~/.claude/commands/perform-claude-research.md`
-- **Destination:** `~/.claude/skills/Research/Workflows/ClaudeResearch.md`
+- **Destination:** `~/.claude/skills/research/Workflows/ClaudeResearch.md`
 - **Size:** 3.6K
 - **Description:** Intelligent query decomposition with Claude's WebSearch tool (free, no API keys)
 - **Triggers:** "claude research", "use websearch", "claude only"
 
 ### 2. Perplexity API Research
 - **Source:** `~/.claude/commands/perform-perplexity-research.md`
-- **Destination:** `~/.claude/skills/Research/Workflows/PerplexityResearch.md`
+- **Destination:** `~/.claude/skills/research/Workflows/PerplexityResearch.md`
 - **Size:** 8.1K
 - **Description:** Fast web search with query decomposition via Perplexity API
 - **Triggers:** "perplexity research", "use perplexity", "sonar"
 
 ### 3. Interview Preparation
 - **Source:** `~/.claude/commands/perform-interview-research.md`
-- **Destination:** `~/.claude/skills/Research/Workflows/InterviewResearch.md`
+- **Destination:** `~/.claude/skills/research/Workflows/InterviewResearch.md`
 - **Size:** 4.4K
 - **Description:** Tyler Cowen-style interview prep with Shannon surprise principle
 - **Triggers:** "interview research", "prepare interview questions", "sponsored interview"
 
 ### 4. AI Trends Analysis
 - **Source:** `~/.claude/commands/analyze-ai-trends.md`
-- **Destination:** `~/.claude/skills/Research/Workflows/AnalyzeAiTrends.md`
+- **Destination:** `~/.claude/skills/research/Workflows/AnalyzeAiTrends.md`
 - **Size:** 3.0K
 - **Description:** Deep trend analysis across historical AI news logs
 - **Triggers:** "analyze ai trends", "trend analysis", "ai industry trends"
 
 ## Workflows Directory Status
 
-**Location:** `~/.claude/skills/Research/Workflows/`
+**Location:** `~/.claude/skills/research/Workflows/`
 
 **Note (2026-01):** Conduct.md and PerplexityResearch.md were later removed. Perplexity functionality consolidated into QuickResearch.md (single-agent) and StandardResearch.md (multi-agent).
 

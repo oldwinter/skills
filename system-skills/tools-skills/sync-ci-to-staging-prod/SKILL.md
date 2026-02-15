@@ -1,3 +1,8 @@
+---
+name: sync-ci-to-staging-prod
+description: Sync CI business configurations to staging and production with production safety gates.
+---
+
 # Sync CI to Staging + Production Skill
 
 此 skill 将 CI 环境的**业务功能配置**一次性同步到 Staging 和 Production 两个环境。

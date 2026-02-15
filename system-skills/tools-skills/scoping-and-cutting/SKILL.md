@@ -1,3 +1,8 @@
+---
+name: scoping-and-cutting
+description: Right-size scope to deliver meaningful outcomes within a fixed delivery timebox.
+---
+
 # Scoping & Cutting
 
 **Category:** Product Management

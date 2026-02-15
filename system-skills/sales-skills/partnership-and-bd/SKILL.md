@@ -1,3 +1,8 @@
+---
+name: partnership-and-bd
+description: Build strategic partnership and business development plans from target selection to execution.
+---
+
 # Partnership & BD
 
 **Category:** Sales & GTM

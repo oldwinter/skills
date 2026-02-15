@@ -1,3 +1,8 @@
+---
+name: marketplace-liquidity-management
+description: Diagnose and improve marketplace liquidity with segment-level bottleneck analysis and experiments.
+---
+
 # Marketplace Liquidity Management
 
 **Category:** Growth

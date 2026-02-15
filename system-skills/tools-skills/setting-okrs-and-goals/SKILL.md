@@ -1,3 +1,8 @@
+---
+name: setting-okrs-and-goals
+description: Set measurable OKRs and goals with clear alignment, guardrails, and review cadence.
+---
+
 # Setting OKRs & Goals
 
 **Category:** Product Management

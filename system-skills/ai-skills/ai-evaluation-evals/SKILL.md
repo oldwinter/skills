@@ -1,3 +1,8 @@
+---
+name: ai-evaluation-evals
+description: Create AI evaluation plans with benchmarks, rubrics, and error analysis workflows.
+---
+
 # AI Evaluation (Evals)
 
 **Category:** AI & Technology

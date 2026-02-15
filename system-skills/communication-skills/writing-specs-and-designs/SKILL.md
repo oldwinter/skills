@@ -1,3 +1,8 @@
+---
+name: writing-specs-and-designs
+description: Create clear product specs and design docs with implementation-ready acceptance criteria.
+---
+
 # Writing Specs & Designs
 
 **Category:** Product Management

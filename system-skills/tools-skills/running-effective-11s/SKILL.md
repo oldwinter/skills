@@ -1,3 +1,8 @@
+---
+name: running-effective-11s
+description: Run effective one-on-ones that build trust, coaching quality, and accountability.
+---
+
 # Running Effective 1:1s
 
 **Category:** Leadership

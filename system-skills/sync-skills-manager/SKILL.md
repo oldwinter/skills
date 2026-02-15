@@ -1,3 +1,8 @@
+---
+name: sync-skills-manager
+description: Manage synchronization workflows between repository skills and local system skill directories.
+---
+
 # Sync Skills Manager
 
 Manage synchronization between repository skills and local/system skill directories.

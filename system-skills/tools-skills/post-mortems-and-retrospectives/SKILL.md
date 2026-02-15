@@ -1,3 +1,8 @@
+---
+name: post-mortems-and-retrospectives
+description: Run blameless post-mortems and retrospectives with root-cause analysis and action tracking.
+---
+
 # Post-mortems & Retrospectives
 
 **Category:** Leadership

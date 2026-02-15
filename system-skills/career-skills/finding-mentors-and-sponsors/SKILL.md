@@ -1,3 +1,8 @@
+---
+name: finding-mentors-and-sponsors
+description: Build a mentor and sponsor network with targeted outreach and follow-up cadence.
+---
+
 # Finding Mentors & Sponsors
 
 **Category:** Career

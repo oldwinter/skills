@@ -1,11 +1,11 @@
 ---
-name: Research
-description: Comprehensive research, analysis, and content extraction system. USE WHEN user says 'research' (ANY form - this is the MANDATORY trigger), 'do research', 'extensive research', 'quick research', 'minor research', 'research this', 'find information', 'investigate', 'extract wisdom', 'extract alpha', 'analyze content', 'can't get this content', 'use fabric', OR requests any web/content research. Supports three research modes (quick/standard/extensive), deep content analysis, intelligent retrieval, and 242+ Fabric patterns. NOTE: For due diligence, OSINT, or background checks, use OSINT skill instead.
-implements: Science
-science_cycle_time: meso
-context: fork
+name: research
+description: Comprehensive research, analysis, and content extraction workflow for web and content research tasks.
+metadata:
+  implements: Science
+  science_cycle_time: meso
+  context: fork
 ---
-
 ## ⚠️ MANDATORY TRIGGER
 
 **When user says "research" (in any form), ALWAYS invoke this skill.**
@@ -21,7 +21,7 @@ context: fork
 ## Customization
 
 **Before executing, check for user customizations at:**
-`~/.claude/skills/PAI/USER/SKILLCUSTOMIZATIONS/Research/`
+`~/.claude/skills/PAI/USER/SKILLCUSTOMIZATIONS/research/`
 
 If this directory exists, load and apply any PREFERENCES.md, configurations, or resources found there. These override default behavior. If the directory does not exist, proceed with skill defaults.
 
