@@ -5,7 +5,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SYSTEM_SKILLS_DIR="$HOME/.agents/skills"
+SYSTEM_SKILLS_DIR="$HOME/.claude/skills"
 REPO_SKILLS_DIR="${SCRIPT_DIR}/../../system-skills"
 COLOR_RESET='\033[0m'
 COLOR_GREEN='\033[0;32m'

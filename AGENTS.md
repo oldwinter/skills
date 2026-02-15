@@ -12,6 +12,112 @@ Repo is designed to sync between:
 - this git working tree
 - local Claude/Cline/Cursor skill locations (see sync tooling)
 
+## Multi-Agent Global Paths (vercel-labs/skills)
+
+Based on the upstream `skills` CLI mapping, your primary agents use these global skill directories:
+
+| Agent | `--agent` value | Global path |
+|------|------------------|-------------|
+| Claude Code | `claude-code` | `~/.claude/skills/` |
+| Codex | `codex` | `~/.codex/skills/` |
+| Amp | `amp` | `~/.config/agents/skills/` |
+| Cursor | `cursor` | `~/.cursor/skills/` |
+| Antigravity | `antigravity` | `~/.gemini/antigravity/skills/` |
+| Droid | `droid` | `~/.factory/skills/` |
+| Gemini CLI | `gemini-cli` | `~/.gemini/skills/` |
+| OpenCode | `opencode` | `~/.config/opencode/skills/` |
+
+Notes:
+- `npx skills add ...` supports two install methods: **Symlink** (recommended, single source of truth) and **Copy** (independent copies).
+- In a multi-agent setup like this repo, prefer **Symlink** to keep all agents aligned with one canonical skill source.
+- This repository's custom sync scripts are still centered on `~/.agents/skills`, `~/.agent/skills`, and `~/.codex/skills`.
+
+Recommended command to install to your primary agents:
+```bash
+npx skills add . --skill '*' --global \
+  --agent claude-code \
+  --agent codex \
+  --agent amp \
+  --agent cursor \
+  --agent antigravity \
+  --agent droid \
+  --agent gemini-cli \
+  --agent opencode \
+  --yes
+```
+
+### Local Consolidation Plan (canonical `~/.agents/skills`)
+
+Goal: keep one canonical copy in `~/.agents/skills`, and let other agents consume skills via symlink when possible.
+
+Current directories with **non-symlink** skills on this machine:
+- `~/.config/agents/skills` (Amp): 15 real dirs, all overlap with `~/.agents/skills` → **migrate to symlink**.
+- `~/.gemini/skills` (Gemini CLI): 15 real dirs, all overlap with `~/.agents/skills` → **migrate to symlink**.
+- `~/.config/opencode/skills` (OpenCode): 14 real dirs, all overlap with `~/.agents/skills` → **migrate to symlink**.
+- `~/.codex/skills` (Codex): 25 real dirs.
+  - Keep local/system dirs: `.system`, `dist`.
+  - Codex-only skills can remain local (`cloudflare-deploy`, `docker-kubectl-deploy`, `e2e-test-automation`, `gh-fix-ci`, `linear`, `openai-docs`, `playwright`, `vercel-deploy`).
+  - Overlap skills (`argocd-cli`, `aws-cli`, `github-cli`, `kubectl`, etc.) are better migrated to symlink for single-source maintenance.
+- `~/.cursor/skills` (Cursor): 3 real dirs, currently unique (`sync-ci-to-staging`, `sync-ci-to-staging-prod`, `sync-staging-to-prod`) → keep unless you want to onboard them into this repo.
+- `~/.factory/skills` (Droid): 18 real dirs, mostly legacy names and not exact-name overlap with `~/.agents/skills` → migrate only after name mapping/verification.
+- `~/.claude/skills` (Claude Code): 28 real dirs are mostly builtin/vendor skills (`Agents`, `Evals`, `Browser`, etc.) → **do not force-migrate** to `~/.agents/skills`.
+
+### OOTB Tooling From `vercel-labs/skills`
+
+What is supported out of the box:
+- Inventory: `npx skills ls -g`
+- Install/update into selected agents: `npx skills add <source> --global --agent ... --skill ...`
+- Remove from selected agents: `npx skills remove --global --agent ... --skill ...`
+- Install method supports **Symlink** and **Copy** (prefer Symlink for centralized management).
+
+What is not exposed as a single dedicated command (in current `npx skills --help`):
+- No explicit one-shot command like “migrate all copied dirs to symlink”.
+- Practical approach is remove+re-add for target agent/skill set, and choose/keep symlink mode.
+
+Suggested migration pass (safe order):
+```bash
+# 1) Check current global distribution
+npx skills ls -g
+
+# 2) Reinstall overlap skills for Amp/Gemini/OpenCode from this repo
+# (use interactive mode at least once to ensure Symlink mode is selected)
+npx skills add . --global \
+  --agent amp gemini-cli opencode \
+  --skill argocd-cli aws-cli changelog-generator eksctl github-cli gitlab-cli \
+  --skill humanizer-zh justfile kargo-cli kubectl obsidian-dashboard skill-creator \
+  --skill sync-to-prod vercel-react-best-practices web-design-guidelines
+```
+
+### Full No-Miss Sync Runbook
+
+Use this sequence when you want to minimize missed skills across active agents, then sync back into this git repo.
+
+```bash
+# 1) Consolidate from active agent paths into canonical main dir (no overwrite on same name)
+#    sources: ~/.claude/skills ~/.codex/skills ~/.config/agents/skills ~/.cursor/skills
+#             ~/.gemini/antigravity/skills ~/.factory/skills ~/.gemini/skills ~/.config/opencode/skills
+#    target:  ~/.agents/skills
+
+# 2) Install canonical set to your primary agents
+npx skills add ~/.agents/skills --global --skill '*' \
+  --agent claude-code --agent codex --agent amp --agent cursor \
+  --agent antigravity --agent droid --agent gemini-cli --agent opencode \
+  --yes
+
+# 3) Sync system skills back to repo (incremental, no delete)
+./sync-skills-3way.sh sync
+
+# 4) Verify names are aligned
+./sync-skills-3way.sh status
+```
+
+Practical note:
+- `./sync-skills-3way.sh` aligns by directories containing `SKILL.md` (unique skill names), not by all top-level folders.
+
+Upstream discovery note from `vercel-labs/skills` README:
+- If repo root contains `SKILL.md`, root is treated as one skill.
+- Otherwise, CLI discovers skills recursively under `skills/` directory.
+
 ### Structure (high level)
 ```
 skills/
