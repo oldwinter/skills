@@ -4,6 +4,18 @@ A comprehensive collection of skills for Claude Code, organized by category.
 
 ---
 
+## Canonical Edit Path
+
+To avoid duplicate edits and sync drift:
+
+- Treat `system-skills/` as the canonical source for synchronized/global skills.
+- Treat `coding-common-skills/`, `devops-skills/`, `obsidian-skills/`, `writing-skills/` as curated collections and compatibility copies.
+- Before large sync operations, run `./sync-skills-3way.sh status`.
+
+Related docs:
+- Sources and provenance: `SKILLS_SOURCES_README.md`
+- Directory consolidation strategy: `DIRECTORY_STRATEGY_README.md`
+
 ## Quick Install (New Machine)
 
 **On a new computer, run these 3 commands to install all skills:**
