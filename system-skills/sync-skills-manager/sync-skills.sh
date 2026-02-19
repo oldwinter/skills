@@ -29,7 +29,7 @@ Commands:
   diff    Preview changes (system skills not in repo)
   pull    Sync system → repository (add new skills only)
   push    Sync repository → system (~/.agents/skills only)
-  dedupe  Convert duplicate Gemini skill dirs to symlinks
+  dedupe  Remove duplicate skills from ~/.gemini/skills
   status  Show current sync status
   auto    Auto-categorize and sync new skills
   help    Show this help message
@@ -42,7 +42,7 @@ Examples:
   $0 pull          # Add new skills from system to repo
   $0 auto          # Auto-categorize and sync new skills
   $0 push          # Sync all repo skills to ~/.agents/skills
-  $0 dedupe        # Clean duplicate dirs in ~/.gemini/skills
+  $0 dedupe        # Remove overlaps from ~/.gemini/skills
   $0 status        # Show sync status
 
 EOF
@@ -145,10 +145,10 @@ auto_categorize() {
 }
 
 dedupe_gemini_overlaps() {
-  local converted=0
+  local removed=0
 
   if [ ! -d "$GEMINI_SKILLS_DIR" ]; then
-    echo "$converted"
+    echo "$removed"
     return
   fi
 
@@ -156,18 +156,14 @@ dedupe_gemini_overlaps() {
     local skill_name
     skill_name="$(basename "$gemini_dir")"
 
-    # Only replace real directories that overlap with canonical system skills.
-    if [ -L "$gemini_dir" ]; then
-      continue
-    fi
+    # Remove overlap entries from Gemini to avoid duplicate source loading.
     if [ -d "$SYSTEM_SKILLS_DIR/$skill_name" ] || [ -L "$SYSTEM_SKILLS_DIR/$skill_name" ]; then
       rm -rf "$gemini_dir"
-      ln -s "$SYSTEM_SKILLS_DIR/$skill_name" "$GEMINI_SKILLS_DIR/$skill_name"
-      converted=$((converted + 1))
+      removed=$((removed + 1))
     fi
-  done < <(find "$GEMINI_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -print0)
+  done < <(find "$GEMINI_SKILLS_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0)
 
-  echo "$converted"
+  echo "$removed"
 }
 
 cmd_diff() {
@@ -356,22 +352,22 @@ cmd_push() {
   rm -f "$tmp_file"
 
   log_info "Repo push complete (new: $synced, updated: $updated)"
-  local converted
-  converted="$(dedupe_gemini_overlaps)"
-  if [ "$converted" -gt 0 ]; then
-    log_info "Gemini dedupe complete (converted: $converted)"
+  local removed
+  removed="$(dedupe_gemini_overlaps)"
+  if [ "$removed" -gt 0 ]; then
+    log_info "Gemini dedupe complete (removed overlaps: $removed)"
   else
-    log_info "Gemini dedupe: no overlapping real directories found"
+    log_info "Gemini dedupe: no overlapping entries found"
   fi
 }
 
 cmd_dedupe() {
-  local converted
-  converted="$(dedupe_gemini_overlaps)"
-  if [ "$converted" -gt 0 ]; then
-    log_info "Gemini dedupe complete (converted: $converted)"
+  local removed
+  removed="$(dedupe_gemini_overlaps)"
+  if [ "$removed" -gt 0 ]; then
+    log_info "Gemini dedupe complete (removed overlaps: $removed)"
   else
-    log_info "Gemini dedupe: no overlapping real directories found"
+    log_info "Gemini dedupe: no overlapping entries found"
   fi
 }
 

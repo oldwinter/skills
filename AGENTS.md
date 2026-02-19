@@ -176,7 +176,7 @@ Notes:
 ```
 
 Notes:
-- `push` now syncs repo skills directly into `~/.agents/skills` and runs a Gemini overlap dedupe pass (real dirs -> symlinks).
+- `push` now syncs repo skills directly into `~/.agents/skills` and removes overlapping entries from `~/.gemini/skills` to avoid Gemini conflict warnings.
 - `sync-skills-3way.sh` performs incremental sync across `~/.codex/skills`, `~/.agents/skills`, `~/.agent/skills`, and repo without deleting files.
 
 #### Install all skills (repo → system)
