@@ -17,7 +17,8 @@ Sync between `~/.agents/skills` and `./system-skills` categories.
 |---------|-------------|
 | `./sync-skills.sh diff` | Preview system-only skills |
 | `./sync-skills.sh pull` | Sync `~/.agents/skills` -> repo (add new skills) |
-| `./sync-skills.sh push` | Install repo skills to system via `add-skill` |
+| `./sync-skills.sh push` | Sync repo -> `~/.agents/skills` (no `add-skill`) |
+| `./sync-skills.sh dedupe` | Convert duplicate `~/.gemini/skills` dirs to symlinks |
 | `./sync-skills.sh status` | Show sync status |
 
 ### `sync-skills-3way.sh` (recommended)

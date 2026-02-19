@@ -176,12 +176,12 @@ Notes:
 ```
 
 Notes:
-- `push` runs `npx add-skill .. --all --global` and can overwrite your system skills install.
+- `push` now syncs repo skills directly into `~/.agents/skills` and runs a Gemini overlap dedupe pass (real dirs -> symlinks).
 - `sync-skills-3way.sh` performs incremental sync across `~/.codex/skills`, `~/.agents/skills`, `~/.agent/skills`, and repo without deleting files.
 
 #### Install all skills (repo → system)
 ```bash
-npx add-skill . --all --global
+./system-skills/sync-skills-manager/sync-skills.sh push
 ```
 
 ### “Run a single test” equivalents

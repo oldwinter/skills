@@ -5,7 +5,8 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SYSTEM_SKILLS_DIR="$HOME/.claude/skills"
+SYSTEM_SKILLS_DIR="${SYSTEM_SKILLS_DIR:-$HOME/.agents/skills}"
+GEMINI_SKILLS_DIR="${GEMINI_SKILLS_DIR:-$HOME/.gemini/skills}"
 REPO_SKILLS_DIR="${SCRIPT_DIR}/../../system-skills"
 COLOR_RESET='\033[0m'
 COLOR_GREEN='\033[0;32m'
@@ -27,7 +28,8 @@ Usage: $0 <command> [options]
 Commands:
   diff    Preview changes (system skills not in repo)
   pull    Sync system → repository (add new skills only)
-  push    Sync repository → system (install all)
+  push    Sync repository → system (~/.agents/skills only)
+  dedupe  Convert duplicate Gemini skill dirs to symlinks
   status  Show current sync status
   auto    Auto-categorize and sync new skills
   help    Show this help message
@@ -39,7 +41,8 @@ Examples:
   $0 diff          # Preview what would be synced
   $0 pull          # Add new skills from system to repo
   $0 auto          # Auto-categorize and sync new skills
-  $0 push          # Install all repo skills to system
+  $0 push          # Sync all repo skills to ~/.agents/skills
+  $0 dedupe        # Clean duplicate dirs in ~/.gemini/skills
   $0 status        # Show sync status
 
 EOF
@@ -139,6 +142,32 @@ auto_categorize() {
   else
     echo "tools-skills"
   fi
+}
+
+dedupe_gemini_overlaps() {
+  local converted=0
+
+  if [ ! -d "$GEMINI_SKILLS_DIR" ]; then
+    echo "$converted"
+    return
+  fi
+
+  while IFS= read -r -d '' gemini_dir; do
+    local skill_name
+    skill_name="$(basename "$gemini_dir")"
+
+    # Only replace real directories that overlap with canonical system skills.
+    if [ -L "$gemini_dir" ]; then
+      continue
+    fi
+    if [ -d "$SYSTEM_SKILLS_DIR/$skill_name" ] || [ -L "$SYSTEM_SKILLS_DIR/$skill_name" ]; then
+      rm -rf "$gemini_dir"
+      ln -s "$SYSTEM_SKILLS_DIR/$skill_name" "$GEMINI_SKILLS_DIR/$skill_name"
+      converted=$((converted + 1))
+    fi
+  done < <(find "$GEMINI_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -print0)
+
+  echo "$converted"
 }
 
 cmd_diff() {
@@ -289,14 +318,61 @@ cmd_pull() {
 }
 
 cmd_push() {
-  log_info "Installing all repository skills to system..."
+  log_info "Syncing repository skills to: $SYSTEM_SKILLS_DIR"
 
-  cd "$SCRIPT_DIR"
+  mkdir -p "$SYSTEM_SKILLS_DIR"
 
-  # Use npx add-skill to install
-  npx add-skill .. --all --global
+  local synced=0
+  local updated=0
+  local tmp_file
+  tmp_file="$(mktemp)"
 
-  log_info "All skills installed to system"
+  # Choose newest SKILL.md copy per skill name when duplicates exist in repo.
+  while IFS= read -r -d '' skill_md; do
+    local skill_dir
+    local skill_name
+    local mtime
+    skill_dir="$(dirname "$skill_md")"
+    skill_name="$(basename "$skill_dir")"
+    if [ "$skill_name" == "sync-skills-manager" ]; then
+      continue
+    fi
+    mtime="$(stat -f '%m' "$skill_md")"
+    printf '%s\t%s\t%s\n' "$skill_name" "$mtime" "$skill_dir" >> "$tmp_file"
+  done < <(find "$REPO_SKILLS_DIR" -type f -name "SKILL.md" -print0)
+
+  if [ -s "$tmp_file" ]; then
+    while IFS=$'\t' read -r skill_name skill_dir; do
+      if [ -d "$SYSTEM_SKILLS_DIR/$skill_name" ] || [ -L "$SYSTEM_SKILLS_DIR/$skill_name" ]; then
+        updated=$((updated + 1))
+      else
+        synced=$((synced + 1))
+      fi
+      mkdir -p "$SYSTEM_SKILLS_DIR/$skill_name"
+      rsync -a --delete "$skill_dir/" "$SYSTEM_SKILLS_DIR/$skill_name/"
+    done < <(sort -k1,1 -k2,2nr "$tmp_file" | awk -F '\t' '!seen[$1]++ {print $1 "\t" $3}')
+  fi
+
+  rm -f "$tmp_file"
+
+  log_info "Repo push complete (new: $synced, updated: $updated)"
+  local converted
+  converted="$(dedupe_gemini_overlaps)"
+  if [ "$converted" -gt 0 ]; then
+    log_info "Gemini dedupe complete (converted: $converted)"
+  else
+    log_info "Gemini dedupe: no overlapping real directories found"
+  fi
+}
+
+cmd_dedupe() {
+  local converted
+  converted="$(dedupe_gemini_overlaps)"
+  if [ "$converted" -gt 0 ]; then
+    log_info "Gemini dedupe complete (converted: $converted)"
+  else
+    log_info "Gemini dedupe: no overlapping real directories found"
+  fi
 }
 
 cmd_status() {
@@ -347,6 +423,9 @@ case "${1:-help}" in
     ;;
   push)
     cmd_push
+    ;;
+  dedupe)
+    cmd_dedupe
     ;;
   status)
     cmd_status
