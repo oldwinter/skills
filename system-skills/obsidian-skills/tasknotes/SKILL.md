@@ -225,4 +225,4 @@ tn pomodoro sessions --limit 10
 - Task IDs are Obsidian file paths relative to vault root
 - Suppress deprecation warnings by redirecting stderr: `2>/dev/null`
 - Use `--json` flag for programmatic parsing
-- Vault location: `/Users/cdd/Documents/notes/oldwinter-notes`
+- Vault location: `/path/to/your/vault` (example: `~/Documents/notes/my-vault`)

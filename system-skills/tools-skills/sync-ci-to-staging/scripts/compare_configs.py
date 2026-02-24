@@ -31,7 +31,6 @@ def find_gitops_root() -> Path:
         Path.cwd(),
         Path.cwd() / "simplex-gitops",
         Path.home() / "Code" / "all-code-in-mba" / "simplex-gitops",
-        Path("/Users/cdd/Code/all-code-in-mba/simplex-gitops"),
     ]
 
     for candidate in candidates:

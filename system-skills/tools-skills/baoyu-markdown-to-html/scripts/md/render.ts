@@ -34,10 +34,12 @@ const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const THEME_DIR = path.resolve(SCRIPT_DIR, "themes");
 const EXTERNAL_THEME_CONFIG_PATH =
   process.env.MD_THEME_CONFIG_PATH
-  || "/Users/jimliu/GitHub/md/packages/shared/src/configs/theme.ts";
+  || "";
 const EXTERNAL_THEME_DIR =
   process.env.MD_THEME_DIR
-  || path.resolve(path.dirname(EXTERNAL_THEME_CONFIG_PATH), "theme-css");
+  || (EXTERNAL_THEME_CONFIG_PATH
+    ? path.resolve(path.dirname(EXTERNAL_THEME_CONFIG_PATH), "theme-css")
+    : "");
 const FALLBACK_THEMES: ThemeName[] = ["default", "grace", "simple"];
 
 const DEFAULT_STYLE = {
@@ -99,7 +101,7 @@ function resolveThemeNames(): ThemeName[] {
   ]);
   const resolved = Array.from(combined).filter((name) =>
     fs.existsSync(path.join(THEME_DIR, `${name}.css`))
-    || fs.existsSync(path.join(EXTERNAL_THEME_DIR, `${name}.css`))
+    || (EXTERNAL_THEME_DIR && fs.existsSync(path.join(EXTERNAL_THEME_DIR, `${name}.css`)))
   );
   return resolved.length ? resolved : FALLBACK_THEMES;
 }

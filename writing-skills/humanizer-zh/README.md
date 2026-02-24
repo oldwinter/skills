@@ -9,7 +9,7 @@
 - 当前仓库路径：`writing-skills/humanizer-zh`
 - 上游仓库：<https://github.com/op7418/Humanizer-zh>
 - 本仓库已将该技能改为普通目录（vendor 方式），不再以 submodule 管理
-- 统一来源说明见：`/Users/cdd/my-code/skills/SKILLS_SOURCES_README.md`
+- 统一来源说明见：`SKILLS_SOURCES_README.md`
 
 ---
 

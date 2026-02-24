@@ -27,7 +27,7 @@ Common trigger phrases:
 
 ## Project Context
 
-The monitoring system is located in `/Users/cdd/Code/all-code-in-mba/source-code/lambda-function/` and consists of:
+The monitoring system is located in `/path/to/monitoring-system/` and consists of:
 
 - **Runtime**: Node.js 18.x (TypeScript)
 - **Cloud Platform**: AWS Lambda + CloudWatch + Secrets Manager + EventBridge + SNS

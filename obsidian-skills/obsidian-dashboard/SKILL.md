@@ -23,7 +23,8 @@ To provide detailed insights into Obsidian vault structure and content through a
 
 1. **Run the Analysis Script**
    ```bash
-   python3 /Users/cdd/.claude/skills/obsidian-dashboard/scripts/analyze_vault.py <vault_path>
+   # From this skill directory:
+   python3 scripts/analyze_vault.py <vault_path>
    ```
 
 2. **The script will generate:**

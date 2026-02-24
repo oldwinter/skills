@@ -52,17 +52,15 @@ npx skills add . --skill '*' --global \
 
 Goal: keep one canonical copy in `~/.agents/skills`, and let other agents consume skills via symlink when possible.
 
-Current directories with **non-symlink** skills on this machine:
-- `~/.config/agents/skills` (Amp): 15 real dirs, all overlap with `~/.agents/skills` → **migrate to symlink**.
-- `~/.gemini/skills` (Gemini CLI): 15 real dirs, all overlap with `~/.agents/skills` → **migrate to symlink**.
-- `~/.config/opencode/skills` (OpenCode): 14 real dirs, all overlap with `~/.agents/skills` → **migrate to symlink**.
-- `~/.codex/skills` (Codex): 25 real dirs.
-  - Keep local/system dirs: `.system`, `dist`.
-  - Codex-only skills can remain local (`cloudflare-deploy`, `docker-kubectl-deploy`, `e2e-test-automation`, `gh-fix-ci`, `linear`, `openai-docs`, `playwright`, `vercel-deploy`).
-  - Overlap skills (`argocd-cli`, `aws-cli`, `github-cli`, `kubectl`, etc.) are better migrated to symlink for single-source maintenance.
-- `~/.cursor/skills` (Cursor): 3 real dirs, currently unique (`sync-ci-to-staging`, `sync-ci-to-staging-prod`, `sync-staging-to-prod`) → keep unless you want to onboard them into this repo.
-- `~/.factory/skills` (Droid): 18 real dirs, mostly legacy names and not exact-name overlap with `~/.agents/skills` → migrate only after name mapping/verification.
-- `~/.claude/skills` (Claude Code): 28 real dirs are mostly builtin/vendor skills (`Agents`, `Evals`, `Browser`, etc.) → **do not force-migrate** to `~/.agents/skills`.
+Current directories with **non-symlink** skills on this machine (snapshot: 2026-02-24):
+- `~/.agents/skills` (Canonical): 188 real dirs → source of truth.
+- `~/.config/agents/skills` (Amp): 14 real dirs (overlap with `~/.agents/skills`) → **migrate to symlink**.
+- `~/.gemini/skills` (Gemini CLI): empty.
+- `~/.config/opencode/skills` (OpenCode): empty.
+- `~/.codex/skills` (Codex): mostly `.system`, plus 2 symlinked skills (`find-skills`, `humanizer`) → OK.
+- `~/.cursor/skills` (Cursor): 119 symlinked skills → OK.
+- `~/.factory/skills` (Droid): 1 real dir + 119 symlinked skills → migrate remaining real dir after verification.
+- `~/.claude/skills` (Claude Code): 2 real dirs + 156 symlinked skills → do not force-migrate builtins.
 
 ### OOTB Tooling From `vercel-labs/skills`
 
@@ -84,7 +82,9 @@ npx skills ls -g
 # 2) Reinstall overlap skills for Amp/Gemini/OpenCode from this repo
 # (use interactive mode at least once to ensure Symlink mode is selected)
 npx skills add . --global \
-  --agent amp gemini-cli opencode \
+  --agent amp \
+  --agent gemini-cli \
+  --agent opencode \
   --skill argocd-cli aws-cli changelog-generator eksctl github-cli gitlab-cli \
   --skill humanizer-zh justfile kargo-cli kubectl obsidian-dashboard skill-creator \
   --skill sync-to-prod vercel-react-best-practices web-design-guidelines

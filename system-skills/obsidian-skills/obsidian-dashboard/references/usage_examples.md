@@ -4,7 +4,8 @@
 
 ```bash
 # Analyze your vault
-python3 /Users/cdd/.claude/skills/obsidian-dashboard/scripts/analyze_vault.py /path/to/your/vault
+# From the obsidian-dashboard skill directory:
+python3 scripts/analyze_vault.py /path/to/your/vault
 
 # The script will generate three files:
 # - dashboard.html (Interactive HTML dashboard)

@@ -3,8 +3,8 @@
 ## 🎉 Skill 已创建成功！
 
 已成功创建 `e2e-test-automation` skill，位置：
-- **Skill 目录**: `/Users/cdd/.codex/skills/e2e-test-automation/`
-- **打包文件**: `/Users/cdd/.codex/skills/dist/e2e-test-automation.skill`
+- **Skill 目录**: `~/.codex/skills/e2e-test-automation/`
+- **打包文件**: `~/.codex/skills/dist/e2e-test-automation.skill`
 
 ## 📦 Skill 包含内容
 
@@ -32,7 +32,7 @@
 ### 1. 安装依赖
 
 ```bash
-cd /Users/cdd/.codex/skills/e2e-test-automation
+cd ~/.codex/skills/e2e-test-automation
 pip install -r requirements.txt
 playwright install chromium
 ```
@@ -40,7 +40,7 @@ playwright install chromium
 ### 2. 准备测试用例
 
 您的测试用例文件已经在项目中：
-`/Users/cdd/Code/all-code-in-mba/source-code/test-hub/ui-testing/e2e-test.md`
+`/path/to/test-hub/ui-testing/e2e-test.md`
 
 ### 3. 运行测试（三种方式）
 
@@ -62,14 +62,14 @@ Agent 会自动：
 #### 方式 2: 直接运行脚本
 
 ```bash
-cd /Users/cdd/Code/all-code-in-mba/source-code/test-hub
+cd /path/to/test-hub
 
 # 有头模式（可以看到浏览器）
-python /Users/cdd/.codex/skills/e2e-test-automation/scripts/execute_tests.py \
+python ~/.codex/skills/e2e-test-automation/scripts/execute_tests.py \
   ui-testing/e2e-test.md
 
 # 无头模式（后台运行）
-python /Users/cdd/.codex/skills/e2e-test-automation/scripts/execute_tests.py \
+python ~/.codex/skills/e2e-test-automation/scripts/execute_tests.py \
   ui-testing/e2e-test.md --headless
 ```
 
@@ -267,15 +267,15 @@ Skill 会自动回退到 Playwright，确保 Playwright 已安装。
 
 ## 📖 更多信息
 
-- **完整文档**: `/Users/cdd/.codex/skills/e2e-test-automation/README.md`
-- **Skill 说明**: `/Users/cdd/.codex/skills/e2e-test-automation/SKILL.md`
-- **示例测试用例**: `/Users/cdd/.codex/skills/e2e-test-automation/references/default_test_cases.md`
+- **完整文档**: `~/.codex/skills/e2e-test-automation/README.md`
+- **Skill 说明**: `~/.codex/skills/e2e-test-automation/SKILL.md`
+- **示例测试用例**: `~/.codex/skills/e2e-test-automation/references/default_test_cases.md`
 
 ## 🎓 下一步
 
 1. **安装依赖**
    ```bash
-   pip install -r /Users/cdd/.codex/skills/e2e-test-automation/requirements.txt
+   pip install -r ~/.codex/skills/e2e-test-automation/requirements.txt
    playwright install chromium
    ```
 

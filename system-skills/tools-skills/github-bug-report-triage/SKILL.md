@@ -141,7 +141,7 @@ the watched file, I get a warning message in the logs.
 The warning message:
 ```
 13:23:31 [WARN] [glob-loader] Duplicate id "russian-test" found in 
-/Users/user/Code/project/content/posts/russian-test.md. Later items 
+/path/to/project/content/posts/russian-test.md. Later items 
 with the same id will overwrite earlier ones.
 ```
 
@@ -158,4 +158,3 @@ with the same id will overwrite earlier ones.
 
 **Missing**:
 - Minimal reproduction (example code or link to a working reproduction)
-

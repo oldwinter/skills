@@ -5,7 +5,7 @@ This repository contains a bidirectional sync script to keep your skills synchro
 ## Overview
 
 The `sync-skills.sh` script provides bidirectional synchronization between:
-- **Repository**: `/Users/shika/Code/skills/` (this repository)
+- **Repository**: `~/Code/skills/` (this repository)
 - **Claude Plugins**: `~/.claude/plugins/marketplaces/user-skills/`
 
 ## Features
@@ -135,14 +135,14 @@ Repository Skills:
   coding-common-skills: 6 skills
   devops-skills: 11 skills
   obsidian-skills: 6 skills
-  system-skills: 118 skills
-  writing-skills: 0 skills
+  system-skills: 188 skills
+  writing-skills: 1 skills
 
 Claude Plugin Skills:
   coding-common-skills: 6 skills
   devops-skills: 11 skills
   obsidian-skills: 6 skills
-  system-skills: 118 skills
+  system-skills: 188 skills
 ```
 
 ## Troubleshooting
@@ -201,7 +201,7 @@ Add to `.git/hooks/post-commit`:
 ### Cron Job
 ```bash
 # Sync every hour
-0 * * * * cd /Users/shika/Code/skills && ./sync-skills.sh both
+0 * * * * cd ~/Code/skills && ./sync-skills.sh both
 ```
 
 ### Watch Script

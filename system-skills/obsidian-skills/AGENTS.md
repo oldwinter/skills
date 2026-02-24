@@ -6,6 +6,7 @@ Obsidian-related skills synced from system; overlaps with top-level `obsidian-sk
 ## WHERE TO LOOK
 | Task | Location |
 |------|----------|
+| CLI automation | `obsidian-cli-automation/SKILL.md` |
 | Markdown patterns | `obsidian-markdown/SKILL.md` |
 | NotebookLM automation | `notebooklm/SKILL.md` |
 | TaskNotes integration | `tasknotes/SKILL.md` |
