@@ -691,10 +691,6 @@ def cmd_refresh(args: argparse.Namespace) -> int:
     base_dir = config_path.parent
 
     repo_root = guess_repo_root()
-    categories = build_categories(repo_root)
-
-    registry_dir = resolve_config_path(str(config.get("registry_dir", "")), base_dir)
-    registry_skills, _registry_unmanaged = list_registry_skills(registry_dir)
 
     agents = pick_agents(config, args.agent)
     profiles = config.get("profiles", {})
@@ -709,6 +705,8 @@ def cmd_refresh(args: argparse.Namespace) -> int:
     backup_root = resolve_config_path(args.backup_root, base_dir)
     timestamp = now_timestamp()
 
+    registry_dir = resolve_config_path(str(config.get("registry_dir", "")), base_dir)
+
     if not do_apply:
         print("[refresh] Dry-run only. Would run: sync -> normalize -> apply. Re-run with --apply to execute.")
         print("")
@@ -716,6 +714,10 @@ def cmd_refresh(args: argparse.Namespace) -> int:
         print("[refresh] Running sync-skills-3way.sh sync ...")
         run_sync(repo_root)
         print("")
+
+    # If sync ran, registry/repo state may have changed; re-snapshot inputs used below.
+    categories = build_categories(repo_root)
+    registry_skills, _registry_unmanaged = list_registry_skills(registry_dir)
 
     for agent in agents:
         agent_cfg = agents_cfg.get(agent, {})

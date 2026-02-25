@@ -70,7 +70,8 @@
     },
     "claude-code": {
       "dir": "~/.claude/skills",
-      "profiles": ["core", "general"]
+      "profiles": ["core", "general"],
+      "reserved_names": ["Research"]
     },
     "antigravity": {
       "dir": "~/.gemini/antigravity/skills",
@@ -99,4 +100,3 @@
     }
   }
 }
-
