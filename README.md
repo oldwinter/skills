@@ -239,6 +239,19 @@ To use a skill, reference it in your conversation with Claude Code, for example:
 ./system-skills/sync-skills-manager/sync-skills.sh push
 ```
 
+## Profiles Manager (Enable/Disable per Agent)
+
+Keep a single global registry in `~/.agents/skills/`, but enable only a small subset per tool (Cursor/Codex/Claude Code/etc.) via symlinks.
+
+```bash
+# Status + preview
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py status
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py diff
+
+# One-shot daily workflow (sync -> normalize -> apply)
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py refresh --apply
+```
+
 ## Adding New Skills
 
 ```bash

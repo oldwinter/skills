@@ -42,6 +42,54 @@ Key behavior:
 | `./sync-skills-3way.sh status` | Show counts and name-level diffs |
 | `./sync-skills-3way.sh help` | Show usage |
 
+### `scripts/skills_profiles.py` (profiles manager)
+
+Manage *which* skills are enabled per agent by creating/removing symlinks that point to the global registry (`~/.agents/skills`).
+
+This solves two common issues:
+- New skills created/edited in one tool (e.g. Codex) not showing up in others (e.g. Cursor).
+- Too many skills loaded everywhere (context bloat) while still keeping one global registry.
+
+**Config**
+- Default config file: `system-skills/sync-skills-manager/skills-profiles.json`
+
+**Safety model**
+- `apply` and `normalize` default to **dry-run**. Use `--apply` to change files.
+- Only “managed skills” are modified: a directory in the registry that contains `SKILL.md`.
+- Non-skill folders (no `SKILL.md`, e.g. `dist/`) are treated as **unmanaged** and never touched.
+- `normalize` always moves existing entries into a backup folder before replacing them with symlinks.
+
+**Commands**
+```bash
+# Show registry + per-agent status
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py status
+
+# Preview what would change (desired vs current)
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py diff
+
+# 1) Sync Codex/registry/repo (incremental, no delete)
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py sync
+
+# 2) Normalize drift (copies/non-canonical links -> canonical symlinks, with backups)
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py normalize --dry-run
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py normalize --apply
+
+# 3) Apply enable/disable sets (remove extra canonical links, add missing links)
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py apply --dry-run
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py apply --apply
+
+# One-shot daily workflow (sync -> normalize -> apply)
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py refresh --apply
+```
+
+**Backups**
+- Default backup root: `~/.agents/skills-backups/<timestamp>/<agent>/<skill>/...`
+
+**Tests**
+```bash
+python3 -m unittest -q
+```
+
 ## Usage
 
 ### Daily 3-way sync

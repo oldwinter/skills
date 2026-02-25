@@ -1,0 +1,102 @@
+{
+  "registry_dir": "~/.agents/skills",
+  "profiles": {
+    "core": {
+      "include_skills": [
+        "agent-browser",
+        "context7",
+        "documentation-lookup",
+        "openai-docs",
+        "find-skills",
+        "skill-creator",
+        "skills-readme-updater",
+        "sync-skills-manager",
+        "justfile",
+        "changelog-generator",
+        "mermaid-visualizer",
+        "excalidraw-diagram",
+        "web-design-guidelines",
+        "docs-update",
+        "create-pull-request",
+        "firecrawl",
+        "playwright",
+        "webapp-testing",
+        "humanizer-zh",
+        "research"
+      ]
+    },
+    "general": {
+      "include_categories": [
+        "product-skills",
+        "leadership-skills",
+        "communication-skills",
+        "devops-skills",
+        "engineering-skills",
+        "obsidian-skills"
+      ]
+    },
+    "engineering": {
+      "include_categories": [
+        "devops-skills",
+        "engineering-skills"
+      ]
+    },
+    "ai": {
+      "include_categories": ["ai-skills"]
+    },
+    "career": {
+      "include_categories": ["career-skills"]
+    },
+    "marketing": {
+      "include_categories": ["marketing-skills"]
+    },
+    "sales": {
+      "include_categories": ["sales-skills"]
+    },
+    "tools_all": {
+      "include_categories": ["tools-skills"]
+    },
+    "baoyu": {
+      "include_globs": ["baoyu-*"]
+    },
+    "seo": {
+      "include_globs": ["seo-*"]
+    }
+  },
+  "agents": {
+    "cursor": {
+      "dir": "~/.cursor/skills",
+      "profiles": ["core", "general"]
+    },
+    "claude-code": {
+      "dir": "~/.claude/skills",
+      "profiles": ["core", "general"]
+    },
+    "antigravity": {
+      "dir": "~/.gemini/antigravity/skills",
+      "profiles": ["core", "general"]
+    },
+    "droid": {
+      "dir": "~/.factory/skills",
+      "profiles": ["core", "general"]
+    },
+    "codex": {
+      "dir": "~/.codex/skills",
+      "profiles": ["core", "engineering"],
+      "reserved_names": [".system", "dist"]
+    },
+    "amp": {
+      "dir": "~/.config/agents/skills",
+      "profiles": ["core", "engineering"]
+    },
+    "opencode": {
+      "dir": "~/.config/opencode/skills",
+      "profiles": ["core", "engineering"]
+    },
+    "gemini-cli": {
+      "dir": "~/.gemini/skills",
+      "profiles": ["core", "general"]
+    }
+  }
+}
+
