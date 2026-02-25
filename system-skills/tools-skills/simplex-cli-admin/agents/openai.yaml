@@ -1,0 +1,4 @@
+interface:
+  display_name: "Simplex CLI Admin"
+  short_description: "Admin workflows for Simplex Router via simplex-cli"
+  default_prompt: "Use simplex-cli to manage Simplex Router admin tasks (auth/config, invite codes, registration, whitelist, credits, cost limits, stats, ranking, active-users, project queries, email, GTM). Prefer --output=llm for parsing, and confirm with the user before running any mutating command."
