@@ -1,7 +1,7 @@
 # devops-skills
 
 ## OVERVIEW
-Curated DevOps / infrastructure skills (small set). These are separate from `system-skills/devops-skills/` (which is larger and sync-managed).
+Canonical DevOps / infrastructure skills for this repository.
 
 ## WHERE TO LOOK
 | Task | Location | Notes |

@@ -1,7 +1,7 @@
 # obsidian-skills
 
 ## OVERVIEW
-Curated Obsidian note-taking / vault-management skills.
+Canonical Obsidian note-taking / vault-management skills for this repository.
 
 ## WHERE TO LOOK
 | Task | Location | Notes |

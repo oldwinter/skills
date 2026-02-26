@@ -1,12 +1,15 @@
 # Skills Repository Sync
 
-This repository contains a bidirectional sync script to keep your skills synchronized between this Git repository and Claude Code's plugin system.
+This repository treats all repo `*-skills` directories as canonical source, then syncs to runtime locations like `~/.claude/skills`.
 
 ## Overview
 
-The `sync-skills.sh` script provides bidirectional synchronization between:
-- **Repository**: `~/Code/skills/` (this repository)
-- **Claude Plugins**: `~/.claude/plugins/marketplaces/user-skills/`
+Recommended sync path:
+- **Canonical source**: `~/Code/skills/` (this repository)
+- **Runtime registry**: `~/.claude/skills/`
+- **Other agents**: symlinked from runtime registry via `link-all`
+
+Legacy `sync-skills.sh` (plugin marketplace flow) is still available for compatibility.
 
 ## Features
 

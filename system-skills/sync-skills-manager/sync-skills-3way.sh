@@ -5,7 +5,7 @@
 # Behavior:
 # - Incremental only (rsync --update), no delete.
 # - Uses newest repo copy per skill name as canonical when syncing repo -> local dirs.
-# - New skills not found in repo are placed under system-skills/tools-skills/<skill-name>.
+# - New skills not found in repo are placed under tools-skills/<skill-name> (repo root by default).
 
 set -euo pipefail
 
@@ -13,8 +13,21 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 CODEX_DIR="${CODEX_DIR:-$HOME/.codex/skills}"
 CLAUDE_DIR="${CLAUDE_DIR:-$HOME/.claude/skills}"
-REPO_NEW_SKILL_DIR="${REPO_NEW_SKILL_DIR:-$REPO_ROOT/system-skills/tools-skills}"
 LINK_SCRIPT="${LINK_SCRIPT:-$SCRIPT_DIR/sync-skills.sh}"
+
+default_repo_new_skill_dir() {
+  if [ -d "$REPO_ROOT/tools-skills" ]; then
+    echo "$REPO_ROOT/tools-skills"
+    return
+  fi
+  if [ -d "$REPO_ROOT/system-skills/tools-skills" ]; then
+    echo "$REPO_ROOT/system-skills/tools-skills"
+    return
+  fi
+  echo "$REPO_ROOT/tools-skills"
+}
+
+REPO_NEW_SKILL_DIR="${REPO_NEW_SKILL_DIR:-$(default_repo_new_skill_dir)}"
 
 COLOR_RESET='\033[0m'
 COLOR_GREEN='\033[0;32m'
@@ -37,7 +50,7 @@ Usage:
 Environment overrides:
   CODEX_DIR           (default: ~/.codex/skills)
   CLAUDE_DIR          (default: ~/.claude/skills)
-  REPO_NEW_SKILL_DIR  (default: <repo>/system-skills/tools-skills)
+  REPO_NEW_SKILL_DIR  (default: <repo>/tools-skills, fallback: <repo>/system-skills/tools-skills)
   LINK_SCRIPT         (default: <repo>/system-skills/sync-skills-manager/sync-skills.sh)
 EOF
 }

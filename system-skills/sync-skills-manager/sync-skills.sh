@@ -1,6 +1,6 @@
 #!/bin/bash
-# Sync Skills Manager - Sync between canonical local skills and repository skills
-# Supports categorized subdirectories
+# Sync Skills Manager - Sync repository-canonical skills and local agent dirs
+# Supports categorized subdirectories (repo-root first, system-skills compatible)
 
 set -euo pipefail
 
@@ -8,7 +8,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SYSTEM_SKILLS_DIR="${SYSTEM_SKILLS_DIR:-$HOME/.claude/skills}"
 GEMINI_SKILLS_DIR="${GEMINI_SKILLS_DIR:-$HOME/.gemini/skills}"
 AGENT_TARGET_DIRS="${AGENT_TARGET_DIRS:-$HOME/.codex/skills,$HOME/.config/agents/skills,$HOME/.cursor/skills,$HOME/.gemini/antigravity/skills,$HOME/.factory/skills,$HOME/.gemini/skills,$HOME/.config/opencode/skills,$HOME/.agents/skills}"
-REPO_SKILLS_DIR="${SCRIPT_DIR}/../../system-skills"
+REPO_ROOT="${REPO_ROOT:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+REPO_SKILLS_DIR="${REPO_SKILLS_DIR:-$REPO_ROOT}"
 COLOR_RESET='\033[0m'
 COLOR_GREEN='\033[0;32m'
 COLOR_YELLOW='\033[0;33m'
@@ -22,15 +23,15 @@ log_diff() { echo -e "${COLOR_CYAN}[DIFF]${COLOR_RESET} $1"; }
 
 show_help() {
   cat << EOF
-Sync Skills Manager - Sync between canonical local skills and repository skills
+Sync Skills Manager - Sync between repository-canonical skills and runtime skill directories
 
 Usage: $0 <command> [options]
 
 Commands:
-  diff      Preview changes (canonical skills not in repo)
-  pull      Sync canonical → repository (add new skills only)
-  push      Sync repository → canonical ($SYSTEM_SKILLS_DIR)
-  link-all  Rebuild agent dirs as symlinks to canonical source
+  diff      Preview changes (runtime skills not in repo)
+  pull      Sync runtime → repository (add new skills only)
+  push      Sync repository → runtime ($SYSTEM_SKILLS_DIR)
+  link-all  Rebuild agent dirs as symlinks to runtime source
   dedupe  Remove duplicate skills from ~/.gemini/skills
   status  Show current sync status
   auto      Auto-categorize and sync new skills
@@ -38,12 +39,18 @@ Commands:
 
 Examples:
   $0 diff      # Preview what would be synced
-  $0 pull      # Add new skills from canonical to repo
+  $0 pull      # Add new skills from runtime directory to repo
   $0 auto      # Auto-categorize and sync new skills
-  $0 push      # Sync all repo skills to canonical source
-  $0 link-all  # Rebuild agent directories to symlink from canonical
+  $0 push      # Sync all repo skills to runtime source
+  $0 link-all  # Rebuild agent directories to symlink from runtime source
   $0 dedupe    # Remove overlaps from ~/.gemini/skills
   $0 status    # Show sync status
+
+Environment:
+  SYSTEM_SKILLS_DIR (default: ~/.claude/skills)
+  REPO_ROOT        (default: repo root of this script)
+  REPO_SKILLS_DIR  (default: \$REPO_ROOT)
+  AGENT_TARGET_DIRS (comma-separated target skill dirs)
 
 EOF
 }
@@ -57,25 +64,84 @@ get_repo_skill_names() {
     | sort -u
 }
 
+# List category directories (dirs ending with "-skills" that directly contain skill dirs)
+list_repo_category_dirs() {
+  local cat_dir
+  while IFS= read -r -d '' cat_dir; do
+    case "$cat_dir" in
+      */.git/*|*/node_modules/*|*/__pycache__/*)
+        continue
+        ;;
+    esac
+    if [ "$(basename "$cat_dir")" = "system-skills" ]; then
+      continue
+    fi
+
+    local has_skill=0
+    local maybe_skill
+    for maybe_skill in "$cat_dir"/*/; do
+      [ -d "$maybe_skill" ] || continue
+      if [ -f "$maybe_skill/SKILL.md" ]; then
+        has_skill=1
+        break
+      fi
+    done
+
+    if [ "$has_skill" -eq 1 ]; then
+      echo "$cat_dir"
+    fi
+  done < <(find "$REPO_SKILLS_DIR" -type d -name "*-skills" -print0) | sort -u
+}
+
+resolve_category_dir() {
+  local category="$1"
+  local root_candidate="$REPO_SKILLS_DIR/$category"
+  local fallback=""
+  local cat_dir
+
+  # Repo-root is canonical when present.
+  if [ -d "$root_candidate" ]; then
+    echo "$root_candidate"
+    return 0
+  fi
+
+  while IFS= read -r cat_dir; do
+    [ "$(basename "$cat_dir")" = "$category" ] || continue
+    case "$cat_dir" in
+      "$REPO_SKILLS_DIR/system-skills/"*)
+        [ -n "$fallback" ] || fallback="$cat_dir"
+        ;;
+      *)
+        echo "$cat_dir"
+        return 0
+        ;;
+    esac
+  done < <(list_repo_category_dirs)
+
+  if [ -n "$fallback" ]; then
+    echo "$fallback"
+    return 0
+  fi
+
+  echo "$root_candidate"
+}
+
 # Find which category directory contains a skill
 find_skill_category() {
   local skill_name="$1"
-  for cat_dir in "$REPO_SKILLS_DIR"/*/; do
-    local cat_name=$(basename "$cat_dir")
-    if [ "$cat_name" == "sync-skills-manager" ]; then
-      continue
-    fi
+  local cat_dir
+  while IFS= read -r cat_dir; do
     if [ -d "$cat_dir/$skill_name" ]; then
       echo "$cat_dir"
       return 0
     fi
-  done
+  done < <(list_repo_category_dirs)
   return 1
 }
 
 # Get all categories (subdirectories)
 get_categories() {
-  ls -d "$REPO_SKILLS_DIR"/*/ 2>/dev/null | grep -v "sync-skills-manager" | xargs -I {} basename {}
+  list_repo_category_dirs | xargs -I {} basename {} | sort -u
 }
 
 # Auto-determine category for a skill
@@ -84,41 +150,51 @@ auto_categorize() {
   local name_lower=$(echo "$skill_name" | tr '[:upper:]' '[:lower:]')
 
   # AI & ML
-  if [[ "$name_lower" == ai-* || "$name_lower" == *llm* || "$name_lower" == *ai* ]]; then
+  if [[ "$name_lower" == ai-* || "$name_lower" == *llm* || "$name_lower" == *openai* || \
+        "$name_lower" == *context7* || "$name_lower" == *doc*lookup* || "$name_lower" == *firecrawl* || \
+        "$name_lower" == *mcp-builder* || "$name_lower" == *retrieval* || "$name_lower" == *eval-harness* ]]; then
     echo "ai-skills"
   # DevOps & Infrastructure
   elif [[ "$name_lower" == *kubectl* || "$name_lower" == *eksctl* || "$name_lower" == *argocd* || \
          "$name_lower" == *k8s* || "$name_lower" == *docker* || "$name_lower" == *aws* || \
-         "$name_lower" == *gitlab* || "$name_lower" == *github* || "$name_lower" == *kargo* ]]; then
+         "$name_lower" == *gitlab* || "$name_lower" == *github* || "$name_lower" == gh-* || \
+         "$name_lower" == *kargo* || "$name_lower" == *deploy* || "$name_lower" == *release* || \
+         "$name_lower" == *terraform* || "$name_lower" == *sync-ci* || "$name_lower" == *ci-fix* || \
+         "$name_lower" == *cloudflare* || "$name_lower" == *vercel* || "$name_lower" == *ecc* ]]; then
     echo "devops-skills"
-  # Database & Backend
-  elif [[ "$name_lower" == *postgres* || "$name_lower" == *supabase* || "$name_lower" == *database* || \
-         "$name_lower" == *sql* || "$name_lower" == *postgres* ]]; then
-    echo "tools-skills"
+  # Engineering & Code Quality
+  elif [[ "$name_lower" == *pattern* || "$name_lower" == *testing* || "$name_lower" == *security* || \
+         "$name_lower" == *tdd* || "$name_lower" == *verification* || "$name_lower" == *playwright* || \
+         "$name_lower" == *web-performance* || "$name_lower" == *web-accessibility* || "$name_lower" == *web-design* || \
+         "$name_lower" == *ui-ux* || "$name_lower" == *remotion* || "$name_lower" == *postgres* || \
+         "$name_lower" == *supabase* || "$name_lower" == *clickhouse* || "$name_lower" == *mdbase* || \
+         "$name_lower" == *coding-standards* ]]; then
+    echo "engineering-skills"
   # Marketing & SEO
-  elif [[ "$name_lower" == *seo* || "$name_lower" == *marketing* || "$name_lower" == *audit* || \
+  elif [[ "$name_lower" == baoyu-* || "$name_lower" == *seo* || "$name_lower" == *marketing* || "$name_lower" == *audit* || \
          "$name_lower" == *content* || "$name_lower" == *brand* || "$name_lower" == *community* ]]; then
     echo "marketing-skills"
   # Product Management
   elif [[ "$name_lower" == *product* || "$name_lower" == *roadmap* || "$name_lower" == *prd* || \
-         "$name_lower" == *metric* || "$name_lower" == *priorit* || "$name_lower" == *vision* ]]; then
+         "$name_lower" == *metric* || "$name_lower" == *priorit* || "$name_lower" == *vision* || \
+         "$name_lower" == *linear* || "$name_lower" == *retention* || "$name_lower" == *scoping* || \
+         "$name_lower" == *positioning* || "$name_lower" == *research* || "$name_lower" == *marketplace* ]]; then
     echo "product-skills"
   # Leadership & Team
   elif [[ "$name_lower" == *leadership* || "$name_lower" == *culture* || "$name_lower" == *hiring* || \
          "$name_lower" == *onboarding* || "$name_lower" == *1-1* || "$name_lower" == *1:1* || \
-         "$name_lower" == *coaching* || "$name_lower" == *delegate* || "$name_lower" == *decision* ]]; then
+         "$name_lower" == *coaching* || "$name_lower" == *delegate* || "$name_lower" == *decision* || \
+         "$name_lower" == *ritual* || "$name_lower" == *post-mortem* || "$name_lower" == *okrs* ]]; then
     echo "leadership-skills"
   # Career
   elif [[ "$name_lower" == *career* || "$name_lower" == *job* || "$name_lower" == *interview* || \
-         "$name_lower" == *promotion* || "$name_lower" == *offer* || "$name_lower" == *mentor* ]]; then
+         "$name_lower" == *promotion* || "$name_lower" == *offer* || "$name_lower" == *mentor* || \
+         "$name_lower" == *continuous-learning* ]]; then
     echo "career-skills"
-  # Engineering
-  elif [[ "$name_lower" == *engineer* || "$name_lower" == *tech-debt* || "$name_lower" == *roadmap* || \
-         "$name_lower" == *platform* || "$name_lower" == *design-syst* ]]; then
-    echo "engineering-skills"
   # Communication
   elif [[ "$name_lower" == *presentation* || "$name_lower" == *communicat* || "$name_lower" == *writing* || \
-         "$name_lower" == *fundrais* ]]; then
+         "$name_lower" == *fundrais* || "$name_lower" == *humanizer* || "$name_lower" == *docs-update* || \
+         "$name_lower" == *changelog* ]]; then
     echo "communication-skills"
   # Sales & GTM
   elif [[ "$name_lower" == *sales* || "$name_lower" == *founder* || "$name_lower" == *enterprise* || \
@@ -126,7 +202,8 @@ auto_categorize() {
     echo "sales-skills"
   # Obsidian & Notes
   elif [[ "$name_lower" == *obsidian* || "$name_lower" == *canvas* || "$name_lower" == *notebook* || \
-         "$name_lower" == *note* || "$name_lower" == *task* ]]; then
+         "$name_lower" == *note* || "$name_lower" == *task* || "$name_lower" == *scheduler* || \
+         "$name_lower" == *excalidraw* ]]; then
     echo "obsidian-skills"
   # Default to tools
   else
@@ -265,16 +342,13 @@ cmd_diff() {
 
     # Check if skill exists in repo (any category)
     local found_in_repo=""
-    for cat_dir in "$REPO_SKILLS_DIR"/*/; do
-      local cat_name=$(basename "$cat_dir")
-      if [ "$cat_name" == "sync-skills-manager" ]; then
-        continue
-      fi
+    local cat_dir
+    while IFS= read -r cat_dir; do
       if [ -d "$cat_dir/$skill_name" ]; then
         found_in_repo="1"
         break
       fi
-    done
+    done < <(list_repo_category_dirs)
 
     if [ -z "$found_in_repo" ]; then
       local category=$(auto_categorize "$skill_name")
@@ -324,28 +398,26 @@ cmd_auto() {
 
     # Check if skill already exists in repo (any category)
     local found_in_repo=""
-    for cat_dir in "$REPO_SKILLS_DIR"/*/; do
-      local cat_name=$(basename "$cat_dir")
-      if [ "$cat_name" == "sync-skills-manager" ]; then
-        continue
-      fi
+    local cat_dir
+    while IFS= read -r cat_dir; do
       if [ -d "$cat_dir/$skill_name" ]; then
         found_in_repo="1"
         break
       fi
-    done
+    done < <(list_repo_category_dirs)
 
     if [ -n "$found_in_repo" ]; then
       continue
     fi
 
     local category=$(auto_categorize "$skill_name")
-    local target_dir="$REPO_SKILLS_DIR/$category"
+    local target_dir
+    target_dir="$(resolve_category_dir "$category")"
 
     if [ ! -d "$target_dir" ]; then
       log_warn "Category $category doesn't exist, using tools-skills"
       category="tools-skills"
-      target_dir="$REPO_SKILLS_DIR/$category"
+      target_dir="$(resolve_category_dir "$category")"
     fi
 
     log_info "Adding: $skill_name → $category/"
@@ -461,14 +533,13 @@ cmd_status() {
 
   # Count by category
   echo "Repo by category:"
-  for cat_dir in "$REPO_SKILLS_DIR"/*/; do
-    local cat_name=$(basename "$cat_dir")
-    if [ "$cat_name" == "sync-skills-manager" ]; then
-      continue
-    fi
-    local count=$(ls -d "$cat_dir"/*/ 2>/dev/null | wc -l | tr -d ' ')
+  local cat_dir
+  while IFS= read -r cat_dir; do
+    local cat_name="${cat_dir#$REPO_SKILLS_DIR/}"
+    local count
+    count="$(find "$cat_dir" -mindepth 1 -maxdepth 1 -type d -exec sh -c '[ -f "$1/SKILL.md" ] && echo "$1"' _ {} \; | wc -l | tr -d ' ')"
     echo "  $cat_name: $count skills"
-  done
+  done < <(list_repo_category_dirs)
   echo ""
 
   local missing=0

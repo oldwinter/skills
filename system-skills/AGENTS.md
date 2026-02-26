@@ -1,27 +1,23 @@
 # system-skills
 
 ## OVERVIEW
-Large skills set synced from canonical `~/.claude/skills`, organized into subcategories (AI, Product, DevOps, Tools, etc.).
+Legacy container directory. Category content has been promoted to repo-root `*-skills` directories.
 
 ## STRUCTURE
 ```
 system-skills/
-├── <subcategory>/
-│   └── <skill-name>/
-│       ├── SKILL.md
-│       ├── references/ | rules/ | scripts/ (optional)
-└── sync-skills-manager/            # system↔repo sync tooling + config
+└── sync-skills-manager/   # sync tooling + config
 ```
 
 ## WHERE TO LOOK
 | Task | Location | Notes |
 |------|----------|-------|
-| Find a skill by name | `system-skills/**/<skill>/SKILL.md` | Directory name is the skill identifier.
-| Understand subcategory boundaries | `system-skills/*-skills/AGENTS.md` | Per-subcategory notes.
-| Sync system → repo | `sync-skills-manager/` | `sync-skills.sh pull/auto`.
+| Find skills by category | `<repo-root>/*-skills/<skill>/SKILL.md` | Repo-root categories are canonical.
+| Sync repo → runtime installs | `sync-skills-manager/` | `sync-skills.sh push/link-all`.
 
 ## CONVENTIONS
-- Subcategories are first-level directories ending in `-skills` (plus `sync-skills-manager`).
+- Keep sync tooling under `system-skills/sync-skills-manager/`.
+- Prefer repo-root categories for all new/moved skills.
 
 ## ANTI-PATTERNS
-- Don’t flatten `system-skills/` — `sync-skills-manager` expects this nesting.
+- Don’t reintroduce category content under `system-skills/`; it creates duplicate source-of-truth issues.

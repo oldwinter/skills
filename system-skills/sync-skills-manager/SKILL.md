@@ -11,7 +11,7 @@ Manage synchronization between repository skills and local/system skill director
 
 ### `sync-skills.sh` (canonical manager)
 
-Sync between canonical `~/.claude/skills` and `./system-skills` categories.
+Sync between repository-canonical categories and runtime installs (`~/.claude/skills` + other agents).
 
 | Command | Description |
 |---------|-------------|
@@ -33,7 +33,7 @@ Incremental 3-way sync across:
 Key behavior:
 
 - Incremental only (`rsync --update`), never deletes files.
-- New skills missing in repo are added to `system-skills/tools-skills/`.
+- New skills missing in repo are added to `tools-skills/` by default (or legacy `system-skills/tools-skills/` if present).
 - For duplicate skill names in repo, the newest `SKILL.md` copy is treated as canonical for repo -> local sync.
 
 | Command | Description |
@@ -128,6 +128,30 @@ python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py sync-che
 python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py sync-check --canonical-agent claude-code --agent codex,cursor,amp
 ```
 
+### `scripts/reclassify_system_skills.py` (category rebalancer)
+
+Rebalance `system-skills` category distribution (defaults to reclassifying `tools-skills` into domain categories).
+
+```bash
+# Preview reclassification plan
+python3 system-skills/sync-skills-manager/scripts/reclassify_system_skills.py --from-category tools-skills
+
+# Apply reclassification
+python3 system-skills/sync-skills-manager/scripts/reclassify_system_skills.py --from-category tools-skills --apply
+```
+
+### `scripts/flatten_system_skills_layout.py` (layout simplifier)
+
+Flatten legacy `system-skills/<category>/<skill>` into repo-root `<category>/<skill>` while preserving `system-skills/sync-skills-manager/`.
+
+```bash
+# Preview flatten/migration actions
+python3 system-skills/sync-skills-manager/scripts/flatten_system_skills_layout.py
+
+# Apply migration actions
+python3 system-skills/sync-skills-manager/scripts/flatten_system_skills_layout.py --apply
+```
+
 ## Usage
 
 ### Daily 3-way sync
@@ -147,7 +171,7 @@ python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py sync-che
 ```json
 {
   "system_skills_path": "~/.claude/skills",
-  "repo_skills_path": "./system-skills",
+  "repo_skills_path": "./",
   "exclude_patterns": ["sync-skills-manager"],
   "sync_mode": "incremental",
   "default_command": "diff"

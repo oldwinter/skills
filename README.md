@@ -8,8 +8,8 @@ A comprehensive collection of skills for multiple AI agents (Codex, Claude Code,
 
 To avoid duplicate edits and sync drift:
 
-- Treat `system-skills/` as the canonical source for synchronized/global skills.
-- Treat `coding-common-skills/`, `devops-skills/`, `obsidian-skills/`, `writing-skills/` as curated collections and compatibility copies.
+- Treat this repository (all `*-skills` directories) as the canonical source.
+- Treat `system-skills/` as a legacy namespace + sync tooling location, not a separate source of truth.
 - Before large sync operations, run `./sync-skills-3way.sh status`.
 
 Related docs:
@@ -50,7 +50,7 @@ skills/
 ├── coding-common-skills/    # General coding and development skills (6 skills)
 ├── devops-skills/           # DevOps and infrastructure skills (11 skills)
 ├── obsidian-skills/         # Obsidian note-taking skills (6 skills)
-├── system-skills/           # System-wide skills synced from ~/.claude/skills (189 skills)
+├── system-skills/           # Sync tooling container (no canonical skill categories)
 └── writing-skills/          # Writing and content skills (1 skill)
 ```
 
@@ -93,7 +93,7 @@ Content creation and refinement:
 - **humanizer-zh** - Remove AI-generated patterns from Chinese text
 
 ### System Skills (189 skills)
-Skills synced from `~/.claude/skills/`, organized into categories:
+Expanded category sets in this repository, mirrored to `~/.claude/skills/`:
 
 #### AI Skills (7 skills)
 - **ai-evals**, **ai-evaluation-evals**, **ai-product-strategy**
@@ -197,7 +197,7 @@ Skills synced from `~/.claude/skills/`, organized into categories:
 
 ## Usage
 
-Canonical install directory: `~/.claude/skills/` (other agents symlink into it).
+Runtime install directory: `~/.claude/skills/` (other agents symlink into it).
 
 To use a skill, reference it in your conversation with Claude Code, for example:
 - "Use the changelog-generator skill to create a changelog"
@@ -261,7 +261,7 @@ git add -A && git commit -m "Add new skill" && git push
 
 ## Maintenance
 
-This repository is synchronized with the local `~/.claude/skills/` canonical directory. Other agent directories are linked from that source.
+This repository is the canonical edit source. `~/.claude/skills/` is the runtime install directory, and other agent directories are linked from it.
 
 ## License
 

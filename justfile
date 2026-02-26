@@ -2,6 +2,8 @@ set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 
 PROFILES := "python3 system-skills/sync-skills-manager/scripts/skills_profiles.py"
 AGENT_AUDIT := "python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py"
+RECLASSIFY := "python3 system-skills/sync-skills-manager/scripts/reclassify_system_skills.py"
+FLATTEN_LAYOUT := "python3 system-skills/sync-skills-manager/scripts/flatten_system_skills_layout.py"
 CONFIG := "system-skills/sync-skills-manager/skills-profiles.json"
 SYNC3 := "./sync-skills-3way.sh"
 SYNC_MGR := "./system-skills/sync-skills-manager/sync-skills.sh"
@@ -122,6 +124,18 @@ agent-sync-check canonical="claude-code" agents="" installed_only="true":
   else \
     if [[ "{{installed_only}}" == "true" ]]; then {{AGENT_AUDIT}} sync-check --canonical-agent "{{canonical}}" --installed-only; else {{AGENT_AUDIT}} sync-check --canonical-agent "{{canonical}}"; fi; \
   fi
+
+skills-reclassify from_category="tools-skills":
+  @{{RECLASSIFY}} --from-category "{{from_category}}"
+
+skills-reclassify-apply from_category="tools-skills":
+  @{{RECLASSIFY}} --from-category "{{from_category}}" --apply
+
+layout-flatten:
+  @{{FLATTEN_LAYOUT}}
+
+layout-flatten-apply:
+  @{{FLATTEN_LAYOUT}} --apply
 
 # -----------------------------
 # Sync helpers

@@ -52,6 +52,14 @@ class DesiredSetTests(unittest.TestCase):
         desired = SKILLS_PROFILES.merge_profile_sets(["p"], profiles, categories, registry_skills)
         self.assertEqual(desired.desired, {"baoyu-a", "baoyu-b"})
 
+    def test_build_categories_merges_same_name_dirs(self) -> None:
+        with TemporaryDirectory() as td:
+            root = Path(td) / "repo"
+            _write_skill(root / "system-skills" / "devops-skills" / "skill-a")
+            _write_skill(root / "devops-skills" / "skill-b")
+            categories = SKILLS_PROFILES.build_categories(root)
+            self.assertEqual(categories["devops-skills"], {"skill-a", "skill-b"})
+
 
 class RatingsTests(unittest.TestCase):
     def test_load_ratings_defaults(self) -> None:

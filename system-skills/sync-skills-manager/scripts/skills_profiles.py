@@ -165,26 +165,24 @@ def guess_repo_root() -> Path:
 def build_categories(repo_root: Path) -> dict[str, set[str]]:
     categories: dict[str, set[str]] = {}
 
-    system_skills_dir = repo_root / "system-skills"
-    if system_skills_dir.is_dir():
-        for cat_dir in system_skills_dir.iterdir():
-            if not cat_dir.is_dir():
-                continue
-            if not cat_dir.name.endswith("-skills"):
-                continue
-            categories[cat_dir.name] = {
-                d.name
-                for d in cat_dir.iterdir()
-                if d.is_dir() and is_skill_dir(d)
-            }
+    for cat_dir in repo_root.rglob("*-skills"):
+        if not cat_dir.is_dir():
+            continue
+        rel = cat_dir.relative_to(repo_root)
+        if any(part.startswith(".") for part in rel.parts):
+            continue
+        if "sync-skills-manager" in rel.parts:
+            continue
 
-    writing_dir = repo_root / "writing-skills"
-    if writing_dir.is_dir():
-        categories["writing-skills"] = {
+        direct_skills = {
             d.name
-            for d in writing_dir.iterdir()
+            for d in cat_dir.iterdir()
             if d.is_dir() and is_skill_dir(d)
         }
+        if not direct_skills:
+            continue
+
+        categories.setdefault(cat_dir.name, set()).update(direct_skills)
 
     return categories
 
