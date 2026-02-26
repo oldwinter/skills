@@ -1,6 +1,6 @@
 #!/bin/bash
 # Three-way incremental sync for skills:
-#   ~/.codex/skills  <->  ~/.agents/skills + ~/.agent/skills  <->  repo skills tree
+#   ~/.codex/skills  <->  ~/.claude/skills  <->  repo skills tree
 #
 # Behavior:
 # - Incremental only (rsync --update), no delete.
@@ -12,20 +12,18 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 CODEX_DIR="${CODEX_DIR:-$HOME/.codex/skills}"
-AGENTS_DIR="${AGENTS_DIR:-$HOME/.agents/skills}"
-AGENT_DIR="${AGENT_DIR:-$HOME/.agent/skills}"
+CLAUDE_DIR="${CLAUDE_DIR:-$HOME/.claude/skills}"
 REPO_NEW_SKILL_DIR="${REPO_NEW_SKILL_DIR:-$REPO_ROOT/system-skills/tools-skills}"
+LINK_SCRIPT="${LINK_SCRIPT:-$SCRIPT_DIR/sync-skills.sh}"
 
 COLOR_RESET='\033[0m'
 COLOR_GREEN='\033[0;32m'
 COLOR_YELLOW='\033[0;33m'
 COLOR_RED='\033[0;31m'
-COLOR_CYAN='\033[0;36m'
 
 log_info() { echo -e "${COLOR_GREEN}[INFO]${COLOR_RESET} $1"; }
 log_warn() { echo -e "${COLOR_YELLOW}[WARN]${COLOR_RESET} $1"; }
 log_error() { echo -e "${COLOR_RED}[ERROR]${COLOR_RESET} $1"; }
-log_diff() { echo -e "${COLOR_CYAN}[DIFF]${COLOR_RESET} $1"; }
 
 usage() {
   cat <<EOF
@@ -38,9 +36,9 @@ Usage:
 
 Environment overrides:
   CODEX_DIR           (default: ~/.codex/skills)
-  AGENTS_DIR          (default: ~/.agents/skills)
-  AGENT_DIR           (default: ~/.agent/skills)
+  CLAUDE_DIR          (default: ~/.claude/skills)
   REPO_NEW_SKILL_DIR  (default: <repo>/system-skills/tools-skills)
+  LINK_SCRIPT         (default: <repo>/system-skills/sync-skills-manager/sync-skills.sh)
 EOF
 }
 
@@ -54,7 +52,7 @@ cleanup() {
 }
 
 init_runtime() {
-  mkdir -p "$AGENTS_DIR" "$AGENT_DIR" "$REPO_NEW_SKILL_DIR"
+  mkdir -p "$CLAUDE_DIR" "$REPO_NEW_SKILL_DIR"
   TMP_DIR="$(mktemp -d)"
   MAP_DIR="$TMP_DIR/repo-map"
   mkdir -p "$MAP_DIR"
@@ -112,7 +110,11 @@ rsync_skill_dir() {
   local follow_links="$3"
   local skill_name="$4"
 
+  if [ -L "$dst_dir" ]; then
+    rm -f "$dst_dir"
+  fi
   mkdir -p "$dst_dir"
+
   if [ "$follow_links" = "yes" ]; then
     rsync -aL --update --exclude "$skill_name/" "$src_dir/" "$dst_dir/" >/dev/null
   else
@@ -139,13 +141,11 @@ sync_skill_to_repo() {
   fi
 }
 
-sync_skill_to_agent_dirs() {
+sync_skill_to_canonical() {
   local skill_name="$1"
   local src_dir="$2"
   local follow_links="$3"
-
-  rsync_skill_dir "$src_dir" "$AGENTS_DIR/$skill_name" "$follow_links" "$skill_name"
-  rsync_skill_dir "$src_dir" "$AGENT_DIR/$skill_name" "$follow_links" "$skill_name"
+  rsync_skill_dir "$src_dir" "$CLAUDE_DIR/$skill_name" "$follow_links" "$skill_name"
 }
 
 collect_codex_sources() {
@@ -154,6 +154,7 @@ collect_codex_sources() {
 
   if [ -d "$CODEX_DIR/.system" ]; then
     while IFS= read -r -d '' d; do
+      [ -f "$d/SKILL.md" ] || continue
       printf '%s\n' "$d" >> "$out_file"
     done < <(find "$CODEX_DIR/.system" -mindepth 1 -maxdepth 1 -type d -print0)
   fi
@@ -163,6 +164,18 @@ collect_codex_sources() {
       local name
       name="$(basename "$d")"
       [ "$name" = ".system" ] && continue
+      [ -f "$d/SKILL.md" ] || continue
+
+      # Skip mirrored links that already point into canonical Claude source.
+      if [ -L "$d" ]; then
+        local link_target abs_target
+        link_target="$(readlink "$d" || true)"
+        abs_target="$(cd "$(dirname "$d")" && cd "$(dirname "$link_target")" 2>/dev/null && pwd)/$(basename "$link_target")"
+        case "$abs_target" in
+          "$CLAUDE_DIR"/*) continue ;;
+        esac
+      fi
+
       printf '%s\n' "$d" >> "$out_file"
     done < <(find "$CODEX_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0)
   fi
@@ -195,36 +208,26 @@ cmd_sync() {
   local codex_list="$TMP_DIR/codex-sources.list"
   collect_codex_sources "$codex_list"
 
-  log_info "Step 1/4: codex -> agents/agent/repo"
+  log_info "Step 1/4: codex -> claude/repo"
   while IFS= read -r src_dir; do
     [ -n "$src_dir" ] || continue
     local skill_name
     skill_name="$(basename "$src_dir")"
     [ "$skill_name" = ".system" ] && continue
 
-    sync_skill_to_agent_dirs "$skill_name" "$src_dir" "yes"
+    sync_skill_to_canonical "$skill_name" "$src_dir" "yes"
     sync_skill_to_repo "$skill_name" "$src_dir" "yes"
   done < "$codex_list"
 
-  log_info "Step 2/4: ~/.agents/skills -> ~/.agent/skills + repo"
+  log_info "Step 2/4: ~/.claude/skills -> repo"
   while IFS= read -r -d '' src_dir; do
     [ -f "$src_dir/SKILL.md" ] || continue
     local skill_name
     skill_name="$(basename "$src_dir")"
-    rsync_skill_dir "$src_dir" "$AGENT_DIR/$skill_name" "no" "$skill_name"
-    sync_skill_to_repo "$skill_name" "$src_dir" "no"
-  done < <(find "$AGENTS_DIR" -mindepth 1 -maxdepth 1 -type d -print0)
+    sync_skill_to_repo "$skill_name" "$src_dir" "yes"
+  done < <(find "$CLAUDE_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0)
 
-  log_info "Step 3/4: ~/.agent/skills -> ~/.agents/skills + repo"
-  while IFS= read -r -d '' src_dir; do
-    [ -f "$src_dir/SKILL.md" ] || continue
-    local skill_name
-    skill_name="$(basename "$src_dir")"
-    rsync_skill_dir "$src_dir" "$AGENTS_DIR/$skill_name" "no" "$skill_name"
-    sync_skill_to_repo "$skill_name" "$src_dir" "no"
-  done < <(find "$AGENT_DIR" -mindepth 1 -maxdepth 1 -type d -print0)
-
-  log_info "Step 4/4: newest repo copy -> ~/.agents/skills + ~/.agent/skills"
+  log_info "Step 3/4: newest repo copy -> ~/.claude/skills"
   for list_file in "$MAP_DIR"/*.list; do
     [ -f "$list_file" ] || continue
     local skill_name
@@ -234,59 +237,73 @@ cmd_sync() {
     latest_repo_dir="$(repo_latest_dir_for_skill "$list_file")"
     [ -n "$latest_repo_dir" ] || continue
 
-    rsync_skill_dir "$latest_repo_dir" "$AGENTS_DIR/$skill_name" "no" "$skill_name"
-    rsync_skill_dir "$latest_repo_dir" "$AGENT_DIR/$skill_name" "no" "$skill_name"
+    rsync_skill_dir "$latest_repo_dir" "$CLAUDE_DIR/$skill_name" "no" "$skill_name"
   done
+
+  log_info "Step 4/4: refresh agent symlinks from ~/.claude/skills"
+  if [ -x "$LINK_SCRIPT" ]; then
+    "$LINK_SCRIPT" link-all >/dev/null
+  else
+    log_warn "Skip link refresh (script not executable): $LINK_SCRIPT"
+  fi
 
   log_info "Sync finished"
   cmd_status
 }
 
 cmd_status() {
-  local agents_list
-  local agent_list
-  local repo_list
-  agents_list="$(mktemp)"
-  agent_list="$(mktemp)"
+  local claude_list codex_list repo_list
+  claude_list="$(mktemp)"
+  codex_list="$(mktemp)"
   repo_list="$(mktemp)"
 
-  find "$AGENTS_DIR" -mindepth 1 -maxdepth 1 -type d \
-    -exec sh -c '[ -f "$1/SKILL.md" ] && basename "$1"' _ {} \; | sort -u > "$agents_list"
-  find "$AGENT_DIR" -mindepth 1 -maxdepth 1 -type d \
-    -exec sh -c '[ -f "$1/SKILL.md" ] && basename "$1"' _ {} \; | sort -u > "$agent_list"
+  find "$CLAUDE_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) \
+    -exec sh -c '[ -f "$1/SKILL.md" ] && basename "$1"' _ {} \; | sort -u > "$claude_list"
+
+  if [ -d "$CODEX_DIR/.system" ]; then
+    find "$CODEX_DIR/.system" -mindepth 1 -maxdepth 1 -type d \
+      -exec sh -c '[ -f "$1/SKILL.md" ] && basename "$1"' _ {} \; > "$codex_list"
+  else
+    : > "$codex_list"
+  fi
+
+  find "$CODEX_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) \
+    -exec sh -c 'name="$(basename "$1")"; [ "$name" = ".system" ] && exit 0; [ -f "$1/SKILL.md" ] && echo "$name"' _ {} \; \
+    | sort -u >> "$codex_list"
+  sort -u "$codex_list" -o "$codex_list"
+
   find "$REPO_ROOT" -type f -name 'SKILL.md' -exec dirname {} \; | xargs -I{} basename {} | sort -u > "$repo_list"
 
-  local agents_count agent_count repo_count
-  agents_count="$(wc -l < "$agents_list" | tr -d ' ')"
-  agent_count="$(wc -l < "$agent_list" | tr -d ' ')"
+  local claude_count codex_count repo_count
+  claude_count="$(wc -l < "$claude_list" | tr -d ' ')"
+  codex_count="$(wc -l < "$codex_list" | tr -d ' ')"
   repo_count="$(wc -l < "$repo_list" | tr -d ' ')"
 
   echo "3-way sync status"
   echo "----------------------------------------"
-  echo "codex dir:   $CODEX_DIR"
-  echo "agents dir:  $AGENTS_DIR"
-  echo "agent dir:   $AGENT_DIR"
-  echo "repo root:   $REPO_ROOT"
+  echo "codex dir:    $CODEX_DIR"
+  echo "claude dir:   $CLAUDE_DIR"
+  echo "repo root:    $REPO_ROOT"
   echo ""
   echo "counts"
-  echo "  ~/.agents/skills : $agents_count"
-  echo "  ~/.agent/skills  : $agent_count"
-  echo "  repo unique      : $repo_count"
+  echo "  codex unique      : $codex_count"
+  echo "  claude canonical  : $claude_count"
+  echo "  repo unique       : $repo_count"
   echo ""
 
-  local only_agents only_repo only_agent only_agents_vs_agent
-  only_agents="$(comm -23 "$agents_list" "$repo_list" | wc -l | tr -d ' ')"
-  only_repo="$(comm -13 "$agents_list" "$repo_list" | wc -l | tr -d ' ')"
-  only_agent="$(comm -23 "$agent_list" "$repo_list" | wc -l | tr -d ' ')"
-  only_agents_vs_agent="$(comm -3 "$agents_list" "$agent_list" | wc -l | tr -d ' ')"
+  local claude_only repo_only codex_only codex_diff
+  claude_only="$(comm -23 "$claude_list" "$repo_list" | wc -l | tr -d ' ')"
+  repo_only="$(comm -13 "$claude_list" "$repo_list" | wc -l | tr -d ' ')"
+  codex_only="$(comm -23 "$codex_list" "$claude_list" | wc -l | tr -d ' ')"
+  codex_diff="$(comm -3 "$codex_list" "$claude_list" | wc -l | tr -d ' ')"
 
   echo "name-level diff summary"
-  echo "  agents only vs repo : $only_agents"
-  echo "  repo only vs agents : $only_repo"
-  echo "  agent only vs repo  : $only_agent"
-  echo "  agents vs agent diff-lines : $only_agents_vs_agent"
+  echo "  claude only vs repo : $claude_only"
+  echo "  repo only vs claude : $repo_only"
+  echo "  codex only vs claude: $codex_only"
+  echo "  codex vs claude diff-lines: $codex_diff"
 
-  rm -f "$agents_list" "$agent_list" "$repo_list"
+  rm -f "$claude_list" "$codex_list" "$repo_list"
 }
 
 case "${1:-sync}" in

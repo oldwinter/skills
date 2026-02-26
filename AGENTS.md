@@ -32,7 +32,7 @@ Based on the upstream `skills` CLI mapping, your primary agents use these global
 Notes:
 - `npx skills add ...` supports two install methods: **Symlink** (recommended, single source of truth) and **Copy** (independent copies).
 - In a multi-agent setup like this repo, prefer **Symlink** to keep all agents aligned with one canonical skill source.
-- This repository's custom sync scripts are still centered on `~/.agents/skills`, `~/.agent/skills`, and `~/.codex/skills`.
+- This repository's custom sync scripts are centered on canonical `~/.claude/skills`, then fan out symlinks to other agent global directories.
 
 Recommended command to install to your primary agents:
 ```bash
@@ -48,19 +48,24 @@ npx skills add . --skill '*' --global \
   --yes
 ```
 
-### Local Consolidation Plan (canonical `~/.agents/skills`)
+### Local Consolidation Plan (canonical `~/.claude/skills`)
 
-Goal: keep one canonical copy in `~/.agents/skills`, and let other agents consume skills via symlink when possible.
+Goal: keep one canonical copy in `~/.claude/skills`, and let other agents consume skills via symlink.
 
-Current directories with **non-symlink** skills on this machine (snapshot: 2026-02-24):
-- `~/.agents/skills` (Canonical): 188 real dirs → source of truth.
-- `~/.config/agents/skills` (Amp): 14 real dirs (overlap with `~/.agents/skills`) → **migrate to symlink**.
-- `~/.gemini/skills` (Gemini CLI): empty.
-- `~/.config/opencode/skills` (OpenCode): empty.
-- `~/.codex/skills` (Codex): mostly `.system`, plus 2 symlinked skills (`find-skills`, `humanizer`) → OK.
-- `~/.cursor/skills` (Cursor): 119 symlinked skills → OK.
-- `~/.factory/skills` (Droid): 1 real dir + 119 symlinked skills → migrate remaining real dir after verification.
-- `~/.claude/skills` (Claude Code): 2 real dirs + 156 symlinked skills → do not force-migrate builtins.
+Recommended local workflow:
+```bash
+# 1) Push newest repo copy per skill name into canonical source
+./system-skills/sync-skills-manager/sync-skills.sh push
+
+# 2) Rebuild all target agent dirs as symlinks to ~/.claude/skills
+./system-skills/sync-skills-manager/sync-skills.sh link-all
+
+# 3) Verify global distribution
+npx skills ls -g
+```
+
+Practical note:
+- `~/.agents/skills` may still exist as a compatibility mirror, but it is no longer the canonical edit source.
 
 ### OOTB Tooling From `vercel-labs/skills`
 
@@ -95,19 +100,14 @@ npx skills add . --global \
 Use this sequence when you want to minimize missed skills across active agents, then sync back into this git repo.
 
 ```bash
-# 1) Consolidate from active agent paths into canonical main dir (no overwrite on same name)
-#    sources: ~/.claude/skills ~/.codex/skills ~/.config/agents/skills ~/.cursor/skills
-#             ~/.gemini/antigravity/skills ~/.factory/skills ~/.gemini/skills ~/.config/opencode/skills
-#    target:  ~/.agents/skills
-
-# 2) Install canonical set to your primary agents
-npx skills add ~/.agents/skills --global --skill '*' \
-  --agent claude-code --agent codex --agent amp --agent cursor \
-  --agent antigravity --agent droid --agent gemini-cli --agent opencode \
-  --yes
-
-# 3) Sync system skills back to repo (incremental, no delete)
+# 1) Consolidate Codex/Repo updates into canonical source and repository
 ./sync-skills-3way.sh sync
+
+# 2) Ensure canonical source contains latest repo copies
+./system-skills/sync-skills-manager/sync-skills.sh push
+
+# 3) Rebuild all target agent dirs as symlinks to canonical source
+./system-skills/sync-skills-manager/sync-skills.sh link-all
 
 # 4) Verify names are aligned
 ./sync-skills-3way.sh status
@@ -163,11 +163,12 @@ Instead, “verification” is usually one of:
 Notes:
 - `sync-skills.sh` uses `rsync --delete` when syncing a skill directory → **can delete files in destination**.
 
-#### Sync system skills (`~/.agents/skills`) ↔ `./system-skills`
+#### Sync system skills (`~/.claude/skills`) ↔ `./system-skills`
 ```bash
 ./system-skills/sync-skills-manager/sync-skills.sh diff
 ./system-skills/sync-skills-manager/sync-skills.sh pull     # alias: auto
 ./system-skills/sync-skills-manager/sync-skills.sh push
+./system-skills/sync-skills-manager/sync-skills.sh link-all
 ./system-skills/sync-skills-manager/sync-skills.sh status
 ./sync-skills-3way.sh sync
 ./sync-skills-3way.sh status
@@ -176,8 +177,9 @@ Notes:
 ```
 
 Notes:
-- `push` now syncs repo skills directly into `~/.agents/skills` and removes overlapping entries from `~/.gemini/skills` to avoid Gemini conflict warnings.
-- `sync-skills-3way.sh` performs incremental sync across `~/.codex/skills`, `~/.agents/skills`, `~/.agent/skills`, and repo without deleting files.
+- `push` syncs repo skills directly into canonical `~/.claude/skills`.
+- `link-all` rebuilds other agent global directories as symlinks to canonical source.
+- `sync-skills-3way.sh` performs incremental sync across `~/.codex/skills`, `~/.claude/skills`, and repo without deleting files.
 
 #### Install all skills (repo → system)
 ```bash

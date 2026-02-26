@@ -1,7 +1,7 @@
 # system-skills/sync-skills-manager
 
 ## OVERVIEW
-Sync tooling for `~/.agents/skills` ↔ `./system-skills` (including auto-categorization heuristics).
+Sync tooling for canonical `~/.claude/skills` ↔ `./system-skills` (including auto-categorization heuristics).
 
 ## WHERE TO LOOK
 | Task | Location |
@@ -15,6 +15,7 @@ Sync tooling for `~/.agents/skills` ↔ `./system-skills` (including auto-catego
 ./sync-skills.sh diff
 ./sync-skills.sh pull     # alias: auto
 ./sync-skills.sh push
+./sync-skills.sh link-all
 ./sync-skills.sh status
 ./sync-skills-3way.sh sync
 ./sync-skills-3way.sh status
@@ -23,3 +24,4 @@ Sync tooling for `~/.agents/skills` ↔ `./system-skills` (including auto-catego
 ## CONVENTIONS
 - The script expects `system-skills/` to contain subcategory directories ending in `-skills` plus `sync-skills-manager`.
 - `sync-skills-3way.sh` is incremental only (`rsync --update`) and does not delete destination files.
+- `sync-skills.sh link-all` rebuilds other agent global paths as symlinks to `~/.claude/skills`.

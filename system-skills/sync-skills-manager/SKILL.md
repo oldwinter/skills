@@ -9,15 +9,16 @@ Manage synchronization between repository skills and local/system skill director
 
 ## Scripts
 
-### `sync-skills.sh` (legacy 2-way)
+### `sync-skills.sh` (canonical manager)
 
-Sync between `~/.agents/skills` and `./system-skills` categories.
+Sync between canonical `~/.claude/skills` and `./system-skills` categories.
 
 | Command | Description |
 |---------|-------------|
 | `./sync-skills.sh diff` | Preview system-only skills |
-| `./sync-skills.sh pull` | Sync `~/.agents/skills` -> repo (add new skills) |
-| `./sync-skills.sh push` | Sync repo -> `~/.agents/skills` (no `add-skill`) |
+| `./sync-skills.sh pull` | Sync `~/.claude/skills` -> repo (add new skills) |
+| `./sync-skills.sh push` | Sync repo -> `~/.claude/skills` and refresh agent links |
+| `./sync-skills.sh link-all` | Rebuild other agent dirs as symlinks to `~/.claude/skills` |
 | `./sync-skills.sh dedupe` | Remove duplicate entries from `~/.gemini/skills` |
 | `./sync-skills.sh status` | Show sync status |
 
@@ -26,8 +27,7 @@ Sync between `~/.agents/skills` and `./system-skills` categories.
 Incremental 3-way sync across:
 
 - `~/.codex/skills` (including `.system`)
-- `~/.agents/skills`
-- `~/.agent/skills`
+- `~/.claude/skills` (canonical)
 - repository skills tree
 
 Key behavior:
@@ -60,7 +60,7 @@ Key behavior:
 
 ```json
 {
-  "system_skills_path": "~/.agents/skills",
+  "system_skills_path": "~/.claude/skills",
   "repo_skills_path": "./system-skills",
   "exclude_patterns": ["sync-skills-manager"],
   "sync_mode": "incremental",

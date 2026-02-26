@@ -1,5 +1,5 @@
 {
-  "system_skills_path": "~/.agents/skills",
+  "system_skills_path": "~/.claude/skills",
   "repo_skills_path": "./system-skills",
   "exclude_patterns": ["sync-skills-manager"],
   "sync_mode": "incremental",

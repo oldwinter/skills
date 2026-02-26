@@ -28,20 +28,11 @@ cd ~/Code/skills
 # 2. Run the 3-way incremental sync (recommended)
 ./sync-skills-3way.sh sync
 
-# 3. (Optional) Symlink the canonical skills dir into other agents (recommended)
-npx skills add ~/.agents/skills --global --skill '*' \
-  --agent claude-code \
-  --agent codex \
-  --agent amp \
-  --agent cursor \
-  --agent antigravity \
-  --agent droid \
-  --agent gemini-cli \
-  --agent opencode \
-  --yes
+# 3. Rebuild all agent global dirs as symlinks to canonical source
+./system-skills/sync-skills-manager/sync-skills.sh link-all
 ```
 
-That's it! All skills will be available from the canonical directory `~/.agents/skills/`.
+That's it! All skills will be available from the canonical directory `~/.claude/skills/`.
 
 ---
 
@@ -59,7 +50,7 @@ skills/
 ├── coding-common-skills/    # General coding and development skills (6 skills)
 ├── devops-skills/           # DevOps and infrastructure skills (11 skills)
 ├── obsidian-skills/         # Obsidian note-taking skills (6 skills)
-├── system-skills/           # System-wide skills synced from ~/.agents/skills (188 skills)
+├── system-skills/           # System-wide skills synced from ~/.claude/skills (188 skills)
 └── writing-skills/          # Writing and content skills (1 skill)
 ```
 
@@ -102,7 +93,7 @@ Content creation and refinement:
 - **humanizer-zh** - Remove AI-generated patterns from Chinese text
 
 ### System Skills (188 skills)
-Skills synced from `~/.agents/skills/`, organized into categories:
+Skills synced from `~/.claude/skills/`, organized into categories:
 
 #### AI Skills (7 skills)
 - **ai-evals**, **ai-evaluation-evals**, **ai-product-strategy**
@@ -206,7 +197,7 @@ Skills synced from `~/.agents/skills/`, organized into categories:
 
 ## Usage
 
-Canonical install directory: `~/.agents/skills/` (other agents can symlink into it).
+Canonical install directory: `~/.claude/skills/` (other agents symlink into it).
 
 To use a skill, reference it in your conversation with Claude Code, for example:
 - "Use the changelog-generator skill to create a changelog"
@@ -232,6 +223,9 @@ To use a skill, reference it in your conversation with Claude Code, for example:
 # Pull new skills from system to repo (incremental sync)
 ./system-skills/sync-skills-manager/sync-skills.sh pull
 
+# Rebuild all target agent dirs as symlinks to canonical
+./system-skills/sync-skills-manager/sync-skills.sh link-all
+
 # Push all repo skills to system (for new machine setup)
 ./sync-skills-3way.sh sync
 
@@ -254,7 +248,7 @@ git add -A && git commit -m "Add new skill" && git push
 
 ## Maintenance
 
-This repository is synchronized with the local `~/.agents/skills/` directory. Any changes made here will be reflected in your Claude Code installation.
+This repository is synchronized with the local `~/.claude/skills/` canonical directory. Other agent directories are linked from that source.
 
 ## License
 

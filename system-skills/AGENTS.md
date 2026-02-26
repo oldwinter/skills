@@ -1,7 +1,7 @@
 # system-skills
 
 ## OVERVIEW
-Large skills set synced from `~/.agents/skills`, organized into subcategories (AI, Product, DevOps, Tools, etc.).
+Large skills set synced from canonical `~/.claude/skills`, organized into subcategories (AI, Product, DevOps, Tools, etc.).
 
 ## STRUCTURE
 ```

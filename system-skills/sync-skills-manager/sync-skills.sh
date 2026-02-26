@@ -1,12 +1,13 @@
 #!/bin/bash
-# Sync Skills Manager - Sync between system and repository skills
+# Sync Skills Manager - Sync between canonical local skills and repository skills
 # Supports categorized subdirectories
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SYSTEM_SKILLS_DIR="${SYSTEM_SKILLS_DIR:-$HOME/.agents/skills}"
+SYSTEM_SKILLS_DIR="${SYSTEM_SKILLS_DIR:-$HOME/.claude/skills}"
 GEMINI_SKILLS_DIR="${GEMINI_SKILLS_DIR:-$HOME/.gemini/skills}"
+AGENT_TARGET_DIRS="${AGENT_TARGET_DIRS:-$HOME/.codex/skills,$HOME/.config/agents/skills,$HOME/.cursor/skills,$HOME/.gemini/antigravity/skills,$HOME/.factory/skills,$HOME/.gemini/skills,$HOME/.config/opencode/skills,$HOME/.agents/skills}"
 REPO_SKILLS_DIR="${SCRIPT_DIR}/../../system-skills"
 COLOR_RESET='\033[0m'
 COLOR_GREEN='\033[0;32m'
@@ -21,50 +22,39 @@ log_diff() { echo -e "${COLOR_CYAN}[DIFF]${COLOR_RESET} $1"; }
 
 show_help() {
   cat << EOF
-Sync Skills Manager - Sync between system and repository skills
+Sync Skills Manager - Sync between canonical local skills and repository skills
 
 Usage: $0 <command> [options]
 
 Commands:
-  diff    Preview changes (system skills not in repo)
-  pull    Sync system → repository (add new skills only)
-  push    Sync repository → system (~/.agents/skills only)
+  diff      Preview changes (canonical skills not in repo)
+  pull      Sync canonical → repository (add new skills only)
+  push      Sync repository → canonical ($SYSTEM_SKILLS_DIR)
+  link-all  Rebuild agent dirs as symlinks to canonical source
   dedupe  Remove duplicate skills from ~/.gemini/skills
   status  Show current sync status
-  auto    Auto-categorize and sync new skills
+  auto      Auto-categorize and sync new skills
   help    Show this help message
 
-Options:
-  --skip-cp-errors  Skip broken symlink errors during copy
-
 Examples:
-  $0 diff          # Preview what would be synced
-  $0 pull          # Add new skills from system to repo
-  $0 auto          # Auto-categorize and sync new skills
-  $0 push          # Sync all repo skills to ~/.agents/skills
-  $0 dedupe        # Remove overlaps from ~/.gemini/skills
-  $0 status        # Show sync status
+  $0 diff      # Preview what would be synced
+  $0 pull      # Add new skills from canonical to repo
+  $0 auto      # Auto-categorize and sync new skills
+  $0 push      # Sync all repo skills to canonical source
+  $0 link-all  # Rebuild agent directories to symlink from canonical
+  $0 dedupe    # Remove overlaps from ~/.gemini/skills
+  $0 status    # Show sync status
 
 EOF
 }
 
 # Get all skill names in repo (recursively, excluding sync-skills-manager and category dirs)
 get_repo_skill_names() {
-  find "$REPO_SKILLS_DIR" -mindepth 1 -maxdepth 2 -type d \
-    ! -name "sync-skills-manager" \
-    ! -name "system-skills" \
-    ! -name "ai-skills" \
-    ! -name "product-skills" \
-    ! -name "leadership-skills" \
-    ! -name "career-skills" \
-    ! -name "communication-skills" \
-    ! -name "marketing-skills" \
-    ! -name "sales-skills" \
-    ! -name "engineering-skills" \
-    ! -name "devops-skills" \
-    ! -name "tools-skills" \
-    ! -name "obsidian-skills" \
-    -exec basename {} \; 2>/dev/null | sort -u
+  while IFS= read -r -d '' skill_md; do
+    basename "$(dirname "$skill_md")"
+  done < <(find "$REPO_SKILLS_DIR" -type f -name "SKILL.md" -print0) \
+    | grep -v '^sync-skills-manager$' \
+    | sort -u
 }
 
 # Find which category directory contains a skill
@@ -156,7 +146,17 @@ dedupe_gemini_overlaps() {
     local skill_name
     skill_name="$(basename "$gemini_dir")"
 
-    # Remove overlap entries from Gemini to avoid duplicate source loading.
+    # Keep canonical symlinks; remove copied/foreign overlaps from Gemini.
+    if [ -L "$gemini_dir" ]; then
+      local link_target abs_target expected_target
+      link_target="$(readlink "$gemini_dir" || true)"
+      abs_target="$(cd "$(dirname "$gemini_dir")" && cd "$(dirname "$link_target")" 2>/dev/null && pwd)/$(basename "$link_target")"
+      expected_target="$SYSTEM_SKILLS_DIR/$skill_name"
+      if [ "$abs_target" = "$expected_target" ]; then
+        continue
+      fi
+    fi
+
     if [ -d "$SYSTEM_SKILLS_DIR/$skill_name" ] || [ -L "$SYSTEM_SKILLS_DIR/$skill_name" ]; then
       rm -rf "$gemini_dir"
       removed=$((removed + 1))
@@ -164,6 +164,77 @@ dedupe_gemini_overlaps() {
   done < <(find "$GEMINI_SKILLS_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) -print0)
 
   echo "$removed"
+}
+
+get_canonical_skill_names() {
+  find "$SYSTEM_SKILLS_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) \
+    -exec sh -c 'p="$1"; [ -f "$p/SKILL.md" ] && basename "$p"' _ {} \; 2>/dev/null | sort -u
+}
+
+is_reserved_entry() {
+  local target_dir="$1"
+  local entry_name="$2"
+
+  case "$target_dir" in
+    "$HOME/.codex/skills")
+      [ "$entry_name" = ".system" ]
+      return
+      ;;
+    "$HOME/.factory/skills")
+      [ "$entry_name" = "template" ]
+      return
+      ;;
+  esac
+
+  return 1
+}
+
+relink_target_dir() {
+  local target_dir="$1"
+  mkdir -p "$target_dir"
+
+  while IFS= read -r -d '' entry; do
+    local name
+    name="$(basename "$entry")"
+
+    # Keep dotfiles/directories as agent internals.
+    if [[ "$name" == .* ]]; then
+      continue
+    fi
+
+    if is_reserved_entry "$target_dir" "$name"; then
+      continue
+    fi
+
+    rm -rf "$entry"
+  done < <(find "$target_dir" -mindepth 1 -maxdepth 1 -print0)
+
+  local linked=0
+  while IFS= read -r skill_name; do
+    [ -n "$skill_name" ] || continue
+    if is_reserved_entry "$target_dir" "$skill_name"; then
+      continue
+    fi
+    ln -s "$SYSTEM_SKILLS_DIR/$skill_name" "$target_dir/$skill_name"
+    linked=$((linked + 1))
+  done < <(get_canonical_skill_names)
+
+  log_info "Linked $linked skill(s) -> $target_dir"
+}
+
+cmd_link_all() {
+  log_info "Rebuilding agent links from canonical source: $SYSTEM_SKILLS_DIR"
+
+  local list="$AGENT_TARGET_DIRS"
+  IFS=',' read -r -a targets <<< "$list"
+
+  local target
+  for target in "${targets[@]}"; do
+    # trim leading/trailing whitespace
+    target="$(echo "$target" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+    [ -n "$target" ] || continue
+    relink_target_dir "$target"
+  done
 }
 
 cmd_diff() {
@@ -344,6 +415,10 @@ cmd_push() {
       else
         synced=$((synced + 1))
       fi
+      # Canonical should own real directories; avoid writing through symlink targets.
+      if [ -L "$SYSTEM_SKILLS_DIR/$skill_name" ]; then
+        rm -f "$SYSTEM_SKILLS_DIR/$skill_name"
+      fi
       mkdir -p "$SYSTEM_SKILLS_DIR/$skill_name"
       rsync -a --delete "$skill_dir/" "$SYSTEM_SKILLS_DIR/$skill_name/"
     done < <(sort -k1,1 -k2,2nr "$tmp_file" | awk -F '\t' '!seen[$1]++ {print $1 "\t" $3}')
@@ -352,6 +427,7 @@ cmd_push() {
   rm -f "$tmp_file"
 
   log_info "Repo push complete (new: $synced, updated: $updated)"
+  cmd_link_all
   local removed
   removed="$(dedupe_gemini_overlaps)"
   if [ "$removed" -gt 0 ]; then
@@ -419,6 +495,9 @@ case "${1:-help}" in
     ;;
   push)
     cmd_push
+    ;;
+  link-all)
+    cmd_link_all
     ;;
   dedupe)
     cmd_dedupe
