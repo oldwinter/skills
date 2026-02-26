@@ -44,7 +44,7 @@ Key behavior:
 
 ### `scripts/skills_profiles.py` (profiles manager)
 
-Manage *which* skills are enabled per agent by creating/removing symlinks that point to the global registry (`~/.agents/skills`).
+Manage *which* skills are enabled per agent by creating/removing symlinks that point to the canonical registry (`~/.claude/skills`).
 
 This solves two common issues:
 - New skills created/edited in one tool (e.g. Codex) not showing up in others (e.g. Cursor).
@@ -80,14 +80,52 @@ python3 system-skills/sync-skills-manager/scripts/skills_profiles.py apply --app
 
 # One-shot daily workflow (sync -> normalize -> apply)
 python3 system-skills/sync-skills-manager/scripts/skills_profiles.py refresh --apply
+
+# Manage by star ratings (1-7)
+# Keep only 7-star skills (other agents). claude-code registry itself is skipped.
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode only --stars 7 --dry-run
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode only --stars 7 --apply
+
+# Batch install by stars (e.g. add 6-star and 5-star)
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode install --stars 6,5 --apply
+
+# Batch uninstall by stars
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode uninstall --stars 5 --apply
 ```
 
 **Backups**
-- Default backup root: `~/.agents/skills-backups/<timestamp>/<agent>/<skill>/...`
+- Default backup root: `~/.claude/skills-backups/<timestamp>/<agent>/<skill>/...`
 
 **Tests**
 ```bash
 python3 -m unittest -q
+```
+
+### `scripts/agent_skills_audit.py` (agent installation + diff auditor)
+
+Check which supported agents are installed locally, list recognized skills, and diff skill sets between agents.
+
+```bash
+# Scan all supported agents
+python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py scan
+
+# Only installed agents, with skills preview
+python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py scan --installed-only --with-skills
+
+# List full skills for selected agents
+python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py skills --installed-only --agent codex,cursor
+
+# Diff codex vs cursor
+python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py diff --left codex --right cursor
+
+# Diff one baseline against multiple agents
+python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py diff --left codex --right cursor,amp,claude-code
+
+# Sync check: compare installed agents against canonical claude-code
+python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py sync-check --canonical-agent claude-code --installed-only
+
+# Sync check for selected agents
+python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py sync-check --canonical-agent claude-code --agent codex,cursor,amp
 ```
 
 ## Usage

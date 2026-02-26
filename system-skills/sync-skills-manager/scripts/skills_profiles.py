@@ -41,6 +41,81 @@ def load_json(path: Path) -> dict[str, Any]:
     return data
 
 
+def load_ratings(config: dict[str, Any]) -> tuple[int, dict[str, int]]:
+    default_rating_raw = config.get("default_rating", 5)
+    try:
+        default_rating = int(default_rating_raw)
+    except (TypeError, ValueError):
+        die(f"Invalid default_rating: {default_rating_raw!r}")
+    if default_rating < 1 or default_rating > 7:
+        die(f"default_rating must be in [1, 7], got {default_rating}")
+
+    ratings_raw = config.get("ratings", {})
+    if not isinstance(ratings_raw, dict):
+        die("Config 'ratings' must be an object")
+
+    ratings: dict[str, int] = {}
+    for skill, score_raw in ratings_raw.items():
+        try:
+            score = int(score_raw)
+        except (TypeError, ValueError):
+            die(f"Invalid rating for skill '{skill}': {score_raw!r}")
+        if score < 1 or score > 7:
+            die(f"Rating for skill '{skill}' must be in [1, 7], got {score}")
+        ratings[str(skill)] = score
+
+    return default_rating, ratings
+
+
+def rating_for_skill(skill: str, ratings: dict[str, int], default_rating: int) -> int:
+    return ratings.get(skill, default_rating)
+
+
+def parse_stars_arg(stars_arg: str) -> set[int]:
+    parts = [p.strip() for p in stars_arg.split(",") if p.strip()]
+    if not parts:
+        die("Invalid --stars value: empty")
+
+    stars: set[int] = set()
+    for p in parts:
+        try:
+            score = int(p)
+        except ValueError:
+            die(f"Invalid star value: {p!r}")
+        if score < 1 or score > 7:
+            die(f"Star value must be in [1, 7], got {score}")
+        stars.add(score)
+    return stars
+
+
+def skills_for_stars(
+    registry_skills: set[str],
+    ratings: dict[str, int],
+    default_rating: int,
+    stars: set[int],
+) -> set[str]:
+    return {
+        skill
+        for skill in registry_skills
+        if rating_for_skill(skill, ratings, default_rating) in stars
+    }
+
+
+def desired_for_star_mode(
+    mode: str,
+    inspection: "AgentInspection",
+    star_skills: set[str],
+) -> set[str]:
+    if mode == "only":
+        return set(star_skills)
+    if mode == "install":
+        return set(inspection.canonical_links) | set(star_skills)
+    if mode == "uninstall":
+        return set(inspection.canonical_links) - set(star_skills)
+    die(f"Unknown stars mode: {mode}")
+    return set()
+
+
 def resolve_config_path(path_str: str, base_dir: Path) -> Path:
     p = Path(path_str).expanduser()
     if p.is_absolute():
@@ -486,6 +561,7 @@ def cmd_status(args: argparse.Namespace) -> int:
     config_path: Path = args.config
     config = load_json(config_path)
     base_dir = config_path.parent
+    default_rating, ratings = load_ratings(config)
 
     repo_root = guess_repo_root()
     categories = build_categories(repo_root)
@@ -503,8 +579,19 @@ def cmd_status(args: argparse.Namespace) -> int:
     print(f"config:         {config_path}")
     print(f"registry_dir:   {registry_dir}")
     print(f"registry skills: {len(registry_skills)} managed, {len(registry_unmanaged)} unmanaged")
+    rating_counts: dict[int, int] = {score: 0 for score in range(1, 8)}
+    for skill in registry_skills:
+        rating_counts[rating_for_skill(skill, ratings, default_rating)] += 1
+    print("ratings:        " + "  ".join(f"{score}★={rating_counts[score]}" for score in range(7, 0, -1)))
     if registry_unmanaged:
         print("registry unmanaged (example): " + ", ".join(sorted(registry_unmanaged)[:10]) + (" ..." if len(registry_unmanaged) > 10 else ""))
+    rated_unknown = sorted(set(ratings.keys()) - registry_skills)
+    if rated_unknown:
+        print(
+            "rating warnings: skills in config but missing from registry: "
+            + ", ".join(rated_unknown[:10])
+            + (" ..." if len(rated_unknown) > 10 else "")
+        )
     print("")
 
     for agent in agents:
@@ -754,10 +841,83 @@ def cmd_refresh(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_stars(args: argparse.Namespace) -> int:
+    config_path: Path = args.config
+    config = load_json(config_path)
+    base_dir = config_path.parent
+    default_rating, ratings = load_ratings(config)
+
+    registry_dir = resolve_config_path(str(config.get("registry_dir", "")), base_dir)
+    registry_skills, _registry_unmanaged = list_registry_skills(registry_dir)
+    registry_dir_resolved = registry_dir.resolve(strict=False)
+
+    stars = parse_stars_arg(args.stars)
+    star_skills = skills_for_stars(
+        registry_skills=registry_skills,
+        ratings=ratings,
+        default_rating=default_rating,
+        stars=stars,
+    )
+
+    agents = pick_agents(config, args.agent)
+    agents_cfg = config.get("agents", {})
+
+    do_apply = args.apply
+    if args.dry_run and do_apply:
+        die("Choose either --dry-run or --apply (not both)")
+    if args.dry_run:
+        do_apply = False
+
+    print(
+        f"stars mode={args.mode} stars={','.join(str(s) for s in sorted(stars))} "
+        f"match={len(star_skills)}"
+    )
+    print("")
+
+    for agent in agents:
+        agent_cfg = agents_cfg.get(agent, {})
+        agent_dir = resolve_config_path(str(agent_cfg.get("dir", "")), base_dir)
+        reserved_names = set(agent_cfg.get("reserved_names", []) or [])
+
+        print(f"[{agent}] {agent_dir}")
+        if agent_dir.resolve(strict=False) == registry_dir_resolved:
+            print("  skipped: agent dir is canonical registry; star actions are link-level only.")
+            print("")
+            continue
+
+        inspection = inspect_agent_dir(agent, agent_dir, registry_dir, registry_skills, reserved_names)
+        desired = desired_for_star_mode(args.mode, inspection, star_skills)
+        plan = apply_agent(inspection, registry_dir, desired, do_apply=do_apply)
+
+        print(f"  removed: {len(plan.to_remove)}")
+        print(f"  added: {len(plan.to_add)}")
+        print(f"  conflicts: {len(plan.conflicts)}")
+        if plan.to_add:
+            print("  add examples: " + ", ".join(plan.to_add[:10]) + (" ..." if len(plan.to_add) > 10 else ""))
+        if plan.to_remove:
+            print(
+                "  remove examples: "
+                + ", ".join(plan.to_remove[:10])
+                + (" ..." if len(plan.to_remove) > 10 else "")
+            )
+        if plan.conflicts:
+            print(
+                "  conflict examples: "
+                + ", ".join(plan.conflicts[:10])
+                + (" ..." if len(plan.conflicts) > 10 else "")
+            )
+        print("")
+
+    if not do_apply:
+        print("Dry-run only. Re-run with --apply to make changes.")
+
+    return 0
+
+
 def build_parser(default_config: Path) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="skills_profiles.py",
-        description="Manage per-agent enabled skill sets as symlinks to a global registry (~/.agents/skills).",
+        description="Manage per-agent enabled skill sets as symlinks to a canonical registry (~/.claude/skills).",
     )
     parser.add_argument(
         "--config",
@@ -790,8 +950,8 @@ def build_parser(default_config: Path) -> argparse.ArgumentParser:
     p_norm.add_argument("--apply", action="store_true", help="Make changes.")
     p_norm.add_argument(
         "--backup-root",
-        default="~/.agents/skills-backups",
-        help="Backup root directory (default: ~/.agents/skills-backups).",
+        default="~/.claude/skills-backups",
+        help="Backup root directory (default: ~/.claude/skills-backups).",
     )
 
     sub.add_parser("sync", help="Run repo sync-skills-3way.sh sync.")
@@ -802,9 +962,28 @@ def build_parser(default_config: Path) -> argparse.ArgumentParser:
     p_refresh.add_argument("--apply", action="store_true", help="Run sync + normalize + apply.")
     p_refresh.add_argument(
         "--backup-root",
-        default="~/.agents/skills-backups",
-        help="Backup root directory (default: ~/.agents/skills-backups).",
+        default="~/.claude/skills-backups",
+        help="Backup root directory (default: ~/.claude/skills-backups).",
     )
+
+    p_stars = sub.add_parser(
+        "stars",
+        help="Manage skills by star rating (install / uninstall / keep-only).",
+    )
+    add_agent_scope_flags(p_stars)
+    p_stars.add_argument(
+        "--mode",
+        choices=["only", "install", "uninstall"],
+        default="only",
+        help="only: keep selected stars only; install: add selected stars; uninstall: remove selected stars.",
+    )
+    p_stars.add_argument(
+        "--stars",
+        required=True,
+        help="Comma-separated stars in [1..7], e.g. 7 or 7,6,5.",
+    )
+    p_stars.add_argument("--dry-run", action="store_true", help="Preview changes (default).")
+    p_stars.add_argument("--apply", action="store_true", help="Make changes.")
 
     return parser
 
@@ -829,6 +1008,8 @@ def main(argv: list[str]) -> int:
         return cmd_sync(args)
     if args.cmd == "refresh":
         return cmd_refresh(args)
+    if args.cmd == "stars":
+        return cmd_stars(args)
 
     die(f"Unknown command: {args.cmd}")
     return 2

@@ -1,5 +1,28 @@
 {
-  "registry_dir": "~/.agents/skills",
+  "registry_dir": "~/.claude/skills",
+  "default_rating": 4,
+  "ratings": {
+    "agent-browser": 7,
+    "context7": 7,
+    "documentation-lookup": 7,
+    "openai-docs": 7,
+    "find-skills": 7,
+    "skill-creator": 7,
+    "sync-skills-manager": 7,
+    "justfile": 7,
+    "create-pull-request": 7,
+    "firecrawl": 7,
+    "playwright": 7,
+    "webapp-testing": 7,
+    "research": 7,
+    "skills-readme-updater": 6,
+    "docs-update": 6,
+    "changelog-generator": 6,
+    "mermaid-visualizer": 6,
+    "excalidraw-diagram": 6,
+    "web-design-guidelines": 5,
+    "humanizer-zh": 5
+  },
   "profiles": {
     "core": {
       "include_skills": [

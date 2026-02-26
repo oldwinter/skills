@@ -53,6 +53,54 @@ class DesiredSetTests(unittest.TestCase):
         self.assertEqual(desired.desired, {"baoyu-a", "baoyu-b"})
 
 
+class RatingsTests(unittest.TestCase):
+    def test_load_ratings_defaults(self) -> None:
+        default_rating, ratings = SKILLS_PROFILES.load_ratings({})
+        self.assertEqual(default_rating, 5)
+        self.assertEqual(ratings, {})
+
+    def test_parse_stars_arg(self) -> None:
+        stars = SKILLS_PROFILES.parse_stars_arg("7, 6,7")
+        self.assertEqual(stars, {6, 7})
+
+    def test_skills_for_stars(self) -> None:
+        registry_skills = {"skill-a", "skill-b", "skill-c"}
+        ratings = {"skill-a": 7, "skill-b": 6}
+        selected = SKILLS_PROFILES.skills_for_stars(
+            registry_skills=registry_skills,
+            ratings=ratings,
+            default_rating=4,
+            stars={6, 7},
+        )
+        self.assertEqual(selected, {"skill-a", "skill-b"})
+
+    def test_desired_for_star_mode(self) -> None:
+        inspection = SKILLS_PROFILES.AgentInspection(
+            agent="agent",
+            agent_dir=Path("/tmp/agent"),
+            reserved_names=set(),
+            present_reserved=set(),
+            canonical_links={"skill-a", "skill-b"},
+            copy_dirs=set(),
+            other_symlinks={},
+            other_files=set(),
+            unmanaged_entries=set(),
+        )
+
+        self.assertEqual(
+            SKILLS_PROFILES.desired_for_star_mode("only", inspection, {"skill-c"}),
+            {"skill-c"},
+        )
+        self.assertEqual(
+            SKILLS_PROFILES.desired_for_star_mode("install", inspection, {"skill-c"}),
+            {"skill-a", "skill-b", "skill-c"},
+        )
+        self.assertEqual(
+            SKILLS_PROFILES.desired_for_star_mode("uninstall", inspection, {"skill-b"}),
+            {"skill-a"},
+        )
+
+
 class ApplyNormalizeTests(unittest.TestCase):
     def test_apply_creates_symlinks(self) -> None:
         with TemporaryDirectory() as td:
