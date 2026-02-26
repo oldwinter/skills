@@ -1,4 +1,0 @@
-interface:
-  display_name: "Pearcleaner CLI"
-  short_description: "Uninstall macOS apps and clean orphaned files"
-  default_prompt: "Use Pearcleaner CLI (`pear`) to preview and safely uninstall a macOS app or remove orphaned files (list first; confirm before delete)."
