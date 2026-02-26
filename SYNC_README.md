@@ -68,21 +68,18 @@ Legacy `sync-skills.sh` (plugin marketplace flow) is still available for compati
 ### Repository Structure
 ```
 skills/
-├── coding-common-skills/
-│   ├── skill-name/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── scripts/
-│   └── ...
+├── ai-skills/
+├── career-skills/
+├── communication-skills/
 ├── devops-skills/
+├── engineering-skills/
+├── leadership-skills/
+├── marketing-skills/
 ├── obsidian-skills/
-├── system-skills/
-│   ├── product-skills/
-│   │   ├── skill-name/
-│   │   │   └── SKILL.md
-│   │   └── ...
-│   ├── leadership-skills/
-│   └── ...
+├── product-skills/
+├── sales-skills/
+├── tools-skills/
+├── system-skills/          # sync tooling container
 └── writing-skills/
 ```
 
@@ -92,14 +89,12 @@ skills/
 ├── .claude-plugin/
 │   └── plugin.json
 └── plugins/
-    ├── coding-common-skills/
+    ├── devops-skills/
     │   └── skills/
-    │       └── skill-name/
-    ├── system-skills/
+    │       └── <skill-name>/
+    ├── tools-skills/
     │   └── skills/
-    │       ├── product-skills/
-    │       │   └── skill-name/
-    │       └── ...
+    │       └── <skill-name>/
     └── ...
 ```
 
@@ -123,29 +118,20 @@ skills/
 
 ## Skill Categories
 
-The script syncs the following categories:
-- `coding-common-skills` - Common coding and development skills
-- `devops-skills` - DevOps and infrastructure skills
-- `obsidian-skills` - Obsidian note-taking skills
-- `system-skills` - System-level skills (nested structure)
-- `writing-skills` - Writing and documentation skills
+The canonical source is all root-level `*-skills` directories
+(for example: `ai-skills`, `devops-skills`, `engineering-skills`, `tools-skills`, `writing-skills`).
 
 ## Current Status
 
 Run `./sync-skills.sh status` to see:
 ```
 Repository Skills:
-  coding-common-skills: 6 skills
-  devops-skills: 11 skills
-  obsidian-skills: 6 skills
-  system-skills: 188 skills
-  writing-skills: 1 skills
+  <category>: <count> skills
+  ...
 
 Claude Plugin Skills:
-  coding-common-skills: 6 skills
-  devops-skills: 11 skills
-  obsidian-skills: 6 skills
-  system-skills: 188 skills
+  <category>: <count> skills
+  ...
 ```
 
 ## Troubleshooting
@@ -219,7 +205,7 @@ fswatch -o . | xargs -n1 -I{} ./sync-skills.sh to-claude
 ## Notes
 
 - The script uses `rsync` with `--delete` flag, which removes files in the destination that don't exist in the source
-- Nested skill structures (like `system-skills/product-skills/skill-name`) are fully supported
+- Nested skill structures are supported, but canonical source remains repo-root category directories
 - The script preserves all files in skill directories (SKILL.md, references/, scripts/, etc.)
 - Changes are detected by comparing file contents, not timestamps
 

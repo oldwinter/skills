@@ -47,23 +47,22 @@ skills/
 ├── DIRECTORY_STRATEGY_README.md
 ├── sync-skills.sh
 ├── sync-skills-3way.sh
-├── coding-common-skills/    # General coding and development skills (6 skills)
+├── ai-skills/
+├── career-skills/
+├── communication-skills/
 ├── devops-skills/           # DevOps and infrastructure skills (11 skills)
+├── engineering-skills/
+├── leadership-skills/
+├── marketing-skills/
 ├── obsidian-skills/         # Obsidian note-taking skills (6 skills)
+├── product-skills/
+├── sales-skills/
 ├── system-skills/           # Sync tooling container (no canonical skill categories)
+├── tools-skills/
 └── writing-skills/          # Writing and content skills (1 skill)
 ```
 
 ## Skills by Category
-
-### Coding Common Skills (6 skills)
-General development tools and best practices:
-- **changelog-generator** - Automatically create changelogs from git commits
-- **justfile** - Command automation with Just
-- **skill-creator** - Create new skills for Claude Code
-- **skills-readme-updater** - Auto-update skills documentation
-- **vercel-react-best-practices** - React/Next.js performance optimization
-- **web-design-guidelines** - UI/UX best practices and accessibility
 
 ### DevOps Skills (11 skills)
 Infrastructure, CI/CD, and cloud operations:
@@ -190,10 +189,9 @@ Expanded category sets in this repository, mirrored to `~/.claude/skills/`:
 
 ## Statistics
 
-- **Unique Skills**: 190 (by skill identifier / directory name)
-- **System Skills**: 189 skills in 11 subcategories + sync tooling
-- **Curated Folders**: 24 skills (includes intentional duplicates)
-- **Top-level Categories**: 5 skill folders
+- **Unique Skills**: 225 (by skill identifier / directory name)
+- **Duplicate Skills**: 0 (by skill identifier)
+- **Top-level Skill Categories**: 12 (`*-skills` at repo root)
 
 ## Usage
 
@@ -272,5 +270,5 @@ Skills are sourced from various providers:
 
 ---
 
-**Last Updated**: 2026-02-25
-**Unique Skills**: 190
+**Last Updated**: 2026-02-26
+**Unique Skills**: 225

@@ -127,9 +127,17 @@ skills/
 ├── SYNC_README.md
 ├── AGENTS.md
 ├── sync-skills.sh
-├── coding-common-skills/
+├── ai-skills/
+├── career-skills/
+├── communication-skills/
 ├── devops-skills/
+├── engineering-skills/
+├── leadership-skills/
+├── marketing-skills/
 ├── obsidian-skills/
+├── product-skills/
+├── sales-skills/
+├── tools-skills/
 ├── system-skills/
 └── writing-skills/
 ```
@@ -163,7 +171,7 @@ Instead, “verification” is usually one of:
 Notes:
 - `sync-skills.sh` uses `rsync --delete` when syncing a skill directory → **can delete files in destination**.
 
-#### Sync system skills (`~/.claude/skills`) ↔ `./system-skills`
+#### Sync system skills (`~/.claude/skills`) ↔ repo root categories (`./*-skills`)
 ```bash
 ./system-skills/sync-skills-manager/sync-skills.sh diff
 ./system-skills/sync-skills-manager/sync-skills.sh pull     # alias: auto
@@ -192,7 +200,7 @@ There is no uniform test suite. Use these targeted checks:
 
 #### Validate ONE skill directory (fast)
 ```bash
-python3 system-skills/tools-skills/skill-creator/scripts/quick_validate.py <path/to/skill-dir>
+python3 tools-skills/skill-creator/scripts/quick_validate.py <path/to/skill-dir>
 ```
 
 What it checks:
@@ -202,7 +210,7 @@ What it checks:
 
 #### Validate ONE “skill pack” structure (stricter)
 ```bash
-python3 system-skills/tools-skills/lenny-skillpack-creator/scripts/lint_skillpack.py <path/to/skill-dir>
+python3 tools-skills/lenny-skillpack-creator/scripts/lint_skillpack.py <path/to/skill-dir>
 ```
 
 Notes:
@@ -269,8 +277,7 @@ This repo contains TS/TSX primarily as *reference assets* inside skill docs/rule
 ## Safety / operations
 
 - Treat sync commands as potentially destructive (they overwrite/delete in destinations).
-- Don’t edit generated/duplicated skill copies unless you know which is canonical.
-  - This repo intentionally contains duplicates across top-level categories and `system-skills/`.
+- This repo treats repo-root `*-skills` directories as canonical source; avoid recreating duplicate skill identifiers.
 
 ## Where to look (quick index)
 
@@ -278,5 +285,5 @@ This repo contains TS/TSX primarily as *reference assets* inside skill docs/rule
 |------|----------|
 | Repo ↔ Claude plugin sync | `SYNC_README.md`, `./sync-skills.sh` |
 | System skills sync tooling | `system-skills/sync-skills-manager/` |
-| Curated categories | `coding-common-skills/`, `devops-skills/`, `obsidian-skills/`, `writing-skills/` |
+| Canonical categories | `ai-skills/`, `career-skills/`, `communication-skills/`, `devops-skills/`, `engineering-skills/`, `leadership-skills/`, `marketing-skills/`, `obsidian-skills/`, `product-skills/`, `sales-skills/`, `tools-skills/`, `writing-skills/` |
 | Canonical human overview | `README.md` |
