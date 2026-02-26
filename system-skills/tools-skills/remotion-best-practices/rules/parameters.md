@@ -7,32 +7,32 @@ metadata:
 
 To make a video parametrizable, a Zod schema can be added to a composition.
 
-First, `zod` must be installed - it must be exactly version `3.22.3`.
+First, `zod` must be installed .
 
 Search the project for lockfiles and run the correct command depending on the package manager:
 
 If `package-lock.json` is found, use the following command:
 
 ```bash
-npm i zod@3.22.3
+npm i zod
 ```
 
 If `bun.lockb` is found, use the following command:
 
 ```bash
-bun i zod@3.22.3
+bun i zod
 ```
 
 If `yarn.lock` is found, use the following command:
 
 ```bash
-yarn add zod@3.22.3
+yarn add zod
 ```
 
 If `pnpm-lock.yaml` is found, use the following command:
 
 ```bash
-pnpm i zod@3.22.3
+pnpm i zod
 ```
 
 Then, a Zod schema can be defined alongside the component:

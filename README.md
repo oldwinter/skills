@@ -50,7 +50,7 @@ skills/
 ├── coding-common-skills/    # General coding and development skills (6 skills)
 ├── devops-skills/           # DevOps and infrastructure skills (11 skills)
 ├── obsidian-skills/         # Obsidian note-taking skills (6 skills)
-├── system-skills/           # System-wide skills synced from ~/.claude/skills (188 skills)
+├── system-skills/           # System-wide skills synced from ~/.claude/skills (189 skills)
 └── writing-skills/          # Writing and content skills (1 skill)
 ```
 
@@ -92,7 +92,7 @@ Note-taking and knowledge management:
 Content creation and refinement:
 - **humanizer-zh** - Remove AI-generated patterns from Chinese text
 
-### System Skills (188 skills)
+### System Skills (189 skills)
 Skills synced from `~/.claude/skills/`, organized into categories:
 
 #### AI Skills (7 skills)
@@ -154,7 +154,7 @@ Skills synced from `~/.claude/skills/`, organized into categories:
 - **github-cli**, **gitlab-cli**, **kargo-cli**
 - **kubectl**, **sync-to-prod**
 
-#### Tools Skills (70 skills)
+#### Tools Skills (71 skills)
 - **agent-browser**, **baoyu-article-illustrator**, **baoyu-comic**
 - **baoyu-compress-image**, **baoyu-cover-image**, **baoyu-danger-gemini-web**
 - **baoyu-danger-x-to-markdown**, **baoyu-format-markdown**, **baoyu-image-gen**
@@ -174,7 +174,7 @@ Skills synced from `~/.claude/skills/`, organized into categories:
 - **retention-and-engagement**, **running-effective-11s**, **scheduler**
 - **scoping-and-cutting**, **seo-aeo-audit**, **seo-geo**
 - **setting-okrs-and-goals**, **skill-creator**, **skill-installer**
-- **skills-readme-updater**, **slack-qa-investigate**, **supabase-postgres-best-practices**
+- **skills-readme-updater**, **slack-qa-investigate**, **simplex-cli-admin**, **supabase-postgres-best-practices**
 - **sync-ci-to-staging**, **sync-ci-to-staging-prod**, **terraform-style-check**
 - **ui-ux-pro-max**, **vercel-deploy**, **vercel-react-best-practices**
 - **web-accessibility-audit**, **web-design-guidelines**, **web-performance-audit**
@@ -190,8 +190,8 @@ Skills synced from `~/.claude/skills/`, organized into categories:
 
 ## Statistics
 
-- **Unique Skills**: 189 (by skill identifier / directory name)
-- **System Skills**: 188 skills in 11 subcategories + sync tooling
+- **Unique Skills**: 190 (by skill identifier / directory name)
+- **System Skills**: 189 skills in 11 subcategories + sync tooling
 - **Curated Folders**: 24 skills (includes intentional duplicates)
 - **Top-level Categories**: 5 skill folders
 
@@ -233,6 +233,19 @@ To use a skill, reference it in your conversation with Claude Code, for example:
 ./system-skills/sync-skills-manager/sync-skills.sh push
 ```
 
+## Profiles Manager (Enable/Disable per Agent)
+
+Keep a single global registry in `~/.agents/skills/`, but enable only a small subset per tool (Cursor/Codex/Claude Code/etc.) via symlinks.
+
+```bash
+# Status + preview
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py status
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py diff
+
+# One-shot daily workflow (sync -> normalize -> apply)
+python3 system-skills/sync-skills-manager/scripts/skills_profiles.py refresh --apply
+```
+
 ## Adding New Skills
 
 ```bash
@@ -259,5 +272,5 @@ Skills are sourced from various providers:
 
 ---
 
-**Last Updated**: 2026-02-24
-**Unique Skills**: 189
+**Last Updated**: 2026-02-25
+**Unique Skills**: 190
