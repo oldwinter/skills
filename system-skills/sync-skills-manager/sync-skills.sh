@@ -7,7 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SYSTEM_SKILLS_DIR="${SYSTEM_SKILLS_DIR:-$HOME/.claude/skills}"
 GEMINI_SKILLS_DIR="${GEMINI_SKILLS_DIR:-$HOME/.gemini/skills}"
-AGENT_TARGET_DIRS="${AGENT_TARGET_DIRS:-$HOME/.codex/skills,$HOME/.config/agents/skills,$HOME/.cursor/skills,$HOME/.gemini/antigravity/skills,$HOME/.factory/skills,$HOME/.gemini/skills,$HOME/.config/opencode/skills,$HOME/.agents/skills}"
+AGENT_TARGET_DIRS="${AGENT_TARGET_DIRS:-$HOME/.codex/skills,$HOME/.config/agents/skills,$HOME/.cursor/skills,$HOME/.gemini/antigravity/skills,$HOME/.factory/skills,$HOME/.gemini/skills,$HOME/.config/opencode/skills}"
 REPO_ROOT="${REPO_ROOT:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 REPO_SKILLS_DIR="${REPO_SKILLS_DIR:-$REPO_ROOT}"
 COLOR_RESET='\033[0m'

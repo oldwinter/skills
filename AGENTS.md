@@ -65,7 +65,8 @@ npx skills ls -g
 ```
 
 Practical note:
-- `~/.agents/skills` may still exist as a compatibility mirror, but it is no longer the canonical edit source.
+- `~/.agents/skills` / `~/.agent/skills` may still exist as compatibility paths (often symlinked to `~/.claude/skills`), but they are not canonical edit sources.
+- `npx skills ls -g` may still display entries under `~/.agents/skills` depending on agent mapping; if that path is a symlink to `~/.claude/skills`, the canonical source remains `~/.claude/skills`.
 
 ### OOTB Tooling From `vercel-labs/skills`
 

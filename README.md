@@ -233,7 +233,10 @@ To use a skill, reference it in your conversation with Claude Code, for example:
 
 ## Profiles Manager (Enable/Disable per Agent)
 
-Keep a single global registry in `~/.agents/skills/`, but enable only a small subset per tool (Cursor/Codex/Claude Code/etc.) via symlinks.
+Keep a single global registry in `~/.claude/skills/`, but enable only a small subset per tool (Cursor/Codex/Claude Code/etc.) via symlinks.
+
+Practical note:
+- `npx skills ls -g` may still show paths under `~/.agents/skills` for some agents. If `~/.agents/skills` is symlinked to `~/.claude/skills`, your canonical source is still `~/.claude/skills`.
 
 ```bash
 # Status + preview
@@ -270,5 +273,5 @@ Skills are sourced from various providers:
 
 ---
 
-**Last Updated**: 2026-02-26
-**Unique Skills**: 225
+**Last Updated**: 2026-02-27
+**Unique Skills**: 214
