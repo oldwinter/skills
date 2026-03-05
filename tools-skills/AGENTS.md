@@ -1,15 +1,23 @@
-# system-skills/tools-skills
+# tools-skills
 
 ## OVERVIEW
-Tooling and “how-to” skills (codegen helpers, UI guidelines, best practices docs, changelog tooling).
+Tooling and automation helpers for various workflows.
+
+## SKILLS (5)
+| Skill | Description |
+|-------|-------------|
+| `agent-browser` | Browser automation CLI for AI agents |
+| `justfile` | Justfile creation and management |
+| `mermaid-visualizer` | Text-to-Mermaid diagram generation |
+| `notebooklm` | Google NotebookLM automation |
+| `project-guidelines-example` | Project guidelines template |
 
 ## WHERE TO LOOK
-| Task | Location | Notes |
-|------|----------|-------|
-| React/Next performance rules | `vercel-react-best-practices/` | Some skills include large `AGENTS.md` as rule docs.
-| Postgres/Supabase best practices | `supabase-postgres-best-practices/` | Large rule doc.
-| Justfile automation | `justfile/SKILL.md` + `scripts/` |
-| Skills README regeneration | `skills-readme-updater/SKILL.md` + `scripts/` |
+| Task | Location |
+|------|----------|
+| Browser automation | `agent-browser/SKILL.md` |
+| Justfile automation | `justfile/SKILL.md` |
+| Diagram generation | `mermaid-visualizer/SKILL.md` |
 
 ## CONVENTIONS
-- Expect heterogeneous layouts: some are mostly `SKILL.md`, others are doc-heavy (`rules/`, `references/`).
+- Expect heterogeneous layouts: some are mostly `SKILL.md`, others include `rules/`, `references/`, or `scripts/`.

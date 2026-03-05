@@ -1,15 +1,25 @@
 # obsidian-skills
 
 ## OVERVIEW
-Canonical Obsidian note-taking / vault-management skills for this repository.
+Obsidian note-taking and vault management skills.
+
+## SKILLS (6)
+| Skill | Description |
+|-------|-------------|
+| `excalidraw-diagram` | Generate Excalidraw diagrams from text |
+| `json-canvas` | Create and edit JSON Canvas files (`.canvas`) |
+| `mdbase` | Manage markdown-as-database collections |
+| `obsidian-bases` | Obsidian Bases (`.base` files) with views and filters |
+| `obsidian-cli-automation` | Terminal automation for Obsidian vaults |
+| `obsidian-markdown` | Obsidian Flavored Markdown syntax |
 
 ## WHERE TO LOOK
-| Task | Location | Notes |
-|------|----------|-------|
-| Obsidian Markdown conventions | `obsidian-skills/obsidian-markdown/SKILL.md` | Focuses on Obsidian-flavored markdown patterns.
-| Canvas / Bases | `obsidian-skills/json-canvas/`, `obsidian-skills/obsidian-bases/` | File-format-specific guidance.
-| CLI automation | `obsidian-skills/obsidian-cli-automation/SKILL.md` | Terminal helpers for vault operations.
-| Task management integration | `obsidian-skills/tasknotes/SKILL.md` | Mentions TaskNotes CLI integration.
+| Task | Location |
+|------|----------|
+| Obsidian Markdown conventions | `obsidian-markdown/SKILL.md` |
+| Canvas / Bases | `json-canvas/`, `obsidian-bases/` |
+| CLI automation | `obsidian-cli-automation/SKILL.md` |
+| Markdown-as-database | `mdbase/SKILL.md` |
 
 ## CONVENTIONS
 - Skills here are user-facing helpers; most logic is described in Markdown rather than code.
