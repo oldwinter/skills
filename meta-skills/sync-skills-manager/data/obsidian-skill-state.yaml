@@ -1,0 +1,22 @@
+generated_at: "2026-03-08"
+skills:
+  agent-browser:
+    rating: 7
+    status: "待评估"
+    favorite: true
+    aliases:
+      - "浏览器 cli 轻量"
+    notes: |
+      - GitHub 仓库：[vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser)
+  api-billing-service-onboarding:
+    rating: 6
+    status: "待评估"
+  argocd-cli:
+    rating: 6
+    status: "待评估"
+  aws-cli:
+    rating: 7
+    status: "待评估"
+  aws-cost-explorer:
+    rating: 6
+    status: "待评估"

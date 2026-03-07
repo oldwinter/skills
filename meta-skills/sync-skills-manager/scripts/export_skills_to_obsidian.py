@@ -5,6 +5,19 @@ import re
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
+import sys
+
+
+SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+from obsidian_skill_state import (
+    DEFAULT_STATE_PATH,
+    SkillStateEntry,
+    read_state_file,
+    render_supplemental_notes,
+)
 
 
 DEFAULT_NOTES_DIR = Path("Atlas/Skills")
@@ -181,26 +194,26 @@ def build_managed_values(skill: SkillRecord, sync_date: str) -> dict[str, object
     }
 
 
-def build_create_defaults(skill: SkillRecord, sync_date: str) -> dict[str, object]:
+def build_create_defaults(skill: SkillRecord, sync_date: str, state_entry: SkillStateEntry | None = None) -> dict[str, object]:
     return {
         "title": skill.skill_id,
         "tags": ["skills"],
         "type": "skill-card",
         "created": sync_date,
         "publish": False,
-        "aliases": [],
+        "aliases": state_entry.aliases if state_entry else [],
         "up": "[[∑ Skills 管理]]",
         "分类": "[[AI生成 - fileclass]]",
     }
 
 
-def build_personal_defaults() -> dict[str, object]:
+def build_personal_defaults(state_entry: SkillStateEntry | None = None) -> dict[str, object]:
     return {
-        "个人评分": None,
-        "个人状态": "待评估",
-        "个人标签": [],
-        "精选": False,
-        "最后评估": None,
+        "个人评分": state_entry.rating if state_entry else None,
+        "个人状态": state_entry.status if state_entry else "待评估",
+        "个人标签": state_entry.tags if state_entry else [],
+        "精选": state_entry.favorite if state_entry else False,
+        "最后评估": state_entry.reviewed_at if state_entry else None,
     }
 
 
@@ -296,7 +309,8 @@ def render_frontmatter(
     return "\n".join(lines).rstrip()
 
 
-def render_new_note_body(skill: SkillRecord) -> str:
+def render_new_note_body(skill: SkillRecord, state_entry: SkillStateEntry | None = None) -> str:
+    notes_block = render_supplemental_notes(state_entry.notes if state_entry else None)
     return (
         f"# {skill.skill_id}\n\n"
         "由仓库同步脚本生成。请在 frontmatter 中维护你的个人字段：\n\n"
@@ -306,18 +320,24 @@ def render_new_note_body(skill: SkillRecord) -> str:
         "- `精选`\n"
         "- `最后评估`\n\n"
         f"仓库路径：`{skill.repo_path}`\n"
+        f"{notes_block}"
     )
 
 
-def render_note(skill: SkillRecord, existing_text: str | None, sync_date: str) -> str:
+def render_note(
+    skill: SkillRecord,
+    existing_text: str | None,
+    sync_date: str,
+    state_entry: SkillStateEntry | None = None,
+) -> str:
     existing_blocks, body = split_note(existing_text or "")
     managed_values = build_managed_values(skill, sync_date)
-    create_defaults = build_create_defaults(skill, sync_date)
-    personal_defaults = build_personal_defaults()
+    create_defaults = build_create_defaults(skill, sync_date, state_entry=state_entry)
+    personal_defaults = build_personal_defaults(state_entry=state_entry)
     frontmatter = render_frontmatter(existing_blocks, managed_values, create_defaults, personal_defaults)
 
     if existing_text is None:
-        body = render_new_note_body(skill)
+        body = render_new_note_body(skill, state_entry=state_entry)
     body = body.strip()
     if body:
         return f"---\n{frontmatter}\n---\n\n{body}\n"
@@ -415,12 +435,15 @@ def sync_to_vault(
     vault_root: Path,
     notes_dir: Path = DEFAULT_NOTES_DIR,
     base_path: Path = DEFAULT_BASE_PATH,
+    state_path: Path | None = None,
     write_base: bool = False,
     dry_run: bool = False,
 ) -> SyncSummary:
     sync_date = date.today().isoformat()
     skills = discover_skills(repo_root)
     skipped_skills = count_invalid_skill_files(repo_root)
+    resolved_state_path = state_path or (repo_root / DEFAULT_STATE_PATH)
+    _, state_entries = read_state_file(resolved_state_path)
     target_notes_dir = vault_root / notes_dir
     target_base_path = vault_root / base_path
 
@@ -434,7 +457,12 @@ def sync_to_vault(
     for skill in skills:
         note_path = target_notes_dir / f"{skill.skill_id}.md"
         existing_text = note_path.read_text(encoding="utf-8") if note_path.exists() else None
-        rendered = render_note(skill, existing_text, sync_date)
+        rendered = render_note(
+            skill,
+            existing_text,
+            sync_date,
+            state_entry=state_entries.get(skill.skill_id),
+        )
 
         if existing_text is None:
             created += 1
@@ -496,6 +524,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help='Relative path inside the vault for the generated base. Default: "Atlas/Bases/skills管理.base".',
     )
     parser.add_argument(
+        "--state-path",
+        type=Path,
+        default=repo_root_from_script() / DEFAULT_STATE_PATH,
+        help="Repo sidecar file containing exported personal skill state.",
+    )
+    parser.add_argument(
         "--write-base",
         action="store_true",
         help="Also write the Base file.",
@@ -517,6 +551,7 @@ def main() -> int:
         vault_root=args.vault_root,
         notes_dir=args.notes_dir,
         base_path=args.base_path,
+        state_path=args.state_path,
         write_base=args.write_base,
         dry_run=args.dry_run,
     )
