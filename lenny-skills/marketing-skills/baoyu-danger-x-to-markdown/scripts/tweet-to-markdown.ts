@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { hasRequiredXCookies, loadXCookies } from "./cookies.js";
 import { fetchTweetThread } from "./thread.js";
 import { formatArticleMarkdown } from "./markdown.js";
+import { resolveReferencedTweetsFromArticle } from "./referenced-tweets.js";
 import { formatThreadTweetsMarkdown } from "./thread-markdown.js";
 import { resolveArticleEntityFromTweet } from "./tweet-article.js";
 
@@ -129,7 +130,8 @@ export async function tweetToMarkdown(
   const parts: string[] = [];
 
   if (articleEntity) {
-    const articleResult = formatArticleMarkdown(articleEntity);
+    const referencedTweets = await resolveReferencedTweetsFromArticle(articleEntity, cookieMap, { log });
+    const articleResult = formatArticleMarkdown(articleEntity, { referencedTweets });
     coverImage = articleResult.coverUrl;
     const articleMarkdown = articleResult.markdown.trimEnd();
     if (articleMarkdown) {

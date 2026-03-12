@@ -18,6 +18,7 @@ description: Posts content to WeChat Official Account (微信公众号) via API 
 | `scripts/wechat-browser.ts` | Image-text posts (图文) |
 | `scripts/wechat-article.ts` | Article posting via browser (文章) |
 | `scripts/wechat-api.ts` | Article posting via API (文章) |
+| `scripts/md-to-wechat.ts` | Markdown → WeChat-ready HTML with image placeholders |
 | `scripts/check-permissions.ts` | Verify environment & permissions |
 
 ## Preferences (EXTEND.md)
@@ -48,7 +49,7 @@ test -f "$HOME/.baoyu-skills/baoyu-post-to-wechat/EXTEND.md" && echo "user"
 │ Not found │ Run first-time setup ([references/config/first-time-setup.md](references/config/first-time-setup.md)) → Save → Continue │
 └───────────┴───────────────────────────────────────────────────────────────────────────┘
 
-**EXTEND.md Supports**: Default theme | Default publishing method (api/browser) | Default author | Default open-comment switch | Default fans-only-comment switch | Chrome profile path
+**EXTEND.md Supports**: Default theme | Default color | Default publishing method (api/browser) | Default author | Default open-comment switch | Default fans-only-comment switch | Chrome profile path
 
 First-time setup: [references/config/first-time-setup.md](references/config/first-time-setup.md)
 
@@ -64,12 +65,17 @@ First-time setup: [references/config/first-time-setup.md](references/config/firs
 
 ```md
 default_theme: default
+default_color: blue
 default_publish_method: api
 default_author: 宝玉
 need_open_comment: 1
 only_fans_can_comment: 0
 chrome_profile_path: /path/to/chrome/profile
 ```
+
+**Theme options**: default, grace, simple, modern
+
+**Color presets**: blue, green, vermilion, yellow, purple, sky, rose, olive, black, gray, pink, red, orange (or hex value)
 
 **Value priority**:
 1. CLI arguments
@@ -98,7 +104,7 @@ Checks: Chrome, profile isolation, Bun, Accessibility, clipboard, paste keystrok
 | Clipboard copy | Ensure Swift/AppKit available (macOS Xcode CLI tools: `xcode-select --install`) |
 | Paste keystroke (macOS) | Same as Accessibility fix above |
 | Paste keystroke (Linux) | Install `xdotool` (X11) or `ydotool` (Wayland) |
-| API credentials | Follow guided setup in Step 5, or manually set in `.baoyu-skills/.env` |
+| API credentials | Follow guided setup in Step 2, or manually set in `.baoyu-skills/.env` |
 
 ## Image-Text Posting (图文)
 
@@ -119,12 +125,10 @@ Copy this checklist and check off items as you complete them:
 Publishing Progress:
 - [ ] Step 0: Load preferences (EXTEND.md)
 - [ ] Step 1: Determine input type
-- [ ] Step 2: Check markdown-to-html skill
-- [ ] Step 3: Convert to HTML
-- [ ] Step 4: Validate metadata (title, summary, cover)
-- [ ] Step 5: Select method and configure credentials
-- [ ] Step 6: Publish to WeChat
-- [ ] Step 7: Report completion
+- [ ] Step 2: Select method and configure credentials
+- [ ] Step 3: Resolve theme/color and validate metadata
+- [ ] Step 4: Publish to WeChat
+- [ ] Step 5: Report completion
 ```
 
 ### Step 0: Load Preferences
@@ -134,6 +138,8 @@ Check and load EXTEND.md settings (see Preferences section above).
 **CRITICAL**: If not found, complete first-time setup BEFORE any other steps or questions.
 
 Resolve and store these defaults for later steps:
+- `default_theme` (default `default`)
+- `default_color` (omit if not set — theme default applies)
 - `default_author`
 - `need_open_comment` (default `1`)
 - `only_fans_can_comment` (default `0`)
@@ -142,9 +148,9 @@ Resolve and store these defaults for later steps:
 
 | Input Type | Detection | Action |
 |------------|-----------|--------|
-| HTML file | Path ends with `.html`, file exists | Skip to Step 4 |
+| HTML file | Path ends with `.html`, file exists | Skip to Step 3 |
 | Markdown file | Path ends with `.md`, file exists | Continue to Step 2 |
-| Plain text | Not a file path, or file doesn't exist | Save to markdown, then Step 2 |
+| Plain text | Not a file path, or file doesn't exist | Save to markdown, continue to Step 2 |
 
 **Plain Text Handling**:
 
@@ -162,78 +168,7 @@ mkdir -p "$(pwd)/post-to-wechat/$(date +%Y-%m-%d)"
 - "Understanding AI Models" → `understanding-ai-models`
 - "人工智能的未来" → `ai-future` (translate to English for slug)
 
-### Step 2: Check Markdown-to-HTML Skill
-
-**Skip if**: Input is `.html` file
-
-**Skill Discovery**:
-
-```bash
-# Check if baoyu-markdown-to-html exists
-test -f skills/baoyu-markdown-to-html/SKILL.md && echo "found"
-```
-
-| Result | Action |
-|--------|--------|
-| Found | Read its SKILL.md, continue to Step 3 |
-| Multiple skills | AskUserQuestion to choose |
-| Not found | Show installation suggestion |
-
-**When Not Found**:
-
-```
-No markdown-to-html skill found.
-
-Suggested installation:
-https://github.com/JimLiu/baoyu-skills/blob/main/skills/baoyu-markdown-to-html/SKILL.md
-
-Options:
-A) Cancel - install the skill first
-B) Continue - provide HTML file manually
-```
-
-### Step 3: Convert Markdown to HTML
-
-**Skip if**: Input is `.html` file
-
-1. **Ask theme preference** (unless specified in EXTEND.md or CLI):
-
-| Theme | Description |
-|-------|-------------|
-| `default` | 经典主题 - 传统排版，标题居中带底边，二级标题白字彩底 |
-| `grace` | 优雅主题 - 文字阴影，圆角卡片，精致引用块 |
-| `simple` | 简洁主题 - 现代极简风，不对称圆角，清爽留白 |
-
-2. **Execute conversion** (using the discovered skill):
-
-```bash
-npx -y bun ${MD_TO_HTML_SKILL_DIR}/scripts/main.ts <markdown_file> --theme <theme>
-```
-
-3. **Parse JSON output** to get: `htmlPath`, `title`, `author`, `summary`, `contentImages`
-
-### Step 4: Validate Metadata
-
-Check extracted metadata from Step 3 (or HTML meta tags if direct HTML input).
-
-| Field | If Missing |
-|-------|------------|
-| Title | Prompt: "Enter title, or press Enter to auto-generate from content" |
-| Summary | Prompt: "Enter summary, or press Enter to auto-generate (recommended for SEO)" |
-| Author | Use fallback chain: CLI `--author` → frontmatter `author` → EXTEND.md `default_author` |
-
-**Auto-Generation Logic**:
-- **Title**: First H1/H2 heading, or first sentence
-- **Summary**: First paragraph, truncated to 120 characters
-
-**Cover Image Check** (required for `article_type=news`):
-1. Use CLI `--cover` if provided.
-2. Else use frontmatter (`coverImage`, `featureImage`, `cover`, `image`).
-3. Else check article directory default path: `imgs/cover.png`.
-4. Else fallback to first inline content image.
-5. If still missing, stop and request a cover image before publishing.
-
-### Step 5: Select Publishing Method and Configure
+### Step 2: Select Publishing Method and Configure
 
 **Ask publishing method** (unless specified in EXTEND.md or CLI):
 
@@ -274,13 +209,48 @@ WECHAT_APP_ID=<user_input>
 WECHAT_APP_SECRET=<user_input>
 ```
 
-### Step 6: Publish to WeChat
+### Step 3: Resolve Theme/Color and Validate Metadata
 
-**API method**:
+1. **Resolve theme** (first match wins, do NOT ask user if resolved):
+   - CLI `--theme` argument
+   - EXTEND.md `default_theme` (loaded in Step 0)
+   - Fallback: `default`
+
+2. **Resolve color** (first match wins):
+   - CLI `--color` argument
+   - EXTEND.md `default_color` (loaded in Step 0)
+   - Omit if not set (theme default applies)
+
+3. **Validate metadata** from frontmatter (markdown) or HTML meta tags (HTML input):
+
+| Field | If Missing |
+|-------|------------|
+| Title | Prompt: "Enter title, or press Enter to auto-generate from content" |
+| Summary | Prompt: "Enter summary, or press Enter to auto-generate (recommended for SEO)" |
+| Author | Use fallback chain: CLI `--author` → frontmatter `author` → EXTEND.md `default_author` |
+
+**Auto-Generation Logic**:
+- **Title**: First H1/H2 heading, or first sentence
+- **Summary**: First paragraph, truncated to 120 characters
+
+4. **Cover Image Check** (required for API `article_type=news`):
+   1. Use CLI `--cover` if provided.
+   2. Else use frontmatter (`coverImage`, `featureImage`, `cover`, `image`).
+   3. Else check article directory default path: `imgs/cover.png`.
+   4. Else fallback to first inline content image.
+   5. If still missing, stop and request a cover image before publishing.
+
+### Step 4: Publish to WeChat
+
+**CRITICAL**: Publishing scripts handle markdown conversion internally. Do NOT pre-convert markdown to HTML — pass the original markdown file directly. This ensures the API method renders images as `<img>` tags (for API upload) while the browser method uses placeholders (for paste-and-replace workflow).
+
+**API method** (accepts `.md` or `.html`):
 
 ```bash
-npx -y bun ${SKILL_DIR}/scripts/wechat-api.ts <html_file> [--title <title>] [--summary <summary>] [--author <author>] [--cover <cover_path>]
+npx -y bun ${SKILL_DIR}/scripts/wechat-api.ts <file> --theme <theme> [--color <color>] [--title <title>] [--summary <summary>] [--author <author>] [--cover <cover_path>]
 ```
+
+**CRITICAL**: Always include `--theme` parameter. Never omit it, even if using `default`. Only include `--color` if explicitly set by user or EXTEND.md.
 
 **`draft/add` payload rules**:
 - Use endpoint: `POST https://api.weixin.qq.com/cgi-bin/draft/add?access_token=ACCESS_TOKEN`
@@ -293,13 +263,14 @@ npx -y bun ${SKILL_DIR}/scripts/wechat-api.ts <html_file> [--title <title>] [--s
 
 If script parameters do not expose the two comment fields, still ensure final API request body includes resolved values.
 
-**Browser method**:
+**Browser method** (accepts `--markdown` or `--html`):
 
 ```bash
+npx -y bun ${SKILL_DIR}/scripts/wechat-article.ts --markdown <markdown_file> --theme <theme> [--color <color>]
 npx -y bun ${SKILL_DIR}/scripts/wechat-article.ts --html <html_file>
 ```
 
-### Step 7: Completion Report
+### Step 5: Completion Report
 
 **For API method**, include draft management link:
 
@@ -308,7 +279,7 @@ WeChat Publishing Complete!
 
 Input: [type] - [path]
 Method: API
-Theme: [theme name]
+Theme: [theme name] [color if set]
 
 Article:
 • Title: [title]
@@ -335,7 +306,7 @@ WeChat Publishing Complete!
 
 Input: [type] - [path]
 Method: Browser
-Theme: [theme name]
+Theme: [theme name] [color if set]
 
 Article:
 • Title: [title]
@@ -363,7 +334,7 @@ Files created:
 |---------|------------|---------------|-------------------|
 | Plain text input | ✗ | ✓ | ✓ |
 | HTML input | ✗ | ✓ | ✓ |
-| Markdown input | Title/content | ✓ (via skill) | ✓ (via skill) |
+| Markdown input | Title/content | ✓ | ✓ |
 | Multiple images | ✓ (up to 9) | ✓ (inline) | ✓ (inline) |
 | Themes | ✗ | ✓ | ✓ |
 | Auto-generate metadata | ✗ | ✓ | ✓ |
@@ -377,15 +348,11 @@ Files created:
 
 **For API method**:
 - WeChat Official Account API credentials
-- Guided setup in Step 5, or manually set in `.baoyu-skills/.env`
+- Guided setup in Step 2, or manually set in `.baoyu-skills/.env`
 
 **For Browser method**:
 - Google Chrome
 - First run: log in to WeChat Official Account (session preserved)
-
-**For Markdown conversion**:
-- A markdown-to-html skill (e.g., `baoyu-markdown-to-html`)
-- If not installed, the workflow will suggest installation
 
 **Config File Locations** (priority order):
 1. Environment variables
@@ -396,8 +363,7 @@ Files created:
 
 | Issue | Solution |
 |-------|----------|
-| No markdown-to-html skill | Install `baoyu-markdown-to-html` from suggested URL |
-| Missing API credentials | Follow guided setup in Step 5 |
+| Missing API credentials | Follow guided setup in Step 2 |
 | Access token error | Check if API credentials are valid and not expired |
 | Not logged in (browser) | First run opens browser - scan QR to log in |
 | Chrome not found | Set `WECHAT_BROWSER_CHROME_PATH` env var |

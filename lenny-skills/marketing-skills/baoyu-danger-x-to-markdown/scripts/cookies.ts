@@ -117,6 +117,8 @@ class CdpConnection {
 }
 
 async function getFreePort(): Promise<number> {
+  const fixed = parseInt(process.env.X_DEBUG_PORT || "", 10);
+  if (fixed > 0) return fixed;
   return await new Promise((resolve, reject) => {
     const srv = net.createServer();
     srv.unref();

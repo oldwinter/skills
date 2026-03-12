@@ -132,8 +132,12 @@ JSON output:
    - Select the placeholder
    - Copy image to clipboard
    - Paste to replace selection
-9. **Review**: Browser stays open for 60s preview
-10. **Publish**: Only with `--submit` flag
+9. **Post-Composition Check** (automatic):
+   - Scan editor for remaining `XIMGPH_` placeholders
+   - Compare expected vs actual image count
+   - Warn if issues found
+10. **Review**: Browser stays open for 60s preview
+11. **Publish**: Only with `--submit` flag
 
 ## Example Session
 

@@ -20,7 +20,20 @@ container {
   text-align: left;
 }
 
+/* ==================== Global resets ==================== */
+blockquote {
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
 /* 去除第一个元素的 margin-top */
 #output section > :first-child {
   margin-top: 0 !important;
+}
+
+.mermaid-diagram .nodeLabel p {
+  color: unset !important;
+  letter-spacing: unset !important;
 }

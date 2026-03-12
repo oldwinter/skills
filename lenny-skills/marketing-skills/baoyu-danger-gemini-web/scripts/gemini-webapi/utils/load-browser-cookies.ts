@@ -91,6 +91,8 @@ class CdpConnection {
 }
 
 async function get_free_port(): Promise<number> {
+  const fixed = parseInt(process.env.GEMINI_WEB_DEBUG_PORT || '', 10);
+  if (fixed > 0) return fixed;
   return await new Promise((resolve, reject) => {
     const srv = net.createServer();
     srv.unref();

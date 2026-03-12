@@ -170,7 +170,7 @@ coverImage: "https://pbs.twimg.com/media/example.jpg"
 Content...
 ```
 
-**File structure**: `x-to-markdown/{username}/{tweet-id}.md`
+**File structure**: `x-to-markdown/{username}/{tweet-id}/{content-slug}.md`
 
 When `--download-media` is enabled:
 - Images are saved to `imgs/` next to the markdown file

@@ -1,9 +1,17 @@
 import path from "node:path";
 import { readFile } from "node:fs/promises";
+import { execSync } from "node:child_process";
 import type { CliArgs } from "../types";
 
-const GOOGLE_MULTIMODAL_MODELS = ["gemini-3-pro-image-preview", "gemini-3-flash-preview"];
-const GOOGLE_IMAGEN_MODELS = ["imagen-3.0-generate-002", "imagen-3.0-generate-001"];
+const GOOGLE_MULTIMODAL_MODELS = [
+  "gemini-3-pro-image-preview",
+  "gemini-3-flash-preview",
+  "gemini-3.1-flash-image-preview",
+];
+const GOOGLE_IMAGEN_MODELS = [
+  "imagen-3.0-generate-002",
+  "imagen-3.0-generate-001",
+];
 
 export function getDefaultModel(): string {
   return process.env.GOOGLE_IMAGE_MODEL || "gemini-3-pro-image-preview";
@@ -33,7 +41,8 @@ function getGoogleImageSize(args: CliArgs): "1K" | "2K" | "4K" {
 }
 
 function getGoogleBaseUrl(): string {
-  const base = process.env.GOOGLE_BASE_URL || "https://generativelanguage.googleapis.com";
+  const base =
+    process.env.GOOGLE_BASE_URL || "https://generativelanguage.googleapis.com";
   return base.replace(/\/+$/g, "");
 }
 
@@ -49,11 +58,46 @@ function toModelPath(model: string): string {
   return `models/${modelId}`;
 }
 
-async function postGoogleJson<T>(pathname: string, body: unknown): Promise<T> {
-  const apiKey = getGoogleApiKey();
-  if (!apiKey) throw new Error("GOOGLE_API_KEY or GEMINI_API_KEY is required");
+function getHttpProxy(): string | null {
+  return (
+    process.env.https_proxy ||
+    process.env.HTTPS_PROXY ||
+    process.env.http_proxy ||
+    process.env.HTTP_PROXY ||
+    process.env.ALL_PROXY ||
+    null
+  );
+}
 
-  const res = await fetch(buildGoogleUrl(pathname), {
+async function postGoogleJsonViaCurl<T>(
+  url: string,
+  apiKey: string,
+  body: unknown,
+): Promise<T> {
+  const proxy = getHttpProxy();
+  const bodyStr = JSON.stringify(body);
+  const proxyArgs = proxy ? `-x "${proxy}"` : "";
+
+  const result = execSync(
+    `curl -s --connect-timeout 30 --max-time 300 ${proxyArgs} "${url}" -H "Content-Type: application/json" -H "x-goog-api-key: ${apiKey}" -d @-`,
+    { input: bodyStr, maxBuffer: 100 * 1024 * 1024, timeout: 310000 },
+  );
+
+  const parsed = JSON.parse(result.toString()) as any;
+  if (parsed.error) {
+    throw new Error(
+      `Google API error (${parsed.error.code}): ${parsed.error.message}`,
+    );
+  }
+  return parsed as T;
+}
+
+async function postGoogleJsonViaFetch<T>(
+  url: string,
+  apiKey: string,
+  body: unknown,
+): Promise<T> {
+  const res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -70,7 +114,30 @@ async function postGoogleJson<T>(pathname: string, body: unknown): Promise<T> {
   return (await res.json()) as T;
 }
 
-function buildPromptWithAspect(prompt: string, ar: string | null, quality: CliArgs["quality"]): string {
+async function postGoogleJson<T>(pathname: string, body: unknown): Promise<T> {
+  const apiKey = getGoogleApiKey();
+  if (!apiKey) throw new Error("GOOGLE_API_KEY or GEMINI_API_KEY is required");
+
+  const url = buildGoogleUrl(pathname);
+  const proxy = getHttpProxy();
+
+  // When an HTTP proxy is detected, use curl instead of fetch.
+  // Bun's fetch has a known issue where long-lived connections through
+  // HTTP proxies get their sockets closed unexpectedly, causing image
+  // generation requests to fail with "socket connection was closed
+  // unexpectedly". Using curl as the HTTP client works around this.
+  if (proxy) {
+    return postGoogleJsonViaCurl<T>(url, apiKey, body);
+  }
+
+  return postGoogleJsonViaFetch<T>(url, apiKey, body);
+}
+
+function buildPromptWithAspect(
+  prompt: string,
+  ar: string | null,
+  quality: CliArgs["quality"],
+): string {
   let result = prompt;
   if (ar) {
     result += ` Aspect ratio: ${ar}.`;
@@ -86,7 +153,9 @@ function addAspectRatioToPrompt(prompt: string, ar: string | null): string {
   return `${prompt} Aspect ratio: ${ar}.`;
 }
 
-async function readImageAsBase64(p: string): Promise<{ data: string; mimeType: string }> {
+async function readImageAsBase64(
+  p: string,
+): Promise<{ data: string; mimeType: string }> {
   const buf = await readFile(p);
   const ext = path.extname(p).toLowerCase();
   let mimeType = "image/png";
@@ -97,7 +166,9 @@ async function readImageAsBase64(p: string): Promise<{ data: string; mimeType: s
 }
 
 function extractInlineImageData(response: {
-  candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { data?: string } }> } }>;
+  candidates?: Array<{
+    content?: { parts?: Array<{ inlineData?: { data?: string } }> };
+  }>;
 }): string | null {
   for (const candidate of response.candidates || []) {
     for (const part of candidate.content?.parts || []) {
@@ -112,16 +183,21 @@ function extractPredictedImageData(response: {
   predictions?: Array<any>;
   generatedImages?: Array<any>;
 }): string | null {
-  const candidates = [...(response.predictions || []), ...(response.generatedImages || [])];
+  const candidates = [
+    ...(response.predictions || []),
+    ...(response.generatedImages || []),
+  ];
   for (const candidate of candidates) {
     if (!candidate || typeof candidate !== "object") continue;
     if (typeof candidate.imageBytes === "string") return candidate.imageBytes;
-    if (typeof candidate.bytesBase64Encoded === "string") return candidate.bytesBase64Encoded;
+    if (typeof candidate.bytesBase64Encoded === "string")
+      return candidate.bytesBase64Encoded;
     if (typeof candidate.data === "string") return candidate.data;
     const image = candidate.image;
     if (image && typeof image === "object") {
       if (typeof image.imageBytes === "string") return image.imageBytes;
-      if (typeof image.bytesBase64Encoded === "string") return image.bytesBase64Encoded;
+      if (typeof image.bytesBase64Encoded === "string")
+        return image.bytesBase64Encoded;
       if (typeof image.data === "string") return image.data;
     }
   }
@@ -131,10 +207,13 @@ function extractPredictedImageData(response: {
 async function generateWithGemini(
   prompt: string,
   model: string,
-  args: CliArgs
+  args: CliArgs,
 ): Promise<Uint8Array> {
   const promptWithAspect = addAspectRatioToPrompt(prompt, args.aspectRatio);
-  const parts: Array<{ text?: string; inlineData?: { data: string; mimeType: string } }> = [];
+  const parts: Array<{
+    text?: string;
+    inlineData?: { data: string; mimeType: string };
+  }> = [];
   for (const refPath of args.referenceImages) {
     const { data, mimeType } = await readImageAsBase64(refPath);
     parts.push({ inlineData: { data, mimeType } });
@@ -147,7 +226,9 @@ async function generateWithGemini(
 
   console.log("Generating image with Gemini...", imageConfig);
   const response = await postGoogleJson<{
-    candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { data?: string } }> } }>;
+    candidates?: Array<{
+      content?: { parts?: Array<{ inlineData?: { data?: string } }> };
+    }>;
   }>(`${toModelPath(model)}:generateContent`, {
     contents: [
       {
@@ -171,12 +252,18 @@ async function generateWithGemini(
 async function generateWithImagen(
   prompt: string,
   model: string,
-  args: CliArgs
+  args: CliArgs,
 ): Promise<Uint8Array> {
-  const fullPrompt = buildPromptWithAspect(prompt, args.aspectRatio, args.quality);
+  const fullPrompt = buildPromptWithAspect(
+    prompt,
+    args.aspectRatio,
+    args.quality,
+  );
   const imageSize = getGoogleImageSize(args);
   if (imageSize === "4K") {
-    console.error("Warning: Imagen models do not support 4K imageSize, using 2K instead.");
+    console.error(
+      "Warning: Imagen models do not support 4K imageSize, using 2K instead.",
+    );
   }
 
   const parameters: Record<string, unknown> = {
@@ -212,12 +299,12 @@ async function generateWithImagen(
 export async function generateImage(
   prompt: string,
   model: string,
-  args: CliArgs
+  args: CliArgs,
 ): Promise<Uint8Array> {
   if (isGoogleImagen(model)) {
     if (args.referenceImages.length > 0) {
       throw new Error(
-        "Reference images are not supported with Imagen models. Use gemini-3-pro-image-preview or gemini-3-flash-preview."
+        "Reference images are not supported with Imagen models. Use gemini-3-pro-image-preview, gemini-3-flash-preview, or gemini-3.1-flash-image-preview.",
       );
     }
     return generateWithImagen(prompt, model, args);
@@ -225,7 +312,7 @@ export async function generateImage(
 
   if (!isGoogleMultimodal(model) && args.referenceImages.length > 0) {
     throw new Error(
-      "Reference images are only supported with Gemini multimodal models. Use gemini-3-pro-image-preview or gemini-3-flash-preview."
+      "Reference images are only supported with Gemini multimodal models. Use gemini-3-pro-image-preview, gemini-3-flash-preview, or gemini-3.1-flash-image-preview.",
     );
   }
 

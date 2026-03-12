@@ -73,7 +73,7 @@ Multi-turn conversation (agent generates unique sessionId):
 Options:
   -p, --prompt <text>       Prompt text
   --promptfiles <files...>  Read prompt from one or more files (concatenated in order)
-  -m, --model <id>          gemini-3-pro | gemini-2.5-pro | gemini-2.5-flash (default: gemini-3-pro)
+  -m, --model <id>          gemini-3-pro | gemini-3-flash | gemini-3-flash-thinking | gemini-3.1-pro-preview (default: gemini-3-pro)
   --json                    Output JSON
   --image [path]            Generate an image and save it (default: ./generated.png)
   --reference <files...>    Reference images for vision input
@@ -227,8 +227,11 @@ function resolveModel(id: string): Model {
   const k = id.trim();
   if (k === 'gemini-3-pro') return Model.G_3_0_PRO;
   if (k === 'gemini-3.0-pro') return Model.G_3_0_PRO;
-  if (k === 'gemini-2.5-pro') return Model.G_2_5_PRO;
-  if (k === 'gemini-2.5-flash') return Model.G_2_5_FLASH;
+  if (k === 'gemini-3-flash') return Model.G_3_0_FLASH;
+  if (k === 'gemini-3.0-flash') return Model.G_3_0_FLASH;
+  if (k === 'gemini-3-flash-thinking') return Model.G_3_0_FLASH_THINKING;
+  if (k === 'gemini-3.0-flash-thinking') return Model.G_3_0_FLASH_THINKING;
+  if (k === 'gemini-3.1-pro-preview') return Model.G_3_1_PRO_PREVIEW;
   return Model.from_name(k);
 }
 

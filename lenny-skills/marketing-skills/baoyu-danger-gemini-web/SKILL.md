@@ -76,7 +76,7 @@ test -f "$HOME/.baoyu-skills/baoyu-danger-gemini-web/EXTEND.md" && echo "user"
 ```bash
 # Text generation
 npx -y bun ${SKILL_DIR}/scripts/main.ts "Your prompt"
-npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "Your prompt" --model gemini-2.5-pro
+npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "Your prompt" --model gemini-3-flash
 
 # Image generation
 npx -y bun ${SKILL_DIR}/scripts/main.ts --prompt "A cute cat" --image cat.png
@@ -100,7 +100,7 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts "Hello" --json
 |--------|-------------|
 | `--prompt`, `-p` | Prompt text |
 | `--promptfiles` | Read prompt from files (concatenated) |
-| `--model`, `-m` | Model: gemini-3-pro (default), gemini-2.5-pro, gemini-2.5-flash |
+| `--model`, `-m` | Model: gemini-3-pro (default), gemini-3-flash, gemini-3-flash-thinking, gemini-3.1-pro-preview |
 | `--image [path]` | Generate image (default: generated.png) |
 | `--reference`, `--ref` | Reference images for vision input |
 | `--sessionId` | Session ID for multi-turn conversation |
@@ -114,9 +114,10 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts "Hello" --json
 
 | Model | Description |
 |-------|-------------|
-| `gemini-3-pro` | Default, latest |
-| `gemini-2.5-pro` | Previous pro |
-| `gemini-2.5-flash` | Fast, lightweight |
+| `gemini-3-pro` | Default, latest 3.0 Pro |
+| `gemini-3-flash` | Fast, lightweight 3.0 Flash |
+| `gemini-3-flash-thinking` | 3.0 Flash with thinking |
+| `gemini-3.1-pro-preview` | 3.1 Pro preview (empty header, auto-routed) |
 
 ## Authentication
 

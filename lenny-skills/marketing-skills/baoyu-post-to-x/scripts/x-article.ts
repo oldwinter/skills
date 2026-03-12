@@ -130,7 +130,7 @@ export async function publishArticle(options: ArticleOptions): Promise<void> {
 
   try {
     const wsUrl = await waitForChromeDebugPort(port, 30_000, { includeLastError: true });
-    cdp = await CdpConnection.connect(wsUrl, 30_000, { defaultTimeoutMs: 30_000 });
+    cdp = await CdpConnection.connect(wsUrl, 30_000, { defaultTimeoutMs: 60_000 });
 
     // Get page target
     const targets = await cdp.send<{ targetInfos: Array<{ targetId: string; url: string; type: string }> }>('Target.getTargets');
@@ -148,7 +148,7 @@ export async function publishArticle(options: ArticleOptions): Promise<void> {
     await cdp.send('DOM.enable', {}, { sessionId });
 
     console.log('[x-article] Waiting for articles page...');
-    await sleep(3000);
+    await sleep(1000);
 
     // Wait for and click "create" button
     const waitForElement = async (selector: string, timeoutMs = 60_000): Promise<boolean> => {
@@ -644,6 +644,8 @@ export async function publishArticle(options: ArticleOptions): Promise<void> {
 
         if (imgUploadOk) {
           console.log(`[x-article] Image upload verified (${expectedImgCount} image block(s))`);
+          // Wait for DraftEditor DOM to stabilize after image insertion
+          await sleep(3000);
         } else {
           console.warn(`[x-article] Image upload not detected after 15s`);
           if (i === 0) {
@@ -653,6 +655,42 @@ export async function publishArticle(options: ArticleOptions): Promise<void> {
       }
 
       console.log('[x-article] All images processed.');
+
+      // Final verification: check placeholder residue and image count
+      console.log('[x-article] Running post-composition verification...');
+      const finalEditorContent = await cdp.send<{ result: { value: string } }>('Runtime.evaluate', {
+        expression: `document.querySelector('.DraftEditor-editorContainer [data-contents="true"]')?.innerText || ''`,
+        returnByValue: true,
+      }, { sessionId });
+
+      const remainingPlaceholders: string[] = [];
+      for (const img of parsed.contentImages) {
+        const regex = new RegExp(img.placeholder + '(?!\\d)');
+        if (regex.test(finalEditorContent.result.value)) {
+          remainingPlaceholders.push(img.placeholder);
+        }
+      }
+
+      const finalImgCount = await cdp.send<{ result: { value: number } }>('Runtime.evaluate', {
+        expression: `document.querySelectorAll('section[data-block="true"][contenteditable="false"] img[src^="blob:"]').length`,
+        returnByValue: true,
+      }, { sessionId });
+
+      const expectedCount = parsed.contentImages.length;
+      const actualCount = finalImgCount.result.value;
+
+      if (remainingPlaceholders.length > 0 || actualCount < expectedCount) {
+        console.warn('[x-article] ⚠ POST-COMPOSITION CHECK FAILED:');
+        if (remainingPlaceholders.length > 0) {
+          console.warn(`[x-article]   Remaining placeholders: ${remainingPlaceholders.join(', ')}`);
+        }
+        if (actualCount < expectedCount) {
+          console.warn(`[x-article]   Image count: expected ${expectedCount}, found ${actualCount}`);
+        }
+        console.warn('[x-article]   Please check the article before publishing.');
+      } else {
+        console.log(`[x-article] ✓ Verification passed: ${actualCount} image(s), no remaining placeholders.`);
+      }
     }
 
     // Before preview: blur editor to trigger save

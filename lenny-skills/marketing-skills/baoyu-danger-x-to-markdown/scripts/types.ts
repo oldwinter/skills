@@ -40,6 +40,7 @@ export type ArticleEntityMapEntry = {
       caption?: string;
       mediaItems?: ArticleEntityMapMediaItem[];
       url?: string;
+      tweetId?: string;
     };
   };
 };

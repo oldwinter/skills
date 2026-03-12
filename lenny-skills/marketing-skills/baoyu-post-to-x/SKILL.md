@@ -172,6 +172,12 @@ npx -y bun ${SKILL_DIR}/scripts/x-article.ts article.md --cover ./cover.jpg
 
 **Note**: Script opens browser with article filled in. User reviews and publishes manually.
 
+**Post-Composition Check**: The script automatically verifies after all images are inserted:
+- Remaining `XIMGPH_` placeholders in editor content
+- Expected vs actual image count
+
+If the check fails (warnings in output), alert the user with the specific issues before they publish.
+
 ---
 
 ## Troubleshooting

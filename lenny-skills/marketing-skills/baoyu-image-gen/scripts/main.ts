@@ -14,7 +14,7 @@ Options:
   -p, --prompt <text>       Prompt text
   --promptfiles <files...>  Read prompt from files (concatenated)
   --image <path>            Output image path (required)
-  --provider google|openai|dashscope  Force provider (auto-detect by default)
+  --provider google|openai|dashscope|replicate  Force provider (auto-detect by default)
   -m, --model <id>          Model ID
   --ar <ratio>              Aspect ratio (e.g., 16:9, 1:1, 4:3)
   --size <WxH>              Size (e.g., 1024x1024)
@@ -30,12 +30,16 @@ Environment variables:
   GOOGLE_API_KEY            Google API key
   GEMINI_API_KEY            Gemini API key (alias for GOOGLE_API_KEY)
   DASHSCOPE_API_KEY         DashScope API key (阿里云通义万象)
+  REPLICATE_API_TOKEN       Replicate API token
   OPENAI_IMAGE_MODEL        Default OpenAI model (gpt-image-1.5)
   GOOGLE_IMAGE_MODEL        Default Google model (gemini-3-pro-image-preview)
   DASHSCOPE_IMAGE_MODEL     Default DashScope model (z-image-turbo)
+  REPLICATE_IMAGE_MODEL     Default Replicate model (google/nano-banana-pro)
   OPENAI_BASE_URL           Custom OpenAI endpoint
+  OPENAI_IMAGE_USE_CHAT     Use /chat/completions instead of /images/generations (true|false)
   GOOGLE_BASE_URL           Custom Google endpoint
   DASHSCOPE_BASE_URL        Custom DashScope endpoint
+  REPLICATE_BASE_URL        Custom Replicate endpoint
 
 Env file load order: CLI args > EXTEND.md > process.env > <cwd>/.baoyu-skills/.env > ~/.baoyu-skills/.env`);
 }
@@ -108,7 +112,7 @@ function parseArgs(argv: string[]): CliArgs {
 
     if (a === "--provider") {
       const v = argv[++i];
-      if (v !== "google" && v !== "openai" && v !== "dashscope") throw new Error(`Invalid provider: ${v}`);
+      if (v !== "google" && v !== "openai" && v !== "dashscope" && v !== "replicate") throw new Error(`Invalid provider: ${v}`);
       out.provider = v;
       continue;
     }
@@ -250,9 +254,9 @@ function parseSimpleYaml(yaml: string): Partial<ExtendConfig> {
       } else if (key === "default_image_size") {
         config.default_image_size = value === "null" ? null : (value as "1K" | "2K" | "4K");
       } else if (key === "default_model") {
-        config.default_model = { google: null, openai: null, dashscope: null };
+        config.default_model = { google: null, openai: null, dashscope: null, replicate: null };
         currentKey = "default_model";
-      } else if (currentKey === "default_model" && (key === "google" || key === "openai" || key === "dashscope")) {
+      } else if (currentKey === "default_model" && (key === "google" || key === "openai" || key === "dashscope" || key === "replicate")) {
         const cleaned = value.replace(/['"]/g, "");
         config.default_model![key] = cleaned === "null" ? null : cleaned;
       }
@@ -323,9 +327,9 @@ function normalizeOutputImagePath(p: string): string {
 }
 
 function detectProvider(args: CliArgs): Provider {
-  if (args.referenceImages.length > 0 && args.provider && args.provider !== "google" && args.provider !== "openai") {
+  if (args.referenceImages.length > 0 && args.provider && args.provider !== "google" && args.provider !== "openai" && args.provider !== "replicate") {
     throw new Error(
-      "Reference images require a ref-capable provider. Use --provider google (Gemini multimodal) or --provider openai (GPT Image edits)."
+      "Reference images require a ref-capable provider. Use --provider google (Gemini multimodal), --provider openai (GPT Image edits), or --provider replicate."
     );
   }
 
@@ -334,22 +338,24 @@ function detectProvider(args: CliArgs): Provider {
   const hasGoogle = !!(process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY);
   const hasOpenai = !!process.env.OPENAI_API_KEY;
   const hasDashscope = !!process.env.DASHSCOPE_API_KEY;
+  const hasReplicate = !!process.env.REPLICATE_API_TOKEN;
 
   if (args.referenceImages.length > 0) {
     if (hasGoogle) return "google";
     if (hasOpenai) return "openai";
+    if (hasReplicate) return "replicate";
     throw new Error(
-      "Reference images require Google or OpenAI. Set GOOGLE_API_KEY/GEMINI_API_KEY or OPENAI_API_KEY, or remove --ref."
+      "Reference images require Google, OpenAI or Replicate. Set GOOGLE_API_KEY/GEMINI_API_KEY, OPENAI_API_KEY, or REPLICATE_API_TOKEN, or remove --ref."
     );
   }
 
-  const available = [hasGoogle && "google", hasOpenai && "openai", hasDashscope && "dashscope"].filter(Boolean) as Provider[];
+  const available = [hasGoogle && "google", hasOpenai && "openai", hasDashscope && "dashscope", hasReplicate && "replicate"].filter(Boolean) as Provider[];
 
   if (available.length === 1) return available[0]!;
   if (available.length > 1) return available[0]!;
 
   throw new Error(
-    "No API key found. Set GOOGLE_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, or DASHSCOPE_API_KEY.\n" +
+    "No API key found. Set GOOGLE_API_KEY, GEMINI_API_KEY, OPENAI_API_KEY, DASHSCOPE_API_KEY, or REPLICATE_API_TOKEN.\n" +
       "Create ~/.baoyu-skills/.env or <cwd>/.baoyu-skills/.env with your keys."
   );
 }
@@ -388,6 +394,9 @@ async function loadProviderModule(provider: Provider): Promise<ProviderModule> {
   }
   if (provider === "dashscope") {
     return (await import("./providers/dashscope")) as ProviderModule;
+  }
+  if (provider === "replicate") {
+    return (await import("./providers/replicate")) as ProviderModule;
   }
   return (await import("./providers/openai")) as ProviderModule;
 }
@@ -436,6 +445,7 @@ async function main(): Promise<void> {
     if (provider === "google") model = extendConfig.default_model.google ?? null;
     if (provider === "openai") model = extendConfig.default_model.openai ?? null;
     if (provider === "dashscope") model = extendConfig.default_model.dashscope ?? null;
+    if (provider === "replicate") model = extendConfig.default_model.replicate ?? null;
   }
   model = model || providerModule.getDefaultModel();
 

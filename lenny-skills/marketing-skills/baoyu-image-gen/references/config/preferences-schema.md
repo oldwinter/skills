@@ -11,7 +11,7 @@ description: EXTEND.md YAML schema for baoyu-image-gen user preferences
 ---
 version: 1
 
-default_provider: null      # google|openai|dashscope|null (null = auto-detect)
+default_provider: null      # google|openai|dashscope|replicate|null (null = auto-detect)
 
 default_quality: null       # normal|2k|null (null = use default: 2k)
 
@@ -20,9 +20,10 @@ default_aspect_ratio: null  # "16:9"|"1:1"|"4:3"|"3:4"|"2.35:1"|null
 default_image_size: null    # 1K|2K|4K|null (Google only, overrides quality)
 
 default_model:
-  google: null              # e.g., "gemini-3-pro-image-preview"
+  google: null              # e.g., "gemini-3-pro-image-preview", "gemini-3.1-flash-image-preview"
   openai: null              # e.g., "gpt-image-1.5"
   dashscope: null           # e.g., "z-image-turbo"
+  replicate: null           # e.g., "google/nano-banana-pro"
 ---
 ```
 
@@ -38,6 +39,7 @@ default_model:
 | `default_model.google` | string\|null | null | Google default model |
 | `default_model.openai` | string\|null | null | OpenAI default model |
 | `default_model.dashscope` | string\|null | null | DashScope default model |
+| `default_model.replicate` | string\|null | null | Replicate default model |
 
 ## Examples
 
@@ -62,5 +64,6 @@ default_model:
   google: "gemini-3-pro-image-preview"
   openai: "gpt-image-1.5"
   dashscope: "z-image-turbo"
+  replicate: "google/nano-banana-pro"
 ---
 ```

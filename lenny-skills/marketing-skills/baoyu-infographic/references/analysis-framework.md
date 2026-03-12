@@ -38,7 +38,8 @@ Approach content analysis as a **world-class instructional designer**:
 | **Cycle/Loop** | Recurring processes, feedback loops | circular-flow | craft-handmade, technical-schematic |
 | **System/Structure** | Components, architecture, anatomy | structural-breakdown, bento-grid | technical-schematic, ikea-manual |
 | **Journey/Narrative** | Stories, user flows, milestones | winding-roadmap, story-mountain | storybook-watercolor, comic-strip |
-| **Overview/Summary** | Multiple topics, feature highlights | bento-grid, periodic-table | chalkboard, bold-graphic |
+| **Overview/Summary** | Multiple topics, feature highlights | bento-grid, periodic-table, dense-modules | chalkboard, bold-graphic |
+| **Product/Buying Guide** | Multi-dimension comparisons, specs, pitfalls | dense-modules | morandi-journal, pop-laboratory, retro-pop-grid |
 
 ### 2. Learning Objective Identification
 

@@ -1,6 +1,6 @@
 ---
 name: baoyu-infographic
-description: Generates professional infographics with 20 layout types and 17 visual styles. Analyzes content, recommends layout×style combinations, and generates publication-ready infographics. Use when user asks to create "infographic", "信息图", "visual summary", or "可视化".
+description: Generates professional infographics with 21 layout types and 20 visual styles. Analyzes content, recommends layout×style combinations, and generates publication-ready infographics. Use when user asks to create "infographic", "信息图", "visual summary", "可视化", or "高密度信息大图".
 ---
 
 # Infographic Generator
@@ -20,8 +20,8 @@ Two dimensions: **layout** (information structure) × **style** (visual aestheti
 
 | Option | Values |
 |--------|--------|
-| `--layout` | 20 options (see Layout Gallery), default: bento-grid |
-| `--style` | 17 options (see Style Gallery), default: craft-handmade |
+| `--layout` | 21 options (see Layout Gallery), default: bento-grid |
+| `--style` | 20 options (see Style Gallery), default: craft-handmade |
 | `--aspect` | landscape (16:9), portrait (9:16), square (1:1) |
 | `--lang` | en, zh, ja, etc. |
 
@@ -49,6 +49,7 @@ Two dimensions: **layout** (information structure) × **style** (visual aestheti
 | `venn-diagram` | Overlapping concepts |
 | `winding-roadmap` | Journey, milestones |
 | `circular-flow` | Cycles, recurring processes |
+| `dense-modules` | High-density modules, data-rich guides |
 
 Full definitions: `references/layouts/<layout>.md`
 
@@ -73,6 +74,9 @@ Full definitions: `references/layouts/<layout>.md`
 | `ikea-manual` | Minimal line art |
 | `knolling` | Organized flat-lay |
 | `lego-brick` | Toy brick construction |
+| `pop-laboratory` | Blueprint grid, coordinate markers, lab precision |
+| `morandi-journal` | Hand-drawn doodle, warm Morandi tones |
+| `retro-pop-grid` | 1970s retro pop art, Swiss grid, thick outlines |
 
 Full definitions: `references/styles/<style>.md`
 
@@ -92,8 +96,22 @@ Full definitions: `references/styles/<style>.md`
 | Educational | `bento-grid` + `chalkboard` |
 | Journey | `winding-roadmap` + `storybook-watercolor` |
 | Categories | `periodic-table` + `bold-graphic` |
+| Product Guide | `dense-modules` + `morandi-journal` |
+| Technical Guide | `dense-modules` + `pop-laboratory` |
+| Trendy Guide | `dense-modules` + `retro-pop-grid` |
 
 Default: `bento-grid` + `craft-handmade`
+
+## Keyword Shortcuts
+
+When user input contains these keywords, **auto-select** the associated layout and offer associated styles as top recommendations in Step 3. Skip content-based layout inference for matched keywords.
+
+If a shortcut has **Prompt Notes**, append them to the generated prompt (Step 5) as additional style instructions.
+
+| User Keyword | Layout | Recommended Styles | Default Aspect | Prompt Notes |
+|--------------|--------|--------------------|----------------|--------------|
+| 高密度信息大图 / high-density-info | `dense-modules` | `morandi-journal`, `pop-laboratory`, `retro-pop-grid` | portrait | — |
+| 信息图 / infographic | `bento-grid` | `craft-handmade` | landscape | Minimalist: clean canvas, ample whitespace, no complex background textures. Simple cartoon elements and icons only. |
 
 ## Output Structure
 
@@ -176,7 +194,9 @@ See `references/structured-content-template.md` for detailed format.
 
 ### Step 3: Recommend Combinations
 
-Recommend 3-5 layout×style combinations based on:
+**3.1 Check Keyword Shortcuts first**: If user input matches a keyword from the **Keyword Shortcuts** table, auto-select the associated layout and prioritize associated styles as top recommendations. Skip content-based layout inference.
+
+**3.2 Otherwise**, recommend 3-5 layout×style combinations based on:
 - Data structure → matching layout
 - Content tone → matching style
 - Audience expectations
@@ -222,8 +242,8 @@ Report: topic, layout, style, aspect, language, output path, files created.
 - `references/analysis-framework.md` - Analysis methodology
 - `references/structured-content-template.md` - Content format
 - `references/base-prompt.md` - Prompt template
-- `references/layouts/<layout>.md` - 20 layout definitions
-- `references/styles/<style>.md` - 17 style definitions
+- `references/layouts/<layout>.md` - 21 layout definitions
+- `references/styles/<style>.md` - 20 style definitions
 
 ## Extension Support
 

@@ -70,6 +70,10 @@ export async function generateImage(
 
   if (!apiKey) throw new Error("OPENAI_API_KEY is required");
 
+  if (process.env.OPENAI_IMAGE_USE_CHAT === "true") {
+    return generateWithChatCompletions(baseURL, apiKey, prompt, model);
+  }
+
   const size = args.size || getOpenAISize(model, args.aspectRatio, args.quality);
 
   if (args.referenceImages.length > 0) {
@@ -82,6 +86,40 @@ export async function generateImage(
   }
 
   return generateWithOpenAIGenerations(baseURL, apiKey, prompt, model, size, args.quality);
+}
+
+async function generateWithChatCompletions(
+  baseURL: string,
+  apiKey: string,
+  prompt: string,
+  model: string
+): Promise<Uint8Array> {
+  const res = await fetch(`${baseURL}/chat/completions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: "user", content: prompt }],
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`OpenAI API error: ${err}`);
+  }
+
+  const result = (await res.json()) as { choices: Array<{ message: { content: string } }> };
+  const content = result.choices[0]?.message?.content ?? "";
+
+  const match = content.match(/data:image\/[^;]+;base64,([A-Za-z0-9+/=]+)/);
+  if (match) {
+    return Uint8Array.from(Buffer.from(match[1]!, "base64"));
+  }
+
+  throw new Error("No image found in chat completions response");
 }
 
 async function generateWithOpenAIGenerations(

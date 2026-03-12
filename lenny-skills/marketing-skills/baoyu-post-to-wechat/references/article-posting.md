@@ -20,9 +20,9 @@ npx -y bun ./scripts/wechat-article.ts --markdown article.md --author "作者名
 | Parameter | Description |
 |-----------|-------------|
 | `--markdown <path>` | Markdown file to convert and post |
-| `--theme <name>` | Theme: default, grace, or simple |
+| `--theme <name>` | Theme: default, grace, simple, modern |
 | `--title <text>` | Override title (auto-extracted from markdown) |
-| `--author <name>` | Author name (default: 宝玉) |
+| `--author <name>` | Author name |
 | `--summary <text>` | Article summary |
 | `--html <path>` | Pre-rendered HTML file (alternative to markdown) |
 | `--profile <dir>` | Chrome profile directory |

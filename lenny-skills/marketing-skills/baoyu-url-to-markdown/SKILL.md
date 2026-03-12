@@ -46,10 +46,45 @@ test -f "$HOME/.baoyu-skills/baoyu-url-to-markdown/EXTEND.md" && echo "user"
 ├───────────┼───────────────────────────────────────────────────────────────────────────┤
 │ Found     │ Read, parse, apply settings                                               │
 ├───────────┼───────────────────────────────────────────────────────────────────────────┤
-│ Not found │ Use defaults                                                              │
+│ Not found │ **MUST** run first-time setup (see below) — do NOT silently create defaults │
 └───────────┴───────────────────────────────────────────────────────────────────────────┘
 
-**EXTEND.md Supports**: Default output directory | Default capture mode | Timeout settings
+**EXTEND.md Supports**: Download media by default | Default output directory | Default capture mode | Timeout settings
+
+### First-Time Setup (BLOCKING)
+
+**CRITICAL**: When EXTEND.md is not found, you **MUST use `AskUserQuestion`** to ask the user for their preferences before creating EXTEND.md. **NEVER** create EXTEND.md with defaults without asking. This is a **BLOCKING** operation — do NOT proceed with any conversion until setup is complete.
+
+Use `AskUserQuestion` with ALL questions in ONE call:
+
+**Question 1** — header: "Media", question: "How to handle images and videos in pages?"
+- "Ask each time (Recommended)" — After saving markdown, ask whether to download media
+- "Always download" — Always download media to local imgs/ and videos/ directories
+- "Never download" — Keep original remote URLs in markdown
+
+**Question 2** — header: "Output", question: "Default output directory?"
+- "url-to-markdown (Recommended)" — Save to ./url-to-markdown/{domain}/{slug}.md
+- (User may choose "Other" to type a custom path)
+
+**Question 3** — header: "Save", question: "Where to save preferences?"
+- "User (Recommended)" — ~/.baoyu-skills/ (all projects)
+- "Project" — .baoyu-skills/ (this project only)
+
+After user answers, create EXTEND.md at the chosen location, confirm "Preferences saved to [path]", then continue.
+
+Full reference: [references/config/first-time-setup.md](references/config/first-time-setup.md)
+
+### Supported Keys
+
+| Key | Default | Values | Description |
+|-----|---------|--------|-------------|
+| `download_media` | `ask` | `ask` / `1` / `0` | `ask` = prompt each time, `1` = always download, `0` = never |
+| `default_output_dir` | empty | path or empty | Default output directory (empty = `./url-to-markdown/`) |
+
+**Value priority**:
+1. CLI arguments (`--download-media`, `-o`)
+2. EXTEND.md
+3. Skill defaults
 
 ## Features
 
@@ -57,6 +92,7 @@ test -f "$HOME/.baoyu-skills/baoyu-url-to-markdown/EXTEND.md" && echo "user"
 - Two capture modes: auto or wait-for-user
 - Clean markdown output with metadata
 - Handles login-required pages via wait mode
+- Download images and videos to local directories
 
 ## Usage
 
@@ -69,6 +105,9 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts <url> --wait
 
 # Save to specific file
 npx -y bun ${SKILL_DIR}/scripts/main.ts <url> -o output.md
+
+# Download images and videos to local directories
+npx -y bun ${SKILL_DIR}/scripts/main.ts <url> --download-media
 ```
 
 ## Options
@@ -79,6 +118,7 @@ npx -y bun ${SKILL_DIR}/scripts/main.ts <url> -o output.md
 | `-o <path>` | Output file path (default: auto-generated) |
 | `--wait` | Wait for user signal before capturing |
 | `--timeout <ms>` | Page load timeout (default: 30000) |
+| `--download-media` | Download image/video assets to local `imgs/` and `videos/`, and rewrite markdown links to local relative paths |
 
 ## Capture Modes
 
@@ -104,6 +144,32 @@ url-to-markdown/<domain>/<slug>.md
 
 - `<slug>`: From page title or URL path (kebab-case, 2-6 words)
 - Conflict resolution: Append timestamp `<slug>-YYYYMMDD-HHMMSS.md`
+
+When `--download-media` is enabled:
+- Images are saved to `imgs/` next to the markdown file
+- Videos are saved to `videos/` next to the markdown file
+- Markdown media links are rewritten to local relative paths
+
+## Media Download Workflow
+
+Based on `download_media` setting in EXTEND.md:
+
+| Setting | Behavior |
+|---------|----------|
+| `1` (always) | Run script with `--download-media` flag |
+| `0` (never) | Run script without `--download-media` flag |
+| `ask` (default) | Follow the ask-each-time flow below |
+
+### Ask-Each-Time Flow
+
+1. Run script **without** `--download-media` → markdown saved
+2. Check saved markdown for remote media URLs (`https://` in image/video links)
+3. **If no remote media found** → done, no prompt needed
+4. **If remote media found** → use `AskUserQuestion`:
+   - header: "Media", question: "Download N images/videos to local files?"
+   - "Yes" — Download to local directories
+   - "No" — Keep remote URLs
+5. If user confirms → run script **again** with `--download-media` (overwrites markdown with localized links)
 
 ## Environment Variables
 

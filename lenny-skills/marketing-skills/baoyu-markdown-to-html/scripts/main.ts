@@ -1,13 +1,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { writeFile } from 'node:fs/promises';
-import os from 'node:os';
 import { createHash } from 'node:crypto';
-import { fileURLToPath } from 'node:url';
 import https from 'node:https';
 import http from 'node:http';
-import { spawnSync } from 'node:child_process';
 import process from 'node:process';
+import type { StyleConfig, HtmlDocumentMeta } from './md/types.js';
+import { DEFAULT_STYLE, THEME_STYLE_DEFAULTS } from './md/constants.js';
+import { loadThemeCss, normalizeThemeCss } from './md/themes.js';
+import { initRenderer, renderMarkdown, postProcessHtml } from './md/renderer.js';
+import {
+  buildCss, loadCodeThemeCss, buildHtmlDocument,
+  inlineCss, normalizeInlineCss, modifyHtmlStructure, removeFirstHeading,
+} from './md/html-builder.js';
 
 interface ImageInfo {
   placeholder: string;
@@ -187,33 +191,23 @@ export async function convertMarkdown(markdownPath: string, options?: { title?: 
 
   const modifiedMarkdown = `---\n${Object.entries(frontmatter).map(([k, v]) => `${k}: ${v}`).join('\n')}\n---\n${modifiedBody}`;
 
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-to-html-'));
-  const tempMdPath = path.join(tempDir, 'temp-article.md');
-  await writeFile(tempMdPath, modifiedMarkdown, 'utf-8');
-
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  const renderScript = path.join(__dirname, 'md', 'render.ts');
-
   console.error(`[markdown-to-html] Rendering with theme: ${theme}, keepTitle: ${keepTitle}`);
 
-  const args = ['-y', 'bun', renderScript, tempMdPath, '--theme', theme];
-  if (keepTitle) args.push('--keep-title');
+  const themeDefaults = THEME_STYLE_DEFAULTS[theme] ?? {};
+  const style: StyleConfig = { ...DEFAULT_STYLE, ...themeDefaults };
+  const { baseCss, themeCss } = loadThemeCss(theme);
+  const css = normalizeThemeCss(buildCss(baseCss, themeCss, style));
+  const codeThemeCss = loadCodeThemeCss('github');
 
-  const result = spawnSync('npx', args, {
-    stdio: ['inherit', 'pipe', 'pipe'],
-    cwd: baseDir,
-  });
+  const renderer = initRenderer({});
+  const { html: baseHtml, readingTime } = renderMarkdown(modifiedMarkdown, renderer);
+  let htmlContent = postProcessHtml(baseHtml, readingTime, renderer);
+  if (!keepTitle) htmlContent = removeFirstHeading(htmlContent);
 
-  if (result.status !== 0) {
-    const stderr = result.stderr?.toString() || '';
-    throw new Error(`Render failed: ${stderr}`);
-  }
-
-  const tempHtmlPath = tempMdPath.replace(/\.md$/i, '.html');
-  if (!fs.existsSync(tempHtmlPath)) {
-    throw new Error(`HTML file not generated: ${tempHtmlPath}`);
-  }
+  const meta: HtmlDocumentMeta = { title, author, description: summary };
+  const fullHtml = buildHtmlDocument(meta, css, htmlContent, codeThemeCss);
+  const inlinedHtml = normalizeInlineCss(await inlineCss(fullHtml), style);
+  const renderedHtml = modifyHtmlStructure(inlinedHtml);
 
   const finalHtmlPath = markdownPath.replace(/\.md$/i, '.html');
   let backupPath: string | undefined;
@@ -224,11 +218,16 @@ export async function convertMarkdown(markdownPath: string, options?: { title?: 
     fs.renameSync(finalHtmlPath, backupPath);
   }
 
-  fs.copyFileSync(tempHtmlPath, finalHtmlPath);
+  fs.writeFileSync(finalHtmlPath, renderedHtml, 'utf-8');
 
   const contentImages: ImageInfo[] = [];
+  let tempDir: string | undefined;
   for (const img of images) {
-    const localPath = await resolveImagePath(img.src, baseDir, tempDir);
+    if (!tempDir && (img.src.startsWith('http://') || img.src.startsWith('https://'))) {
+      const os = await import('node:os');
+      tempDir = fs.mkdtempSync(path.join(os.default.tmpdir(), 'markdown-to-html-'));
+    }
+    const localPath = await resolveImagePath(img.src, baseDir, tempDir ?? baseDir);
     contentImages.push({
       placeholder: img.placeholder,
       localPath,
@@ -236,12 +235,12 @@ export async function convertMarkdown(markdownPath: string, options?: { title?: 
     });
   }
 
-  let htmlContent = fs.readFileSync(finalHtmlPath, 'utf-8');
+  let finalContent = fs.readFileSync(finalHtmlPath, 'utf-8');
   for (const img of contentImages) {
-    const imgTag = `<img src="${img.placeholder}" data-local-path="${img.localPath}" style="display: block; width: 100%; margin: 1.5em auto;">`;
-    htmlContent = htmlContent.replace(img.placeholder, imgTag);
+    const imgTag = `<img src="${img.originalPath}" data-local-path="${img.localPath}" style="display: block; width: 100%; margin: 1.5em auto;">`;
+    finalContent = finalContent.replace(img.placeholder, imgTag);
   }
-  fs.writeFileSync(finalHtmlPath, htmlContent, 'utf-8');
+  fs.writeFileSync(finalHtmlPath, finalContent, 'utf-8');
 
   console.error(`[markdown-to-html] HTML saved to: ${finalHtmlPath}`);
 

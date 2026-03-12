@@ -307,14 +307,17 @@ function parseFrontmatter(content: string): { frontmatter: Record<string, string
   return { frontmatter, body: match[2]! };
 }
 
-function renderMarkdownToHtml(markdownPath: string, theme: string = "default"): string {
+function renderMarkdownToHtml(markdownPath: string, theme: string = "default", color?: string): string {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
   const renderScript = path.join(__dirname, "md", "render.ts");
   const baseDir = path.dirname(markdownPath);
 
-  console.error(`[wechat-api] Rendering markdown with theme: ${theme}`);
-  const result = spawnSync("npx", ["-y", "bun", renderScript, markdownPath, "--theme", theme], {
+  const renderArgs = ["-y", "bun", renderScript, markdownPath, "--theme", theme];
+  if (color) renderArgs.push("--color", color);
+
+  console.error(`[wechat-api] Rendering markdown with theme: ${theme}${color ? `, color: ${color}` : ""}`);
+  const result = spawnSync("npx", renderArgs, {
     stdio: ["inherit", "pipe", "pipe"],
     cwd: baseDir,
   });
@@ -356,7 +359,8 @@ Options:
   --title <title>     Override title
   --author <name>     Author name (max 16 chars)
   --summary <text>    Article summary/digest (max 128 chars)
-  --theme <name>      Theme name for markdown (default, grace, simple). Default: default
+  --theme <name>      Theme name for markdown (default, grace, simple, modern). Default: default
+  --color <name|hex>  Primary color (blue, green, vermilion, etc. or hex)
   --cover <path>      Cover image path (local or URL)
   --dry-run           Parse and render only, don't publish
   --help              Show this help
@@ -398,6 +402,7 @@ interface CliArgs {
   author?: string;
   summary?: string;
   theme: string;
+  color?: string;
   cover?: string;
   dryRun: boolean;
 }
@@ -430,6 +435,8 @@ function parseArgs(argv: string[]): CliArgs {
       args.summary = argv[++i];
     } else if (arg === "--theme" && argv[i + 1]) {
       args.theme = argv[++i]!;
+    } else if (arg === "--color" && argv[i + 1]) {
+      args.color = argv[++i];
     } else if (arg === "--cover" && argv[i + 1]) {
       args.cover = argv[++i];
     } else if (arg === "--dry-run") {
@@ -506,8 +513,8 @@ async function main(): Promise<void> {
     if (!author) author = frontmatter.author || "";
     if (!digest) digest = frontmatter.digest || frontmatter.summary || frontmatter.description || "";
 
-    console.error(`[wechat-api] Theme: ${args.theme}`);
-    htmlPath = renderMarkdownToHtml(filePath, args.theme);
+    console.error(`[wechat-api] Theme: ${args.theme}${args.color ? `, color: ${args.color}` : ""}`);
+    htmlPath = renderMarkdownToHtml(filePath, args.theme, args.color);
     console.error(`[wechat-api] HTML generated: ${htmlPath}`);
     htmlContent = extractHtmlContent(htmlPath);
   }
