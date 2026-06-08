@@ -1,0 +1,11 @@
+.DS_Store
+__pycache__/
+*.pyc
+.workflow/*
+!.workflow/create-codex-dynamic-workflows-repo/
+!.workflow/create-codex-dynamic-workflows-repo/**
+.pytest_cache/
+.mypy_cache/
+node_modules/
+dist/
+coverage/

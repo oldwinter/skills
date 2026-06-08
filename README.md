@@ -184,6 +184,21 @@ npx skills add . --skill '*' --global \
   --yes
 ```
 
+
+## Canonical Runtime Sync
+
+This repository also acts as the canonical source for operating-system-level global skills mirrored from `~/.agents/skills` and `~/.codex/skills`. The sync state lives in `global-skills-sync-state.json` and stores the last synced content hash for each runtime skill.
+
+Sync is managed from `general-tasks`:
+
+```bash
+just global-skills-sync-status
+just global-skills-sync-dry-run
+just global-skills-sync-apply
+```
+
+The sync uses a three-way baseline: single-sided changes are copied to the other side, both-sided divergent changes are reported as conflicts, and missing skills are copied to the missing side. Runtime directories are copied by default; use `link_runtime=1` from `general-tasks` only when you want runtime entries symlinked to this repo.
+
 ## Adding New Skills
 
 ```bash
