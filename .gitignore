@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.runtime-backups/
+node_modules/
+.codegraph
