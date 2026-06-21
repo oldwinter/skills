@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Leadership",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "running-effective-1-1s",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/running-effective-1-1s",
+    "skill_md_url": "https://refoundai.com/skills/running-effective-1-1s/SKILL.md"
+  },
+  "version": "0.1.0"
+}

@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Communication",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "running-effective-meetings",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/running-effective-meetings",
+    "skill_md_url": "https://refoundai.com/skills/running-effective-meetings/SKILL.md"
+  },
+  "version": "0.1.0"
+}

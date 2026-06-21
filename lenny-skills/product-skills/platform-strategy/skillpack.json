@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "AI & Technology",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "platform-strategy",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/platform-strategy",
+    "skill_md_url": "https://refoundai.com/skills/platform-strategy/SKILL.md"
+  },
+  "version": "0.1.0"
+}

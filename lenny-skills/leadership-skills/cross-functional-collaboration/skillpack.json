@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Leadership",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "cross-functional-collaboration",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/cross-functional-collaboration",
+    "skill_md_url": "https://refoundai.com/skills/cross-functional-collaboration/SKILL.md"
+  },
+  "version": "0.1.0"
+}

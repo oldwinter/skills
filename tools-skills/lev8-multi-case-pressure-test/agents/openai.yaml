@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lev8 Multi-Case Pressure Test"
+  short_description: "Run and verify multi-tab Lev8 case pressure tests."
+  default_prompt: "Use this skill to parse a CSV of Lev8 test cases, launch multiple fresh Chrome tabs, submit each query, run generated search plans, and summarize table/rendering outcomes."

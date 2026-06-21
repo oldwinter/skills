@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Leadership",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "having-difficult-conversations",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/having-difficult-conversations",
+    "skill_md_url": "https://refoundai.com/skills/having-difficult-conversations/SKILL.md"
+  },
+  "version": "0.1.0"
+}

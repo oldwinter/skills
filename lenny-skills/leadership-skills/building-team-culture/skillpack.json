@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Hiring & Teams",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "building-team-culture",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/building-team-culture",
+    "skill_md_url": "https://refoundai.com/skills/building-team-culture/SKILL.md"
+  },
+  "version": "0.1.0"
+}

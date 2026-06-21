@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Leadership",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "post-mortems-retrospectives",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/post-mortems-retrospectives",
+    "skill_md_url": "https://refoundai.com/skills/post-mortems-retrospectives/SKILL.md"
+  },
+  "version": "0.1.0"
+}

@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Product Management",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "writing-north-star-metrics",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/writing-north-star-metrics",
+    "skill_md_url": "https://refoundai.com/skills/writing-north-star-metrics/SKILL.md"
+  },
+  "version": "0.1.0"
+}

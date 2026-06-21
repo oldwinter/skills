@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Product Management",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "dogfooding",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/dogfooding",
+    "skill_md_url": "https://refoundai.com/skills/dogfooding/SKILL.md"
+  },
+  "version": "0.1.0"
+}

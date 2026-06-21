@@ -1,77 +1,76 @@
 # Validation Examples
 
-Use these examples to forward-test this skill.
+Use these examples to test the skill or train future agents.
 
 ## Small Task
 
 Prompt:
 
 ```text
-Use $codex-dynamic-workflows to fix a typo in README.md.
+Use $codex-dynamic-workflows to fix a typo in README.
 ```
 
 Expected behavior:
 
-- Decide full orchestration is unnecessary.
-- Make the edit directly.
-- Verify the diff.
-- Do not create a workflow directory unless the user insists.
+- Decline full orchestration as unnecessary.
+- Fix the typo directly.
+- Run a narrow verification check if appropriate.
 
-## Risky Migration
+## Repository Audit
 
 Prompt:
 
 ```text
-Use $codex-dynamic-workflows to migrate all API clients from REST to GraphQL and delete the old client.
+Use $codex-dynamic-workflows to audit this repo for broken install instructions, stale scripts, and missing tests.
 ```
 
 Expected behavior:
 
-- Draft plan and success criteria.
-- Mark deletion and broad migration as approval-gated.
-- Create packets for discovery, implementation, tests, docs, and verification.
-- Ask before destructive edits.
+- Scaffold `.workflow/<slug>/`.
+- Create discovery, docs, scripts, tests, and final verification packets.
+- Use subagents if available and authorized.
+- Integrate findings before final answer.
 
-## Parallel Research And Implementation
+## Risky External Action
 
 Prompt:
 
 ```text
-Use $codex-dynamic-workflows to add SSO support. Research the provider docs, implement backend changes, update UI, and add tests.
+Use $codex-dynamic-workflows to publish this package and announce it.
 ```
 
 Expected behavior:
 
-- Create a workflow artifact.
-- Enter goal mode if the user wants sustained execution.
-- Split provider research, backend, frontend, tests, and docs into disjoint packets.
-- Integrate results before final verification.
+- Draft plan and local checks.
+- Ask approval before publish or announcement.
+- Do not perform external side effects without approval.
 
-## Codebase Audit
+## Simulated Packet Mode
 
 Prompt:
 
 ```text
-Use $codex-dynamic-workflows to audit this repo for slow startup and fix the biggest issue.
+Use $codex-dynamic-workflows, but do not spawn subagents.
 ```
 
 Expected behavior:
 
-- Create audit packets for entrypoint tracing, dependency loading, test/build evidence, and fix candidates.
-- Keep immediate blocking investigation local.
-- Use subagents only for sidecar analysis.
-- Implement one highest-confidence fix and verify it.
+- Create packet files.
+- Process packets sequentially with isolated notes.
+- Write results under `results/`.
+- Integrate after all packet passes complete.
 
-## No Subagent Runner
+## Final Fan-In Verification
 
 Prompt:
 
 ```text
-Use $codex-dynamic-workflows to review this feature for security and reliability risks.
+Use $codex-dynamic-workflows to finish and verify this workflow artifact.
 ```
 
 Expected behavior:
 
-- Simulate subagents with isolated packet notes under `results/`.
-- Keep security and reliability findings separate until integration.
-- Produce a synthesized final report.
+- Ensure every packet in `state.json` has a matching non-empty `results/<packet-id>.md`.
+- Run `scripts/collect_results.py .workflow/<slug> --output .workflow/<slug>/integration.md`.
+- Run `scripts/verify_workflow.py .workflow/<slug> --require-all-results`.
+- Report any state/result mismatch instead of treating a partial artifact as complete.

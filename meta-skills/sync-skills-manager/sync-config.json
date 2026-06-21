@@ -1,0 +1,7 @@
+{
+  "system_skills_path": "~/.claude/skills",
+  "repo_skills_path": "./",
+  "exclude_patterns": ["sync-skills-manager"],
+  "sync_mode": "incremental",
+  "default_command": "diff"
+}

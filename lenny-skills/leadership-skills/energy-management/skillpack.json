@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Leadership",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "energy-management",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/energy-management",
+    "skill_md_url": "https://refoundai.com/skills/energy-management/SKILL.md"
+  },
+  "version": "0.1.0"
+}

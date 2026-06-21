@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Career",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "negotiating-offers",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/negotiating-offers",
+    "skill_md_url": "https://refoundai.com/skills/negotiating-offers/SKILL.md"
+  },
+  "version": "0.1.0"
+}

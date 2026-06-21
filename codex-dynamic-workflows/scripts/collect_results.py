@@ -14,7 +14,39 @@ MARKERS = (
     "Decision",
     "Risk",
     "Verification",
+    "Evidence",
     "TODO",
+    "Blocker",
+)
+SECTION_ALIASES = {
+    "accepted": "Accepted",
+    "accepted results": "Accepted",
+    "rejected": "Rejected",
+    "rejected results": "Rejected",
+    "conflict": "Conflicts",
+    "conflicts": "Conflicts",
+    "conflicts resolved": "Conflicts",
+    "decision": "Decisions",
+    "decisions": "Decisions",
+    "risk": "Risks",
+    "risks": "Risks",
+    "remaining risks": "Risks",
+    "verification": "Verification Evidence",
+    "verification evidence": "Verification Evidence",
+    "evidence": "Verification Evidence",
+    "todo": "TODO",
+    "blocker": "Blockers",
+    "blockers": "Blockers",
+}
+SECTION_ORDER = (
+    "Accepted",
+    "Rejected",
+    "Conflicts",
+    "Decisions",
+    "Risks",
+    "Verification Evidence",
+    "TODO",
+    "Blockers",
 )
 
 
@@ -31,7 +63,48 @@ def interesting_lines(text: str) -> list[str]:
         lowered = stripped.lower()
         if stripped.startswith(("-", "*", "#")) or any(marker.lower() in lowered for marker in MARKERS):
             lines.append(stripped)
-    return lines[:40]
+    return lines[:50]
+
+
+def normalize_item(line: str) -> str:
+    stripped = line.strip()
+    if stripped.startswith(("-", "*")):
+        return stripped[1:].strip()
+    return stripped
+
+
+def section_name(line: str) -> str | None:
+    stripped = line.strip()
+    if stripped.startswith("## "):
+        title = stripped.lstrip("#").strip().lower()
+        return SECTION_ALIASES.get(title)
+    if stripped.startswith(("-", "*", "#")) or not stripped.endswith(":"):
+        return None
+    title = stripped[:-1].strip().lower()
+    return SECTION_ALIASES.get(title)
+
+
+def structured_sections(text: str) -> dict[str, list[str]]:
+    sections: dict[str, list[str]] = {name: [] for name in SECTION_ORDER}
+    current: str | None = None
+    for line in text.splitlines():
+        next_section = section_name(line)
+        if next_section:
+            current = next_section
+            continue
+        if line.startswith("#"):
+            current = None
+            continue
+        if current is None:
+            continue
+        item = normalize_item(line)
+        if item:
+            sections[current].append(item)
+    return {name: items for name, items in sections.items() if items}
+
+
+def prefixed_items(items: list[str], heading: str) -> list[str]:
+    return [f"- {heading}: {item}" for item in items[:50]]
 
 
 def main() -> int:
@@ -52,10 +125,25 @@ def main() -> int:
     lines = [f"# Integration Checklist: {workflow_dir.name}", ""]
     if not files:
         lines.extend(["No result files found.", ""])
+
+    grouped: dict[str, list[str]] = {name: [] for name in SECTION_ORDER}
+    fallback_blocks: list[tuple[str, list[str]]] = []
     for file in files:
         text = file.read_text(encoding="utf-8")
-        lines.extend([f"## {heading_for(file)}", ""])
-        snippets = interesting_lines(text)
+        heading = heading_for(file)
+        sections = structured_sections(text)
+        if sections:
+            for name, items in sections.items():
+                grouped[name].extend(prefixed_items(items, heading))
+        else:
+            fallback_blocks.append((heading, interesting_lines(text)))
+
+    for name in SECTION_ORDER:
+        if grouped[name]:
+            lines.extend([f"## {name}", "", *grouped[name], ""])
+
+    for heading, snippets in fallback_blocks:
+        lines.extend([f"## {heading}", ""])
         if snippets:
             lines.extend(snippets)
         else:

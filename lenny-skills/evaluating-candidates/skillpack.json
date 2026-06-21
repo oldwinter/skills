@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Hiring & Teams",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "evaluating-candidates",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/evaluating-candidates",
+    "skill_md_url": "https://refoundai.com/skills/evaluating-candidates/SKILL.md"
+  },
+  "version": "0.1.0"
+}

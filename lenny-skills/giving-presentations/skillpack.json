@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Communication",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "giving-presentations",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/giving-presentations",
+    "skill_md_url": "https://refoundai.com/skills/giving-presentations/SKILL.md"
+  },
+  "version": "0.1.0"
+}

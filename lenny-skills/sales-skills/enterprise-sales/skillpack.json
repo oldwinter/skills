@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "liqiongyu"
+  ],
+  "category": "Sales & GTM",
+  "contributors": [],
+  "origin": "refound",
+  "schema_version": 1,
+  "skill_slug": "enterprise-sales",
+  "upstream": {
+    "page_url": "https://refoundai.com/lenny-skills/s/enterprise-sales",
+    "skill_md_url": "https://refoundai.com/skills/enterprise-sales/SKILL.md"
+  },
+  "version": "0.1.0"
+}
