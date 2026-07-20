@@ -1,0 +1,4 @@
+interface:
+  display_name: "Obsidian Note Capture"
+  short_description: "Capture docs and research into oldwinter-notes"
+  default_prompt: "Use $obsidian-note-capture to save this research summary into my Obsidian vault."
