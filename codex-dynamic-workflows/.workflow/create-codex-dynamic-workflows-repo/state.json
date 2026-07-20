@@ -1,0 +1,44 @@
+{
+  "title": "Create Codex Dynamic Workflows Repository",
+  "slug": "create-codex-dynamic-workflows-repo",
+  "created_at": "2026-05-31T14:01:02+00:00",
+  "status": "planned",
+  "approval": {
+    "required": null,
+    "granted": null,
+    "notes": ""
+  },
+  "budgets": {
+    "max_concurrent_agents": 4,
+    "max_total_agents": 12,
+    "time_minutes": null,
+    "token_budget": null
+  },
+  "packets": [
+    {
+      "id": "01-discovery",
+      "objective": "Map the current context, sources, constraints, and acceptance criteria.",
+      "status": "pending",
+      "assignee": "parent",
+      "result": null
+    },
+    {
+      "id": "02-execution",
+      "objective": "Perform the main implementation or analysis slice with a bounded write scope.",
+      "status": "pending",
+      "assignee": "subagent-or-parent",
+      "result": null
+    },
+    {
+      "id": "03-verification",
+      "objective": "Verify the integrated outcome against the original success criteria.",
+      "status": "pending",
+      "assignee": "parent",
+      "result": null
+    }
+  ],
+  "verification": {
+    "status": "not_started",
+    "checks": []
+  }
+}

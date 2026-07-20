@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Dynamic Workflows"
+  short_description: "Plan and run supervised Codex subagent workflows"
+  default_prompt: "Use $codex-dynamic-workflows to plan and run a supervised Codex workflow for this task."

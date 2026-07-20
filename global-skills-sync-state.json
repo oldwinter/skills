@@ -1,0 +1,232 @@
+{
+  "version": 1,
+  "canonicalRepo": ".",
+  "updatedAt": "2026-06-08T15:53:45.535080+00:00",
+  "skills": {
+    "agent-browser": {
+      "lastSyncedHash": "6f68d01b14796e410746fab39c2d6b36dcfa030dd59eb772f6418e2db949a16c",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "ast-grep": {
+      "lastSyncedHash": "e812630c21ec2215bd0abfe33835ae382059112e990411b588b84bb24c4f0a4f",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "caveman": {
+      "lastSyncedHash": "934433479903febc585bf6deb5f0cebc63137e3f86b7babe0aab1ecb94d6d7a4",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "codex-dynamic-workflows": {
+      "lastSyncedHash": "9c8d9f9bc535913508112ee5232a55e2a2fe710a87be48e9642df7c7f719e72c",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "darwin-skill": {
+      "lastSyncedHash": "302cca2f75a50e1da541bc5822b886a7e257ad1efdb244091e247b2923d8711c",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "diagnose": {
+      "lastSyncedHash": "eacaa3d6c8bfcf4c051fc1c12cb5c43f3549ccb1d447aa8b263abdc5b1eaceb5",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "find-skills": {
+      "lastSyncedHash": "d31e234f0c90694a670222cdd1dafa853e051d7066beda389f1097c22dadd461",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "go-live": {
+      "lastSyncedHash": "5b1782383b3cc9989505d59ca97310a9695b084e6ad901844a33ffd4f2d4f129",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "grill-me": {
+      "lastSyncedHash": "784f0dbb7403b0f00324bce9a112f715342777a0daee7bbb7385f9c6f0a170ea",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "grill-with-docs": {
+      "lastSyncedHash": "eb0e91e84277283dc2b23ed544399e53afd6b5287e5b6929f25fe8aa608e164b",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "handoff": {
+      "lastSyncedHash": "1a78d774f8a59db5daa6e65e20a6596872fa8cde769f9a6e3a09b678dd5ae8cc",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "huashu-nuwa": {
+      "lastSyncedHash": "beafb6b5f7c97b77852f9aec04a2451cdeef4b4c081088dc96c63208f5a06588",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "improve-codebase-architecture": {
+      "lastSyncedHash": "ef32aea0a8fab9b365ff9e08a95f8d353e20ca21ea46ec2e73587c86dd341351",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "loop": {
+      "lastSyncedHash": "4d72f07457f208a8883bc0a4b0ccddec23ffce422571d65a42a81a20b3a394d8",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "planning-with-files-zh": {
+      "lastSyncedHash": "800de38aada3b7e4c008d65e35cf75f53f79e55b9ea4b62df480ac95b067281f",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "prototype": {
+      "lastSyncedHash": "e4d0c8f8cb3fc096ee99405a15491da466545cf4a3694bee5a0c9db2fa621a43",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "setup-matt-pocock-skills": {
+      "lastSyncedHash": "bd910595dccca5b4404241b1d8667d6ed05764aa8c89e1297038573b93ce613e",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "skill-creator": {
+      "lastSyncedHash": "983170c54ebd674cfd33cc0d3269e0cc2ec36163abfb0d292e36e4dfec9ff9cc",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "supergoal": {
+      "lastSyncedHash": "78f28b20f53c520c430a7cf392e5bfc57a66acb89de119b3e3d8940e6fbc38bc",
+      "runtimeRoots": [
+        {
+          "root": "codex",
+          "state": "active"
+        }
+      ]
+    },
+    "tdd": {
+      "lastSyncedHash": "e63cb1d7d5f6d90ad03f811299d40cc8e52c3d4bdaafd058ce2585ca249c234c",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "to-issues": {
+      "lastSyncedHash": "47f648f3414848ccfc62cb41d2828b7e575fb5e7cbd6c4bdf630c063b5dc5e82",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "to-prd": {
+      "lastSyncedHash": "a6d6d475f1d01c201937fa0c306e55b7056b02023ad615bc92f57514e831dd31",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "triage": {
+      "lastSyncedHash": "2b6efb6da12d92551772fcc04acf331f4e0e6f7bd9d4cb23ce0b301e0b128feb",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "write-a-skill": {
+      "lastSyncedHash": "b44d8aab2ead83c716e01af4c9a24ccc4575ce70ad58ec4f1749fb88c9cc82ba",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "zoom-out": {
+      "lastSyncedHash": "8357aeaece3b709c442eab67e64b86844e05e2f1ea95b109565eba50b6def36e",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    }
+  }
+}
