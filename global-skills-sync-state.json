@@ -1,7 +1,7 @@
 {
   "version": 1,
   "canonicalRepo": ".",
-  "updatedAt": "2026-06-08T15:53:45.535080+00:00",
+  "updatedAt": "2026-07-30T15:21:00+00:00",
   "skills": {
     "agent-browser": {
       "lastSyncedHash": "6f68d01b14796e410746fab39c2d6b36dcfa030dd59eb772f6418e2db949a16c",
@@ -53,6 +53,19 @@
       "runtimeRoots": [
         {
           "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "done": {
+      "lastSyncedHash": "ec5b0be38e17298a5785be4cc5b8d40fe19212a0621060328ae9c62e99bb08f4",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        },
+        {
+          "root": "codex",
           "state": "active"
         }
       ]
