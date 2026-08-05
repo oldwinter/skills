@@ -158,7 +158,7 @@ Automation and tooling helpers:
 
 ## Statistics
 
-- **Total Skills**: 158 (unique by directory name)
+- **Total Skills**: 159 (unique by directory name)
 - **Top-level Categories**: 7 (`base-skills`, `devops-skills`, `lenny-skills`, `meta-skills`, `obsidian-skills`, `tools-skills`, plus `lenny-skills` sub-categories)
 
 ## Multi-Agent Global Paths
@@ -206,6 +206,12 @@ The sync uses a three-way baseline: single-sided changes are copied to the other
 npx skills add owner/repo@skill-name -g -y
 ```
 
+Install only `add-just-doctor` globally on a new device:
+
+```bash
+npx --yes skills@latest add oldwinter/skills --global --skill add-just-doctor --agent '*' --yes --full-depth
+```
+
 ## Justfile
 
 This repository now includes a root [`justfile`](justfile) for the common day-to-day workflows.
@@ -246,5 +252,5 @@ Skills are sourced from various providers:
 
 ---
 
-**Last Updated**: 2026-03-05
-**Total Skills**: 158
+**Last Updated**: 2026-08-05
+**Total Skills**: 159
