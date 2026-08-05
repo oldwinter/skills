@@ -9,13 +9,13 @@ Create a repository-native `just doctor` command, execute it against the current
 
 ## 1. Read The Repository Contract
 
-Read the applicable agent instructions, setup docs, `Justfile` or `justfile`, configuration modules, environment examples, and test conventions. Find the canonical local environment file and the repository's existing dotenv loader. In linked worktrees, follow the repository's documented rule for locating the primary worktree environment.
+Read the applicable agent instructions and setup docs, resolving repository file references from the repository root. Check `./Justfile` and then `./justfile`; inspect configuration modules, environment examples such as `./.env.example`, and test conventions. When a filename varies by repository, start the search at the repository root and record the discovered path in `./relative/path` form. Find the canonical local environment file and the repository's existing dotenv loader. In linked worktrees, follow the repository's documented rule for locating the primary worktree environment.
 
 Completion criterion: identify the exact recipe file, runtime/config entrypoint, canonical local environment file, test layer, and validation commands before editing.
 
 ## 2. Build The Dependency Inventory
 
-Trace environment lookups from runtime code, configuration schemas, `.env.example`-style contracts, Compose/Helm manifests, and existing provider clients. For every runtime dependency controlled by environment configuration, record:
+Trace environment lookups from runtime code, configuration schemas, `./.env.example`-style contracts, Compose/Helm manifests, and existing provider clients. For every runtime dependency controlled by environment configuration, record:
 
 - service name and ownership: first-party, third-party, or infrastructure;
 - endpoint or connection-string variables and runtime defaults;
