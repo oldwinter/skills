@@ -1,0 +1,7 @@
+interface:
+  display_name: "Add Just Doctor"
+  short_description: "Add and validate repository dependency checks"
+  default_prompt: "Use $add-just-doctor to add and run a just doctor command for this repository."
+
+policy:
+  allow_implicit_invocation: false

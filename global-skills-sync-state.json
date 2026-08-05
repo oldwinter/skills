@@ -1,8 +1,17 @@
 {
   "version": 1,
   "canonicalRepo": ".",
-  "updatedAt": "2026-06-08T15:53:45.535080+00:00",
+  "updatedAt": "2026-08-05T08:47:28.694531+00:00",
   "skills": {
+    "add-just-doctor": {
+      "lastSyncedHash": "b55177d1c6e5e778cba947927b7c9a5f6e84d2f3e0b4e8647f65dcafaac01af7",
+      "runtimeRoots": [
+        {
+          "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
     "agent-browser": {
       "lastSyncedHash": "6f68d01b14796e410746fab39c2d6b36dcfa030dd59eb772f6418e2db949a16c",
       "runtimeRoots": [
