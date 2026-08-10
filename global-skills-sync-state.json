@@ -1,7 +1,7 @@
 {
   "version": 1,
   "canonicalRepo": ".",
-  "updatedAt": "2026-08-05T08:47:28.694531+00:00",
+  "updatedAt": "2026-08-10T10:49:34Z",
   "skills": {
     "add-just-doctor": {
       "lastSyncedHash": "b55177d1c6e5e778cba947927b7c9a5f6e84d2f3e0b4e8647f65dcafaac01af7",
@@ -35,6 +35,15 @@
       "runtimeRoots": [
         {
           "root": "agents",
+          "state": "active"
+        }
+      ]
+    },
+    "chendongdong-digital-twin": {
+      "lastSyncedHash": "2c0359d620c2001378a6124c9bf46696442f1c8312e2b500b12e25a47d59bc6b",
+      "runtimeRoots": [
+        {
+          "root": "codex",
           "state": "active"
         }
       ]

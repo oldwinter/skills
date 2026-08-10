@@ -1,0 +1,23 @@
+{
+  "profile_subject": "self",
+  "window": {
+    "start": "2026-02-10",
+    "end": "2026-08-10",
+    "timezone": "Asia/Shanghai"
+  },
+  "raw_content_stored": false,
+  "sources": {
+    "notes": {"items_processed": 1, "status": "processed"},
+    "gitlab": {"items_processed": 1, "status": "processed"},
+    "lark_im": {"items_processed": 1, "status": "processed"}
+  },
+  "research_dimensions": {
+    "writings": 1,
+    "conversations": 1,
+    "expression_dna": 1,
+    "external_views": 1,
+    "decisions": 1,
+    "timeline": 1
+  },
+  "excluded_sources": []
+}

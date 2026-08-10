@@ -1,0 +1,8 @@
+test_allows_reversible_precedented_high_confidence_work (tests.test_decision_gate.DecisionGateTests.test_allows_reversible_precedented_high_confidence_work) ... ok
+test_drafts_outbound_message_without_current_send_authorization (tests.test_decision_gate.DecisionGateTests.test_drafts_outbound_message_without_current_send_authorization) ... ok
+test_escalates_high_risk_action_despite_high_confidence (tests.test_decision_gate.DecisionGateTests.test_escalates_high_risk_action_despite_high_confidence) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.115s
+
+OK

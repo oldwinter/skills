@@ -1,0 +1,7 @@
+test_accepts_aggregate_only_manifest (tests.test_source_manifest.SourceManifestTests.test_accepts_aggregate_only_manifest) ... ok
+test_rejects_manifest_that_stores_raw_content (tests.test_source_manifest.SourceManifestTests.test_rejects_manifest_that_stores_raw_content) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.059s
+
+OK

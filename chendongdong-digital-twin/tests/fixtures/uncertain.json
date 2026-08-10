@@ -1,0 +1,10 @@
+{
+  "action_type": "local_code_edit",
+  "reversible": false,
+  "scope_confirmed": false,
+  "precedent_count": 0,
+  "confidence": 0.61,
+  "explicit_send_authorization": false,
+  "ambiguity_present": false,
+  "risk_tags": []
+}

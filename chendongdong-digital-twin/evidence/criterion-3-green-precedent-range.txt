@@ -1,0 +1,6 @@
+test_escalates_out_of_range_precedent_counts (tests.test_decision_gate.DecisionGateTests.test_escalates_out_of_range_precedent_counts) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.080s
+
+OK

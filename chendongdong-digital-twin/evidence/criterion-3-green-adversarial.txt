@@ -1,0 +1,16 @@
+test_allows_reversible_precedented_high_confidence_work (tests.test_decision_gate.DecisionGateTests.test_allows_reversible_precedented_high_confidence_work) ... ok
+test_drafts_outbound_message_without_current_send_authorization (tests.test_decision_gate.DecisionGateTests.test_drafts_outbound_message_without_current_send_authorization) ... ok
+test_escalates_explicit_ambiguity (tests.test_decision_gate.DecisionGateTests.test_escalates_explicit_ambiguity) ... ok
+test_escalates_high_risk_action_despite_high_confidence (tests.test_decision_gate.DecisionGateTests.test_escalates_high_risk_action_despite_high_confidence) ... ok
+test_escalates_invalid_field_types_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_invalid_field_types_instead_of_crashing) ... ok
+test_escalates_invalid_json_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_invalid_json_instead_of_crashing) ... ok
+test_escalates_malformed_request_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_malformed_request_instead_of_crashing) ... ok
+test_escalates_non_object_json_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_non_object_json_instead_of_crashing) ... ok
+test_escalates_out_of_range_confidence (tests.test_decision_gate.DecisionGateTests.test_escalates_out_of_range_confidence) ... ok
+test_escalates_uncertain_unscoped_unprecedented_irreversible_work (tests.test_decision_gate.DecisionGateTests.test_escalates_uncertain_unscoped_unprecedented_irreversible_work) ... ok
+test_escalates_unknown_risk_tags (tests.test_decision_gate.DecisionGateTests.test_escalates_unknown_risk_tags) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.415s
+
+OK

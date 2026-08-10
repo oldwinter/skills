@@ -1,0 +1,70 @@
+{
+  "profile_subject": "self",
+  "window": {
+    "start": "2026-02-10",
+    "end": "2026-08-10",
+    "timezone": "Asia/Shanghai"
+  },
+  "raw_content_stored": false,
+  "sources": {
+    "notes": {
+      "items_processed": 8649,
+      "first_party_deep_sample": 29,
+      "status": "processed_with_provenance_limits"
+    },
+    "gitlab": {
+      "closed_items": 134,
+      "non_system_comments": 243,
+      "status": "complete_for_targeted_closed_item_scope"
+    },
+    "lark_im": {
+      "self_authored_messages": 5668,
+      "colleague_mentions": 927,
+      "chats_inventoried": 183,
+      "status": "complete_for_sender_and_mention_queries"
+    },
+    "lark_tasks": {
+      "items_processed": 73,
+      "status": "metadata_only"
+    },
+    "lark_calendar": {
+      "items_processed": 144,
+      "status": "metadata_only"
+    },
+    "lark_minutes": {
+      "unique_items": 27,
+      "status": "metadata_only_missing_artifact_scope"
+    },
+    "local_git": {
+      "mainline_commits": 1017,
+      "repositories": 5,
+      "status": "metadata_and_subjects_processed"
+    },
+    "codex_sessions": {
+      "sessions_indexed": 1744,
+      "status": "index_and_aggregates_only"
+    }
+  },
+  "research_dimensions": {
+    "writings": 32,
+    "conversations": 24,
+    "expression_dna": 18,
+    "external_views": 15,
+    "decisions": 13,
+    "timeline": 7
+  },
+  "quality_limits": [
+    "The note corpus has incomplete authorship provenance; first-person evidence was content-classified and AI-marked notes were down-weighted.",
+    "Formal tracker prose includes AI-assisted material and informs process more strongly than natural voice.",
+    "Colleague mentions show dependency patterns more reliably than stable personality judgments.",
+    "Meeting artifacts were not read because the active identity lacked the additional artifact scopes.",
+    "The six-month window is a current operating model, not a permanent psychological profile."
+  ],
+  "excluded_sources": [
+    "browser history: high privacy risk and low incremental signal",
+    "shell history: high secret exposure risk and low incremental signal",
+    "credential stores and keychains: out of scope",
+    "mail bodies: unnecessary after communication coverage converged",
+    "meeting transcripts and summaries: additional read scopes unavailable"
+  ]
+}

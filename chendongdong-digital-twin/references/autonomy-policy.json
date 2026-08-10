@@ -1,0 +1,7 @@
+{
+  "identity_claim": "simulation",
+  "outbound_default": "draft",
+  "irreversible_default": "escalate",
+  "human_override": true,
+  "raw_content_stored": false
+}

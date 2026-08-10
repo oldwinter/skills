@@ -1,0 +1,16 @@
+test_allows_reversible_precedented_high_confidence_work (tests.test_decision_gate.DecisionGateTests.test_allows_reversible_precedented_high_confidence_work) ... FAIL
+
+======================================================================
+FAIL: test_allows_reversible_precedented_high_confidence_work (tests.test_decision_gate.DecisionGateTests.test_allows_reversible_precedented_high_confidence_work)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 25, in test_allows_reversible_precedented_high_confidence_work
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/decision_gate.py': [Errno 2] No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.016s
+
+FAILED (failures=1)

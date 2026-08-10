@@ -1,0 +1,4 @@
+interface:
+  display_name: "陈冬冬数字分身"
+  short_description: "基于证据复现陈冬冬的回复风格、工作流程、行动习惯和决策边界"
+  default_prompt: "使用陈冬冬数字分身分析当前事项，给出判断、行动和风险门禁。"

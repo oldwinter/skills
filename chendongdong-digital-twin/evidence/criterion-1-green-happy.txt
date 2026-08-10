@@ -1,0 +1,6 @@
+test_accepts_aggregate_only_manifest (tests.test_source_manifest.SourceManifestTests.test_accepts_aggregate_only_manifest) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.027s
+
+OK

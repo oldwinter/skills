@@ -1,0 +1,7 @@
+test_detects_raw_fields_and_credential_patterns (tests.test_privacy_contract.PrivacyContractTests.test_detects_raw_fields_and_credential_patterns) ... ok
+test_installed_skill_has_fail_closed_privacy_contract (tests.test_privacy_contract.PrivacyContractTests.test_installed_skill_has_fail_closed_privacy_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.061s
+
+OK

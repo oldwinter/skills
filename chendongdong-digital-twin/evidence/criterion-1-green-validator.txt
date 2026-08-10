@@ -1,0 +1,8 @@
+test_accepts_aggregate_only_manifest (tests.test_source_manifest.SourceManifestTests.test_accepts_aggregate_only_manifest) ... ok
+test_rejects_manifest_that_stores_raw_content (tests.test_source_manifest.SourceManifestTests.test_rejects_manifest_that_stores_raw_content) ... ok
+test_requires_window_sources_and_nonempty_research_dimensions (tests.test_source_manifest.SourceManifestTests.test_requires_window_sources_and_nonempty_research_dimensions) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.125s
+
+OK
