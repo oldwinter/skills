@@ -1,0 +1,22 @@
+test_allows_reversible_precedented_high_confidence_work (test_decision_gate.DecisionGateTests.test_allows_reversible_precedented_high_confidence_work) ... ok
+test_drafts_outbound_message_without_current_send_authorization (test_decision_gate.DecisionGateTests.test_drafts_outbound_message_without_current_send_authorization) ... ok
+test_escalates_explicit_ambiguity (test_decision_gate.DecisionGateTests.test_escalates_explicit_ambiguity) ... ok
+test_escalates_high_risk_action_despite_high_confidence (test_decision_gate.DecisionGateTests.test_escalates_high_risk_action_despite_high_confidence) ... ok
+test_escalates_invalid_field_types_instead_of_crashing (test_decision_gate.DecisionGateTests.test_escalates_invalid_field_types_instead_of_crashing) ... ok
+test_escalates_invalid_json_instead_of_crashing (test_decision_gate.DecisionGateTests.test_escalates_invalid_json_instead_of_crashing) ... ok
+test_escalates_malformed_request_instead_of_crashing (test_decision_gate.DecisionGateTests.test_escalates_malformed_request_instead_of_crashing) ... ok
+test_escalates_non_object_json_instead_of_crashing (test_decision_gate.DecisionGateTests.test_escalates_non_object_json_instead_of_crashing) ... ok
+test_escalates_out_of_range_confidence (test_decision_gate.DecisionGateTests.test_escalates_out_of_range_confidence) ... ok
+test_escalates_out_of_range_precedent_counts (test_decision_gate.DecisionGateTests.test_escalates_out_of_range_precedent_counts) ... ok
+test_escalates_uncertain_unscoped_unprecedented_irreversible_work (test_decision_gate.DecisionGateTests.test_escalates_uncertain_unscoped_unprecedented_irreversible_work) ... ok
+test_escalates_unknown_risk_tags (test_decision_gate.DecisionGateTests.test_escalates_unknown_risk_tags) ... ok
+test_detects_raw_fields_and_credential_patterns (test_privacy_contract.PrivacyContractTests.test_detects_raw_fields_and_credential_patterns) ... ok
+test_installed_skill_has_fail_closed_privacy_contract (test_privacy_contract.PrivacyContractTests.test_installed_skill_has_fail_closed_privacy_contract) ... ok
+test_accepts_aggregate_only_manifest (test_source_manifest.SourceManifestTests.test_accepts_aggregate_only_manifest) ... ok
+test_rejects_manifest_that_stores_raw_content (test_source_manifest.SourceManifestTests.test_rejects_manifest_that_stores_raw_content) ... ok
+test_requires_window_sources_and_nonempty_research_dimensions (test_source_manifest.SourceManifestTests.test_requires_window_sources_and_nonempty_research_dimensions) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.682s
+
+OK

@@ -158,7 +158,7 @@ Automation and tooling helpers:
 
 ## Statistics
 
-- **Total Skills**: 159 (unique by directory name)
+- **Total Skills**: 160 (unique by directory name)
 - **Top-level Categories**: 7 (`base-skills`, `devops-skills`, `lenny-skills`, `meta-skills`, `obsidian-skills`, `tools-skills`, plus `lenny-skills` sub-categories)
 
 ## Multi-Agent Global Paths
@@ -199,6 +199,8 @@ just global-skills-sync-apply
 ```
 
 The sync uses a three-way baseline: single-sided changes are copied to the other side, both-sided divergent changes are reported as conflicts, and missing skills are copied to the missing side. Runtime directories are copied by default; use `link_runtime=1` from `general-tasks` only when you want runtime entries symlinked to this repo.
+
+`chendongdong-digital-twin/` is maintained in this repository as its sole source of truth. Its Codex runtime entry at `~/.codex/skills/chendongdong-digital-twin` must remain a symlink to this directory; edit and validate the repository copy, not the runtime path.
 
 ## Adding New Skills
 
@@ -252,5 +254,5 @@ Skills are sourced from various providers:
 
 ---
 
-**Last Updated**: 2026-08-05
-**Total Skills**: 159
+**Last Updated**: 2026-08-10
+**Total Skills**: 160

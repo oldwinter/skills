@@ -1,0 +1,13 @@
+{"action": "act", "confidence": 0.93, "reason": "scoped reversible work matches prior decisions"}
+{"action": "draft", "confidence": 0.94, "reason": "current send authorization is required for outbound communication"}
+{"action": "escalate", "confidence": 0.99, "reason": "high-risk tags require human review: destructive, production"}
+{"action": "escalate", "confidence": 0.0, "reason": "missing required fields: ambiguity_present, confidence, explicit_send_authorization, precedent_count, reversible, risk_tags, scope_confirmed"}
+{"action": "escalate", "confidence": 0.61, "reason": "action must be reversible; scope is not confirmed; no matching precedent; confidence is below 0.85"}
+{"action": "escalate", "confidence": 0.0, "reason": "invalid JSON input"}
+{"action": "escalate", "confidence": 0.0, "reason": "input must be a JSON object"}
+{"action": "escalate", "confidence": 0.0, "reason": "invalid fields: confidence"}
+{"action": "escalate", "confidence": 0.95, "reason": "unknown risk tags require human review: biological_hazard"}
+{"action": "escalate", "confidence": 0.95, "reason": "ambiguity requires human review"}
+{"action": "escalate", "confidence": 0.0, "reason": "invalid fields: confidence"}
+{"action": "escalate", "confidence": 0.0, "reason": "invalid fields: precedent_count"}
+{"action": "escalate", "confidence": 0.0, "reason": "invalid fields: precedent_count"}

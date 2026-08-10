@@ -1,0 +1,23 @@
+test_escalates_malformed_request_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_malformed_request_instead_of_crashing) ... FAIL
+
+======================================================================
+FAIL: test_escalates_malformed_request_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_malformed_request_instead_of_crashing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 51, in test_escalates_malformed_request_instead_of_crashing
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/decision_gate.py", line 49, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/decision_gate.py", line 40, in main
+    "confidence": request["confidence"],
+                  ~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'confidence'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.041s
+
+FAILED (failures=1)

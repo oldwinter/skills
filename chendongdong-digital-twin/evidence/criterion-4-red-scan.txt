@@ -1,0 +1,15 @@
+test_detects_raw_fields_and_credential_patterns (tests.test_privacy_contract.PrivacyContractTests.test_detects_raw_fields_and_credential_patterns) ... FAIL
+
+======================================================================
+FAIL: test_detects_raw_fields_and_credential_patterns (tests.test_privacy_contract.PrivacyContractTests.test_detects_raw_fields_and_credential_patterns)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_privacy_contract.py", line 64, in test_detects_raw_fields_and_credential_patterns
+    self.assertEqual(result.returncode, 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 1 test in 0.073s
+
+FAILED (failures=1)

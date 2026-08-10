@@ -1,0 +1,110 @@
+test_allows_reversible_precedented_high_confidence_work (tests.test_decision_gate.DecisionGateTests.test_allows_reversible_precedented_high_confidence_work) ... ok
+test_drafts_outbound_message_without_current_send_authorization (tests.test_decision_gate.DecisionGateTests.test_drafts_outbound_message_without_current_send_authorization) ... ok
+test_escalates_explicit_ambiguity (tests.test_decision_gate.DecisionGateTests.test_escalates_explicit_ambiguity) ... FAIL
+test_escalates_high_risk_action_despite_high_confidence (tests.test_decision_gate.DecisionGateTests.test_escalates_high_risk_action_despite_high_confidence) ... ok
+test_escalates_invalid_field_types_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_invalid_field_types_instead_of_crashing) ... FAIL
+test_escalates_invalid_json_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_invalid_json_instead_of_crashing) ... FAIL
+test_escalates_malformed_request_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_malformed_request_instead_of_crashing) ... ok
+test_escalates_non_object_json_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_non_object_json_instead_of_crashing) ... FAIL
+test_escalates_out_of_range_confidence (tests.test_decision_gate.DecisionGateTests.test_escalates_out_of_range_confidence) ... FAIL
+test_escalates_uncertain_unscoped_unprecedented_irreversible_work (tests.test_decision_gate.DecisionGateTests.test_escalates_uncertain_unscoped_unprecedented_irreversible_work) ... ok
+test_escalates_unknown_risk_tags (tests.test_decision_gate.DecisionGateTests.test_escalates_unknown_risk_tags) ... FAIL
+
+======================================================================
+FAIL: test_escalates_explicit_ambiguity (tests.test_decision_gate.DecisionGateTests.test_escalates_explicit_ambiguity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 105, in test_escalates_explicit_ambiguity
+    self.assertEqual(payload["action"], "escalate")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'act' != 'escalate'
+- act
++ escalate
+
+
+======================================================================
+FAIL: test_escalates_invalid_field_types_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_invalid_field_types_instead_of_crashing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 86, in test_escalates_invalid_field_types_instead_of_crashing
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/decision_gate.py", line 75, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/decision_gate.py", line 54, in main
+    if request["confidence"] < 0.85:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'str' and 'float'
+
+
+======================================================================
+FAIL: test_escalates_invalid_json_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_invalid_json_instead_of_crashing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 70, in test_escalates_invalid_json_instead_of_crashing
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/decision_gate.py", line 75, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/decision_gate.py", line 31, in main
+    request = json.loads(args.input.read_text(encoding="utf-8"))
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 2 column 1 (char 16)
+
+
+======================================================================
+FAIL: test_escalates_non_object_json_instead_of_crashing (tests.test_decision_gate.DecisionGateTests.test_escalates_non_object_json_instead_of_crashing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 78, in test_escalates_non_object_json_instead_of_crashing
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/decision_gate.py", line 75, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/decision_gate.py", line 33, in main
+    matched_risks = HIGH_RISK_TAGS.intersection(request.get("risk_tags", []))
+                                                ^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+
+
+======================================================================
+FAIL: test_escalates_out_of_range_confidence (tests.test_decision_gate.DecisionGateTests.test_escalates_out_of_range_confidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 113, in test_escalates_out_of_range_confidence
+    self.assertEqual(payload["action"], "escalate")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'act' != 'escalate'
+- act
++ escalate
+
+
+======================================================================
+FAIL: test_escalates_unknown_risk_tags (tests.test_decision_gate.DecisionGateTests.test_escalates_unknown_risk_tags)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 97, in test_escalates_unknown_risk_tags
+    self.assertEqual(payload["action"], "escalate")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'act' != 'escalate'
+- act
++ escalate
+
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.446s
+
+FAILED (failures=6)

@@ -1,0 +1,16 @@
+test_accepts_aggregate_only_manifest (tests.test_source_manifest.SourceManifestTests.test_accepts_aggregate_only_manifest) ... FAIL
+
+======================================================================
+FAIL: test_accepts_aggregate_only_manifest (tests.test_source_manifest.SourceManifestTests.test_accepts_aggregate_only_manifest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_source_manifest.py", line 49, in test_accepts_aggregate_only_manifest
+    self.assertEqual(result.returncode, 0, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/validate_source_manifest.py': [Errno 2] No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.020s
+
+FAILED (failures=1)
