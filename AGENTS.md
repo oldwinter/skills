@@ -4,6 +4,8 @@ This is the canonical agent instruction file for this repository. Root `CLAUDE.m
 
 This repository is a **skills library** (Markdown-first). Most work is editing `SKILL.md` files and related docs/scripts.
 
+It is also a public Canonical Source. Keep Skill implementations reusable outside cdd's private environment. Device inventory, consumer enablement/routing policy, automations, personal memory, and runtime installation evidence belong to private `oldwinter/general-tasks`; machine and harness configuration belongs to private `oldwinter/dotfiles`.
+
 ## Repository overview
 
 Primary unit = a *skill directory* containing:
@@ -86,6 +88,7 @@ Requires `PyYAML`. Checks `references/*.md`, `README.md`, `skillpack.json`, and 
 - `SKILL.md` is required and should remain named exactly `SKILL.md`.
 - Skill directory name is the **skill identifier**.
 - Prefer **hyphen-case** for skill directory names (matches validators).
+- Never add credentials, private sessions, personal memory, private hostnames, or hardcoded device paths. Use placeholders or public interfaces in examples.
 
 ### `SKILL.md` frontmatter
 

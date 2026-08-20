@@ -4,6 +4,14 @@ A comprehensive collection of skills for multiple AI agents (Codex, Claude Code,
 
 ---
 
+## Repository Ownership
+
+This public repository owns reusable Skill implementations, references, scripts, tests, and provenance. A contribution must remain understandable and verifiable without access to cdd's private devices or `general-tasks` checkout.
+
+Consumer policy is intentionally elsewhere: private device inventory, enabled/disabled selection, routing budgets, automation intent, runtime installation policy, and execution evidence are owned by private `oldwinter/general-tasks`. Machine configuration and harness settings are owned by private `oldwinter/dotfiles`. Do not copy either repository's policy or runtime state into a Skill implementation.
+
+Never commit credentials, private sessions, personal memory, private hostnames, or hardcoded machine paths. Public-safe examples must use placeholders or documented public interfaces.
+
 ## Directory Structure
 
 ```
