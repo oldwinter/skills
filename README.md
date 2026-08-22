@@ -33,6 +33,10 @@ skills/
 
 ## Skills by Category
 
+### Standalone Skills
+
+- **change-evidence** — Screen-recorded acceptance evidence for user-facing UI/UX and frontend changes.
+
 ### Base Skills (6 skills)
 Foundational skills used across many workflows:
 - **context7** — Library documentation lookup via Context7 API
@@ -166,7 +170,7 @@ Automation and tooling helpers:
 
 ## Statistics
 
-- **Total Skills**: 160 (unique by directory name)
+- **Total Skills**: 161 (unique by directory name)
 - **Top-level Categories**: 7 (`base-skills`, `devops-skills`, `lenny-skills`, `meta-skills`, `obsidian-skills`, `tools-skills`, plus `lenny-skills` sub-categories)
 
 ## Multi-Agent Global Paths
