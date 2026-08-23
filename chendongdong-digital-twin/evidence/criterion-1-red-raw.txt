@@ -4,7 +4,7 @@ test_rejects_manifest_that_stores_raw_content (tests.test_source_manifest.Source
 FAIL: test_rejects_manifest_that_stores_raw_content (tests.test_source_manifest.SourceManifestTests.test_rejects_manifest_that_stores_raw_content)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_source_manifest.py", line 86, in test_rejects_manifest_that_stores_raw_content
+  File "${SKILL_ROOT}/tests/test_source_manifest.py", line 86, in test_rejects_manifest_that_stores_raw_content
     self.assertEqual(result.returncode, 1)
     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: 0 != 1

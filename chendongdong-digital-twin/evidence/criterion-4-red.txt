@@ -4,10 +4,10 @@ test_installed_skill_has_fail_closed_privacy_contract (tests.test_privacy_contra
 FAIL: test_installed_skill_has_fail_closed_privacy_contract (tests.test_privacy_contract.PrivacyContractTests.test_installed_skill_has_fail_closed_privacy_contract)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_privacy_contract.py", line 21, in test_installed_skill_has_fail_closed_privacy_contract
+  File "${SKILL_ROOT}/tests/test_privacy_contract.py", line 21, in test_installed_skill_has_fail_closed_privacy_contract
     self.assertEqual(result.returncode, 0, result.stderr)
     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/cdd/.codex/skills/chendongdong-digital-twin/scripts/privacy_check.py': [Errno 2] No such file or directory
+AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '${SKILL_ROOT}/scripts/privacy_check.py': [Errno 2] No such file or directory
 
 
 ----------------------------------------------------------------------

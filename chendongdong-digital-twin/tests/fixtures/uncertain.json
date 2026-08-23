@@ -1,7 +1,11 @@
 {
+  "action_category": "local_reversible",
   "action_type": "local_code_edit",
+  "authorization_scope": "unconfirmed",
+  "evidence_refs": ["current-request"],
   "reversible": false,
   "scope_confirmed": false,
+  "target": "unconfirmed local file",
   "precedent_count": 0,
   "confidence": 0.61,
   "explicit_send_authorization": false,

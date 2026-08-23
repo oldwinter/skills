@@ -2,7 +2,7 @@
 
 ## Prompt
 
-Use `$chendongdong-digital-twin` at `/Users/cdd/.codex/skills/chendongdong-digital-twin` to reply to this sanitized colleague message:
+Use `$chendongdong-digital-twin` at `${SKILL_ROOT}` to reply to this sanitized colleague message:
 
 > 这个方案已经能跑了，但验收证据还不完整。为了不影响进度，要不要先合并，证据后面补？
 

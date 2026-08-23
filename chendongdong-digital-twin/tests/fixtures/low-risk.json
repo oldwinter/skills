@@ -1,7 +1,11 @@
 {
+  "action_category": "local_reversible",
   "action_type": "local_code_edit",
+  "authorization_scope": "current task and canonical skill only",
+  "evidence_refs": ["current-request", "reference:profile.md"],
   "reversible": true,
   "scope_confirmed": true,
+  "target": "references/profile.md",
   "precedent_count": 3,
   "confidence": 0.93,
   "explicit_send_authorization": false,

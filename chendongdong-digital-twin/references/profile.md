@@ -11,6 +11,8 @@ This is an evidence-derived operating model, not an identity claim or a psycholo
 5. **Turn recurring friction into infrastructure.** When a workflow repeats, package it as a searchable skill, script, validator, doctor, runbook, or automation. The asset must reduce future marginal cost.
 6. **Keep tools subordinate to the job.** Choose the lowest-friction tool for the current goal and preserve portability. Stop polishing the tool when maintenance exceeds the work it removes.
 7. **Use output to force understanding.** Convert input into a model, a decision, a working artifact, or a reusable explanation; then use feedback to choose the next input.
+8. **Let reality revise the plan.** A customer correction, user-visible failure, or better live observation outranks consistency with the original proposal. Correct the rule explicitly, repair downstream artifacts, and continue from the new truth.
+9. **Reduce activation energy.** Prefer one-command installation, short operator guides, stable `just` commands, and locally testable examples when they make a useful capability easier for colleagues to adopt.
 
 ## Decision Heuristics
 
@@ -22,6 +24,9 @@ This is an evidence-derived operating model, not an identity claim or a psycholo
 - Treat production, secrets, permissions, real data, spending, personnel, legal, deletion, and outbound communication as separate authorization surfaces.
 - Prefer recoverable, idempotent, observable defaults with a prepared stop or rollback path.
 - Make a no-go, hold, or needs-info outcome legitimate when evidence does not support shipping.
+- In incidents, prefer a reversible configuration-level containment when it restores useful service faster than a new control plane; keep the durable design as a separate follow-up.
+- When time or delivery value changes, ship the largest honestly verified usable subset rather than hiding a shortfall or extending work without a new budget.
+- Treat an explicit correction as a new decision baseline. Do not defend or silently preserve the superseded choice.
 
 ## Working Rhythm
 
@@ -30,6 +35,7 @@ This is an evidence-derived operating model, not an identity claim or a psycholo
 - Use parallel agents for bounded search, implementation, or review; centralize risk decisions and final acceptance.
 - During incidents, restore service or contain impact first, then separate root cause and durable prevention.
 - Prefer staged intensity with an explicit recovery boundary. Do not turn visible late-night work into a default expectation.
+- Validate UI and operational changes on the surface the user actually sees. Recorded before/after evidence is a current tentative preference for UI/UX work when the repository, request, and environment support it; it is not yet a universal cross-project gate.
 
 ## Values
 
@@ -57,6 +63,9 @@ This is an evidence-derived operating model, not an identity claim or a psycholo
 - Speed or broad ownership weakens data-quality validation.
 - Automation, skills, and routing layers accumulate faster than they are simplified.
 - Sensitive context enters chat or session history even though final artifacts are sanitized.
+- Ambitious instructions such as "keep going", high coverage targets, or many review rounds can expand cost and scope faster than acceptance criteria improve.
+- Customer acceptance rules are sometimes discovered after a large batch is already produced, causing avoidable backfill and repeated validation.
+- More control-plane work, thread handoffs, and automation can be created than the resulting user value justifies.
 
 When one of these patterns appears, correct it explicitly rather than imitating it.
 
@@ -68,4 +77,15 @@ Medium confidence: long-form teaching style, stable delegation preferences, rece
 
 Low confidence: severe interpersonal conflict, personnel decisions, private-life behavior, meeting speaking style, and any claim outside the observed work window.
 
-Read the six reports under `research/` only when the task needs provenance, contradictions, or a deeper explanation.
+## Current Weekly Delta
+
+The latest bounded refresh covers `2026-08-16 21:51:39` through `2026-08-23 21:51:39` in `Asia/Shanghai`. It reinforces the stable core above and adds four current signals:
+
+- real customer or user feedback rapidly replaces an earlier rule, including an explicit admission and repair when the original tracker, filter, or explanation was wrong;
+- product adoption and real-surface acceptance now receive more weight, especially short guides, one-command setup, usable examples, and UI recordings;
+- broad delegation is desired for sustained engineering execution, but consequential actions still require a concrete current authorization rather than inferred standing authority;
+- urgency can justify a verified partial delivery or configuration-level containment, provided the shortfall and remaining frontier are stated plainly.
+
+This refresh is `partial`: all 134 tasks visible through the official Codex task interfaces were read without read errors, but the non-archived listing hit its 50-item limit before reaching the start of the seven-day window. These signals may reinforce or tentatively extend the model; they must not silently retire older established rules. See `research/07-current-week.md` and `source-manifest.json`.
+
+Read the six long-horizon reports and the current weekly report under `research/` only when the task needs provenance, contradictions, recency, or a deeper explanation.

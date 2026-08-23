@@ -4,7 +4,7 @@ test_escalates_uncertain_unscoped_unprecedented_irreversible_work (tests.test_de
 FAIL: test_escalates_uncertain_unscoped_unprecedented_irreversible_work (tests.test_decision_gate.DecisionGateTests.test_escalates_uncertain_unscoped_unprecedented_irreversible_work)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 61, in test_escalates_uncertain_unscoped_unprecedented_irreversible_work
+  File "${SKILL_ROOT}/tests/test_decision_gate.py", line 61, in test_escalates_uncertain_unscoped_unprecedented_irreversible_work
     self.assertEqual(payload["action"], "escalate")
     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: 'act' != 'escalate'
