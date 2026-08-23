@@ -4,7 +4,7 @@ test_requires_window_sources_and_nonempty_research_dimensions (tests.test_source
 FAIL: test_requires_window_sources_and_nonempty_research_dimensions (tests.test_source_manifest.SourceManifestTests.test_requires_window_sources_and_nonempty_research_dimensions)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_source_manifest.py", line 108, in test_requires_window_sources_and_nonempty_research_dimensions
+  File "${SKILL_ROOT}/tests/test_source_manifest.py", line 108, in test_requires_window_sources_and_nonempty_research_dimensions
     self.assertEqual(result.returncode, 1)
     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: 0 != 1

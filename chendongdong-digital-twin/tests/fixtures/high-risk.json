@@ -1,7 +1,11 @@
 {
+  "action_category": "production",
   "action_type": "production_mutation",
+  "authorization_scope": "diagnosis only",
+  "evidence_refs": ["current-request"],
   "reversible": false,
   "scope_confirmed": true,
+  "target": "production service",
   "precedent_count": 4,
   "confidence": 0.99,
   "explicit_send_authorization": true,

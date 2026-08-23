@@ -1,7 +1,11 @@
 {
+  "action_category": "outbound",
   "action_type": "outbound_colleague_message",
+  "authorization_scope": "draft only",
+  "evidence_refs": ["current-request"],
   "reversible": false,
   "scope_confirmed": true,
+  "target": "named colleague in current request",
   "precedent_count": 12,
   "confidence": 0.94,
   "explicit_send_authorization": false,

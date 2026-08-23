@@ -4,7 +4,7 @@ test_drafts_outbound_message_without_current_send_authorization (tests.test_deci
 FAIL: test_drafts_outbound_message_without_current_send_authorization (tests.test_decision_gate.DecisionGateTests.test_drafts_outbound_message_without_current_send_authorization)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 36, in test_drafts_outbound_message_without_current_send_authorization
+  File "${SKILL_ROOT}/tests/test_decision_gate.py", line 36, in test_drafts_outbound_message_without_current_send_authorization
     self.assertEqual(payload["action"], "draft")
     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: 'act' != 'draft'

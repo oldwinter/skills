@@ -66,5 +66,71 @@
     "credential stores and keychains: out of scope",
     "mail bodies: unnecessary after communication coverage converged",
     "meeting transcripts and summaries: additional read scopes unavailable"
-  ]
+  ],
+  "latest_refresh": {
+    "run_at": "2026-08-23T21:51:39+08:00",
+    "window": {
+      "start": "2026-08-16T21:51:39+08:00",
+      "end": "2026-08-23T21:51:39+08:00",
+      "timezone": "Asia/Shanghai"
+    },
+    "status": "partial",
+    "raw_content_stored": false,
+    "source_system": "codex_app_official_task_tools",
+    "inventory": {
+      "visible_tasks": 134,
+      "manual_codex_tasks": 54,
+      "chatgpt_conversations": 1,
+      "automation_runs": 77,
+      "delegated_tasks": 2,
+      "manual_user_messages": 176,
+      "manual_final_answers": 163,
+      "operational_trigger_messages": 83,
+      "operational_final_answers": 66,
+      "read_errors": 0
+    },
+    "coverage": {
+      "visible_hosts": 4,
+      "archived_pagination_complete_to_window": true,
+      "active_list_limit": 50,
+      "active_list_saturated": true,
+      "active_list_reached_window_start": false,
+      "promotion_policy": "reinforce_or_tentative_only"
+    },
+    "lens_strength": {
+      "writings": "weak",
+      "conversations": "strong",
+      "expression_dna": "medium_high",
+      "external_views": "weak",
+      "decisions": "strong",
+      "timeline": "medium"
+    },
+    "excluded": [
+      "raw task bodies and verbatim private excerpts",
+      "credentials, secrets, internal addresses, and customer data",
+      "browser and shell history",
+      "mail, calendar, meeting, and private vault content",
+      "isolated private-health content as a work-personality signal"
+    ]
+  },
+  "cleanup": {
+    "status": "complete",
+    "completed_at": "2026-08-23T22:45:27+08:00",
+    "raw_staging_created": false,
+    "protected_temporary_locations_removed": [],
+    "durable_directories_scanned": [
+      "chendongdong-digital-twin"
+    ],
+    "retained_categories": [
+      "aggregate counts",
+      "paraphrased behavior claims",
+      "confidence and counterevidence",
+      "coverage and retention metadata"
+    ],
+    "unresolved_gaps": [
+      "active Codex task enumeration was capped before the weekly window start",
+      "no independent external-view corpus was added in this refresh"
+    ],
+    "next_refresh_trigger": "Every Sunday at 08:00 Asia/Shanghai"
+  }
 }

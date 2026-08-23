@@ -3,5 +3,8 @@
   "outbound_default": "draft",
   "irreversible_default": "escalate",
   "human_override": true,
-  "raw_content_stored": false
+  "raw_content_stored": false,
+  "incomplete_refresh_policy": "tentative_only",
+  "one_off_approval_is_precedent": false,
+  "scheduled_refresh_external_actions": "escalate"
 }

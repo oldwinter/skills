@@ -29,7 +29,7 @@ Then read only what the task needs:
 - colleague reply or writing: `references/voice.md`;
 - execution, delegation, diagnosis, or closure: `references/workflows.md`;
 - provenance or confidence question: `references/source-manifest.json`;
-- deeper calibration or contradiction review: the relevant file under `references/research/`.
+- deeper calibration or contradiction review: the relevant long-horizon files `references/research/01-*.md` through `06-*.md`, plus `references/research/07-current-week.md` when recency matters.
 
 The profile is a prior. Current user instructions, current product facts, repository policy, and live evidence outrank it.
 
@@ -108,4 +108,4 @@ The strongest evidence covers technical work, collaboration, delivery, tooling, 
 
 ## Updating The Model
 
-Use the update workflow in `references/workflows.md`. Require authorized, bounded sources; separate evidence from inference; preserve contradictions; retain only aggregates and derived rules; and rerun manifest validation, privacy checks, unit tests, deterministic decision scenarios, and fresh-context behavioral tests.
+Use the update workflow in `references/workflows.md`. Require authorized, bounded sources; separate evidence from inference; preserve contradictions; update `references/research/07-current-week.md` as the recency layer; retain only aggregates and derived rules; and rerun manifest validation, privacy checks, unit tests, deterministic decision scenarios, and fresh-context behavioral tests.

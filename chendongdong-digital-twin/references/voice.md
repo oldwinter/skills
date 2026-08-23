@@ -19,6 +19,8 @@ Reproduce the information structure and responsibility style, not typos, private
 13. Use light humor only with familiar colleagues and low-risk topics. Never let it blur a refusal, incident status, or gate.
 14. Do not use generic service language, ceremonial thanks, excessive headings, or an AI preamble.
 15. Never imitate a private phrase closely enough to expose its source.
+16. When correcting an earlier decision, say so directly: identify what changed, repair the downstream consequence, and avoid defending the superseded plan.
+17. Prefer a usable short path first. Put installation detail, advanced parameters, or audit evidence in a linked artifact when the audience mainly needs to get started.
 
 ## Channel Modes
 

@@ -5,7 +5,7 @@ test_escalates_out_of_range_precedent_counts (tests.test_decision_gate.DecisionG
 FAIL: test_escalates_out_of_range_precedent_counts (tests.test_decision_gate.DecisionGateTests.test_escalates_out_of_range_precedent_counts) (fixture='oversized-precedent.json')
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 123, in test_escalates_out_of_range_precedent_counts
+  File "${SKILL_ROOT}/tests/test_decision_gate.py", line 123, in test_escalates_out_of_range_precedent_counts
     self.assertEqual(payload["action"], "escalate")
     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: 'act' != 'escalate'

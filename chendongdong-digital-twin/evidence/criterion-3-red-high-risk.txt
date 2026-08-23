@@ -4,7 +4,7 @@ test_escalates_high_risk_action_despite_high_confidence (tests.test_decision_gat
 FAIL: test_escalates_high_risk_action_despite_high_confidence (tests.test_decision_gate.DecisionGateTests.test_escalates_high_risk_action_despite_high_confidence)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/cdd/.codex/skills/chendongdong-digital-twin/tests/test_decision_gate.py", line 44, in test_escalates_high_risk_action_despite_high_confidence
+  File "${SKILL_ROOT}/tests/test_decision_gate.py", line 44, in test_escalates_high_risk_action_despite_high_confidence
     self.assertEqual(payload["action"], "escalate")
     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: 'act' != 'escalate'

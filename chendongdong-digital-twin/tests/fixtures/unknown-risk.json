@@ -1,7 +1,11 @@
 {
+  "action_category": "local_reversible",
   "action_type": "local_code_edit",
+  "authorization_scope": "current task",
+  "evidence_refs": ["current-request"],
   "reversible": true,
   "scope_confirmed": true,
+  "target": "local file",
   "precedent_count": 2,
   "confidence": 0.95,
   "explicit_send_authorization": false,
