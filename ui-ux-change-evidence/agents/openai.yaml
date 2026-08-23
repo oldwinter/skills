@@ -1,7 +1,0 @@
-interface:
-  display_name: "UI/UX Change Evidence"
-  short_description: "Record every UI/UX change for acceptance"
-  default_prompt: "Use $ui-ux-change-evidence to capture and deliver screen-recorded acceptance evidence for this UI/UX change."
-
-policy:
-  allow_implicit_invocation: true

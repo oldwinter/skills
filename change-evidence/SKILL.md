@@ -22,12 +22,12 @@ If a display, recorder, permission, or usable acceptance surface is unavailable,
 ## Workflow
 
 1. Define the changed point and acceptance path before editing. Name the user-visible state and interaction. For a bug fix, reproduce and record the failure before changing code.
-2. Record a short baseline or reproduction focused on that path. Prefer a recorder already provided by the repository; otherwise use a platform recorder that produces a common video format. Choose a duration long enough to show the path, usually 20–60 seconds. Review the visible screen first and close or mask secrets, tokens, private sessions, and unrelated windows.
+2. Record a short baseline or reproduction focused on that path. Prefer a recorder already provided by the repository; otherwise use a platform recorder that produces a common video format. Choose a duration long enough to show the path, usually 20–60 seconds. Review the visible screen first and close or mask secrets, tokens, private sessions, and unrelated windows. Disable audio unless the user explicitly requests narration.
 3. Make the requested change while preserving the same entry point and test data where possible.
 4. Record the fixed behavior through the same focused path. Keep the affected browser or app state visible so the recording shows the observable acceptance signal.
 5. Run the smallest relevant checks after the final edit. Confirm that each recording exists, is non-empty, opens successfully, and matches the stated acceptance result.
-6. Deliver the evidence in the handoff: changed point, baseline or reproduction path, fixed path, recording paths, and exact checks/results. Attach or post evidence to an issue only when the task explicitly authorizes that external write; otherwise provide the prepared paths without posting.
+6. Deliver the evidence in the handoff: changed point, baseline or reproduction path, fixed path, recording paths, and exact checks/results. When the task already has a corresponding issue in scope, attach the recordings or accessible artifact links there; otherwise provide the evidence directly to the user. Do not create a new issue or publish elsewhere solely for this evidence.
 
 ## Evidence quality
 
-Keep each recording scoped to the changed point, include enough context to identify the page or test, and show the acceptance state rather than an idle desktop. When recording fails, report the failure and its cause instead of substituting screenshots or an assertion.
+Keep each recording scoped to the changed point, include enough context to identify the page or test, and show the acceptance state rather than an idle desktop. Record every affected viewport or device class when the change is responsive or platform-specific. When recording fails, report the failure and its cause instead of substituting screenshots or an assertion.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Change Evidence"
+  short_description: "Record UI/UX changes for acceptance evidence"
+  default_prompt: "Use $change-evidence to record and deliver acceptance evidence for this UI/UX change."
+
+policy:
+  allow_implicit_invocation: true
