@@ -1,16 +1,32 @@
-# Skills Repository
+# oldwinter/skills
 
-A comprehensive collection of skills for multiple AI agents (Codex, Claude Code, Cursor, etc.), organized by category.
+散落在 Claude、Codex、Cursor 里的 agent skills，我收到这一处，免得用着用着就丢了。
 
----
+这不是精选商店。有我自己写的，也有从 [Lenny / Refound](https://refoundai.com/lenny-skills/) 和社区搬来的。我在用，所以我在收。
 
-## Repository Ownership
+同类如果也在多 agent 之间对不齐 skills，可以直接装。
 
-This public repository owns reusable Skill implementations, references, scripts, tests, and provenance. A contribution must remain understandable and verifiable without access to cdd's private devices or `general-tasks` checkout.
+## 装
 
-Consumer policy is intentionally elsewhere: private device inventory, enabled/disabled selection, routing budgets, automation intent, runtime installation policy, and execution evidence are owned by private `oldwinter/general-tasks`. Machine configuration and harness settings are owned by private `oldwinter/dotfiles`. Do not copy either repository's policy or runtime state into a Skill implementation.
+```bash
+npx skills add oldwinter/skills
+```
 
-Never commit credentials, private sessions, personal memory, private hostnames, or hardcoded machine paths. Public-safe examples must use placeholders or documented public interfaces.
+只装某一个：
+
+```bash
+npx --yes skills@latest add oldwinter/skills --global --skill add-just-doctor --agent '*' --yes --full-depth
+```
+
+## 这仓库在干什么
+
+skills 一散，各端各写各的，过两周就对不上。这里是我的唯一源头：仓库、本机 runtime、Obsidian 库三路同步。同步命令在 `general-tasks` 里，这个仓库自己也有 `just sync-status`。
+
+完整目录在下面，由 `skills-readme-updater` 根据元数据生成。
+
+## 我是谁
+
+[oldwinter](https://github.com/oldwinter)。白天做云计算，晚上在浇 [数字花园](https://notes.oldwinter.top)。
 
 ## Directory Structure
 
