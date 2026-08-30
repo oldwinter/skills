@@ -4,7 +4,7 @@ import { marked, type RendererObject, type Tokens } from "marked";
 import readingTime, { type ReadTimeResults } from "reading-time";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
-import remarkCjkFriendly from "remark-cjk-friendly";
+import remarkCjkFriendly from "remark-cjk-friendly/bidi";
 import remarkStringify from "remark-stringify";
 
 import {

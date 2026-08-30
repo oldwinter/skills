@@ -11,7 +11,7 @@ import frontMatter from 'front-matter';
 import hljs from 'highlight.js/lib/common';
 import { Lexer, Marked, type RendererObject, type Tokens } from 'marked';
 import { unified } from 'unified';
-import remarkCjkFriendly from 'remark-cjk-friendly';
+import remarkCjkFriendly from 'remark-cjk-friendly/bidi';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 

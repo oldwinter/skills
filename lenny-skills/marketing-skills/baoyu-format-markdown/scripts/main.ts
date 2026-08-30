@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "fs";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
-import remarkCjkFriendly from "remark-cjk-friendly";
+import remarkCjkFriendly from "remark-cjk-friendly/bidi";
 import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkStringify from "remark-stringify";
