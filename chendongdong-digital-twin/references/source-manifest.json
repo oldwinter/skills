@@ -43,6 +43,13 @@
     "codex_sessions": {
       "sessions_indexed": 1744,
       "status": "index_and_aggregates_only"
+    },
+    "computer_history": {
+      "six_hour_summaries_reviewed": 16,
+      "active_ten_minute_segments_reviewed": 34,
+      "events_aggregated": 1944,
+      "raw_content_stored": false,
+      "status": "partial_bounded_user_authorized_refresh"
     }
   },
   "research_dimensions": {
@@ -68,42 +75,64 @@
     "meeting transcripts and summaries: additional read scopes unavailable"
   ],
   "latest_refresh": {
-    "run_at": "2026-08-23T21:51:39+08:00",
+    "run_at": "2026-08-31T12:05:24+08:00",
     "window": {
-      "start": "2026-08-16T21:51:39+08:00",
-      "end": "2026-08-23T21:51:39+08:00",
+      "start": "2026-08-24T12:05:24+08:00",
+      "end": "2026-08-31T12:05:24+08:00",
       "timezone": "Asia/Shanghai"
     },
     "status": "partial",
     "raw_content_stored": false,
     "source_system": "codex_app_official_task_tools",
     "inventory": {
-      "visible_tasks": 134,
-      "manual_codex_tasks": 54,
+      "visible_tasks": 110,
+      "manual_codex_tasks": 64,
       "chatgpt_conversations": 1,
-      "automation_runs": 77,
-      "delegated_tasks": 2,
-      "manual_user_messages": 176,
-      "manual_final_answers": 163,
-      "operational_trigger_messages": 83,
-      "operational_final_answers": 66,
-      "read_errors": 0
+      "automation_runs": 21,
+      "delegated_tasks": 24,
+      "readable_tasks": 110,
+      "task_read_pages": 114,
+      "visible_turns": 304,
+      "manual_user_messages": 212,
+      "manual_final_answers": 211,
+      "chatgpt_user_messages": 10,
+      "chatgpt_turns": 10,
+      "chatgpt_assistant_blocks": 115,
+      "automation_trigger_messages": 27,
+      "automation_final_answers": 27,
+      "delegated_user_messages": 41,
+      "delegated_final_answers": 31,
+      "read_errors": 0,
+      "read_error_categories": {},
+      "turn_status": {
+        "completed": 288,
+        "interrupted": 9,
+        "failed": 6,
+        "in_progress": 1
+      }
     },
     "coverage": {
-      "visible_hosts": 4,
+      "visible_hosts": 2,
+      "unavailable_hosts": 0,
+      "unavailable_sources": 0,
+      "archived_pages": 2,
+      "archived_records_returned": 100,
+      "archived_tasks_in_window": 78,
       "archived_pagination_complete_to_window": true,
       "active_list_limit": 50,
       "active_list_saturated": true,
       "active_list_reached_window_start": false,
+      "active_list_oldest_visible_at": "2026-08-31T09:53:56+08:00",
+      "turn_page_limit": 10,
       "promotion_policy": "reinforce_or_tentative_only"
     },
     "lens_strength": {
-      "writings": "weak",
+      "writings": "insufficient_evidence",
       "conversations": "strong",
       "expression_dna": "medium_high",
-      "external_views": "weak",
+      "external_views": "insufficient_evidence",
       "decisions": "strong",
-      "timeline": "medium"
+      "timeline": "weak"
     },
     "excluded": [
       "raw task bodies and verbatim private excerpts",
@@ -113,9 +142,54 @@
       "isolated private-health content as a work-personality signal"
     ]
   },
+  "latest_supplemental_refresh": {
+    "run_at": "2026-08-24T11:12:38+08:00",
+    "source_system": "computer_history",
+    "authorization": "current_user_request",
+    "status": "partial",
+    "raw_content_stored": false,
+    "summary_observation_dates": [
+      "2026-08-17",
+      "2026-08-20",
+      "2026-08-21",
+      "2026-08-22",
+      "2026-08-23",
+      "2026-08-24"
+    ],
+    "raw_event_window": {
+      "start": "2026-08-22T14:40:00+08:00",
+      "end": "2026-08-24T10:30:00+08:00",
+      "timezone": "Asia/Shanghai"
+    },
+    "inventory": {
+      "six_hour_summaries": 16,
+      "active_ten_minute_segments": 34,
+      "events": 1944,
+      "meaningful_app_transitions": 106
+    },
+    "coverage": {
+      "summary_dates_contiguous": false,
+      "rolling_event_stream": true,
+      "active_windows_only": true,
+      "promotion_policy": "reinforce_or_tentative_only"
+    },
+    "retained": [
+      "aggregate counts",
+      "paraphrased work and writing patterns",
+      "confidence and counterevidence",
+      "coverage and promotion boundaries"
+    ],
+    "excluded": [
+      "raw prompts and keystroke text",
+      "window titles, URLs, and communication bodies",
+      "internal addresses, accounts, and private identifiers",
+      "isolated app actions as personality evidence"
+    ],
+    "autonomy_change": "none"
+  },
   "cleanup": {
     "status": "complete",
-    "completed_at": "2026-08-23T22:45:27+08:00",
+    "completed_at": "2026-08-31T12:18:42+08:00",
     "raw_staging_created": false,
     "protected_temporary_locations_removed": [],
     "durable_directories_scanned": [
@@ -129,7 +203,10 @@
     ],
     "unresolved_gaps": [
       "active Codex task enumeration was capped before the weekly window start",
-      "no independent external-view corpus was added in this refresh"
+      "no independent external-view corpus was added in this refresh",
+      "no independent fresh-context reviewer was available for this refresh",
+      "the current Codex runtime does not expose the canonical twin through an active symlink",
+      "the requested digital-twin-creator skill was unavailable in installed and repository skill surfaces"
     ],
     "next_refresh_trigger": "Every Sunday at 08:00 Asia/Shanghai"
   }
