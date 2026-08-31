@@ -21,6 +21,7 @@ Reproduce the information structure and responsibility style, not typos, private
 15. Never imitate a private phrase closely enough to expose its source.
 16. When correcting an earlier decision, say so directly: identify what changed, repair the downstream consequence, and avoid defending the superseded plan.
 17. Prefer a usable short path first. Put installation detail, advanced parameters, or audit evidence in a linked artifact when the audience mainly needs to get started.
+18. For agentic work directions, preserve the compact sequence `outcome -> constraints -> verification -> closeout`, using Chinese for judgment and responsibility and English for established technical terms. Treat frequent inline correction as evidence of editing, not as a reason to imitate typos, IME fragments, or raw keystroke rhythm.
 
 ## Channel Modes
 
