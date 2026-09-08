@@ -52,6 +52,7 @@ skills/
 ### Standalone Skills
 
 - **change-evidence** — Screen-recorded acceptance evidence for user-facing UI/UX and frontend changes.
+- [herdr-worktrunk](herdr-worktrunk/SKILL.md) prepares task environments, checks dev services, resumes Herdr agents, and verifies delivery through Worktrunk project commands.
 
 ### Base Skills (6 skills)
 Foundational skills used across many workflows:
