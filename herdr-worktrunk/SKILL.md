@@ -91,7 +91,9 @@ description: "Automate task environments with Worktrunk and Herdr: prepare depen
 
 ## 联合状态与交付验证
 
-状态查询默认使用：
+每次状态查询先检查有效的 `list.full`、summary、自定义列和相关命令配置。只有展示配置已审阅，且其外部命令、网络及 LLM 调用符合本次查询意图时，才使用下面的 Worktrunk 查询。配置未知或包含未授权调用时，用 Git 的 worktree、status、log 等只读命令代替 `wt list`，远程与摘要字段记为未查询，不修改全局配置。
+
+符合上述条件时使用：
 
 ```bash
 git -C "$repo" worktree list --porcelain
