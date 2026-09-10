@@ -3,9 +3,14 @@
 
 import argparse
 import json
-import math
 import re
+import sys
 from pathlib import Path
+from typing import NoReturn
+
+
+def reject_constant(value: str) -> NoReturn:
+    raise ValueError(f"Nonstandard JSON constant: {value}")
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--vault", type=Path, required=True, help="Root used by file nodes")
@@ -30,7 +35,7 @@ while pending:
         continue
     location = filename.relative_to(root).as_posix()
     try:
-        data = json.loads(filename.read_text(encoding="utf-8"))
+        data = json.loads(filename.read_text(encoding="utf-8"), parse_constant=reject_constant)
     except (OSError, UnicodeError, ValueError) as exc:
         errors.append(f"{location}: {exc}")
         continue
@@ -75,7 +80,7 @@ while pending:
                 continue
             for key in ("x", "y", "width", "height"):
                 value = item.get(key)
-                if type(value) not in (int, float) or not math.isfinite(value) or (key in ("width", "height") and value <= 0):
+                if type(value) not in (int, float) or not -sys.float_info.max <= value <= sys.float_info.max or (key in ("width", "height") and value <= 0):
                     errors.append(f"{at}: invalid {key}")
             node_type = item.get("type")
             if not isinstance(node_type, str) or node_type not in required:
@@ -95,6 +100,9 @@ while pending:
                     if target:
                         references.append((target, bool(match[1]), at))
     for reference, embedded, at in references:
+        if "\0" in reference:
+            errors.append(f"{at}: NUL character in file reference")
+            continue
         target = (root / reference).resolve()
         if not target.suffix and not target.is_file():
             target = target.with_suffix(".md")
