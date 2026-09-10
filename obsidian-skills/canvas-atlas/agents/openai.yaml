@@ -1,0 +1,4 @@
+interface:
+  display_name: "Canvas Atlas"
+  short_description: "把仓库和笔记变成可追溯的 Obsidian 全局地图，支持单图与多图导航"
+  default_prompt: "使用 $canvas-atlas 分析当前材料，创建可逐层阅读的 Obsidian 架构地图，并验证文件引用与实际阅读效果。"

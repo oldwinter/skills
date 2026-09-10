@@ -43,7 +43,7 @@ skills/
 │   ├── sales-skills/      #   Sales & GTM (8 skills)
 │   └── (direct skills)    #   Career, AI, communication, etc. (20 skills)
 ├── meta-skills/           # Skills about skills — creation, sync, review (6 skills)
-├── obsidian-skills/       # Obsidian note-taking & vault management (7 skills)
+├── obsidian-skills/       # Obsidian note-taking & vault management (8 skills)
 └── tools-skills/          # Tooling & automation helpers (5 skills)
 ```
 
@@ -167,8 +167,9 @@ Skills about creating, reviewing, and managing skills:
 - **skills-readme-updater** — Update README.md from skill metadata
 - **sync-skills-manager** — Sync skills between repo and system directories
 
-### Obsidian Skills (7 skills)
+### Obsidian Skills (8 skills)
 Note-taking and knowledge management with Obsidian:
+- [canvas-atlas](obsidian-skills/canvas-atlas/SKILL.md) — Source-backed architecture maps with single-canvas and nested navigation modes
 - **excalidraw-diagram** — Generate Excalidraw diagrams from text
 - **json-canvas** — Create and edit JSON Canvas files
 - **mdbase** — Manage markdown-as-database collections

@@ -3,9 +3,10 @@
 ## OVERVIEW
 Obsidian note-taking and vault management skills.
 
-## SKILLS (7)
+## SKILLS (8)
 | Skill | Description |
 |-------|-------------|
+| `canvas-atlas` | Source-backed architecture maps with single and nested Canvas modes |
 | `excalidraw-diagram` | Generate Excalidraw diagrams from text |
 | `json-canvas` | Create and edit JSON Canvas files (`.canvas`) |
 | `mdbase` | Manage markdown-as-database collections |
