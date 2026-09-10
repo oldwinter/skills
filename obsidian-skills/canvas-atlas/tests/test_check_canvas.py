@@ -24,6 +24,7 @@ class CanvasCheckTests(unittest.TestCase):
             ("duplicate-id", "id", "a"),
             ("negative-size", "width", -1),
             ("nonfinite-coordinate", "x", float("nan")),
+            ("oversized-coordinate", "x", 10 ** 400),
             ("invalid-type", "type", []),
         ):
             data = copy.deepcopy(BASE)
@@ -39,12 +40,17 @@ class CanvasCheckTests(unittest.TestCase):
         for name, fields, expected in (
             ("missing-link", {"text": "[[missing.canvas]]"}, False),
             ("outside-vault", {"type": "file", "file": "../outside.canvas"}, False),
+            ("nul-reference", {"type": "file", "file": "bad\0.canvas"}, False),
             ("embed-cycle", {"type": "file", "file": "check.canvas"}, False),
             ("navigation-cycle", {"text": "[[check.canvas|Return]]"}, True),
         ):
             data = copy.deepcopy(BASE)
             data["nodes"][0].update(fields)
             cases.append((name, data, expected))
+        for value in (float("nan"), float("inf"), float("-inf")):
+            data = copy.deepcopy(BASE)
+            data["metadata"] = {"nested": [value]}
+            cases.append((f"nonstandard-json-{value}", data, False))
         for name, data, expected in cases:
             with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)

@@ -64,7 +64,7 @@ description: 将代码仓库、笔记集合或研究材料整理成可追溯、�
 先检查数据，再检查 Obsidian 中的真实阅读体验。
 
 1. 严格解析每个 `.canvas`。检查 ID 唯一、边端点存在、坐标有限、宽高为正及节点必要字段。
-   用 Python 3.10+ 运行随附的只读检查器，路径相对当前 Skill：`python3 scripts/check_canvas.py --vault <vault根目录> <vault相对路径.canvas>`。它递归检查引用到的 Canvas，要求链接使用明确的 vault 相对路径；不解析 Obsidian 的模糊短名，也不验证 Markdown 标题、块 ID 或外部 URL 内容。
+   用 Python 3.10+ 运行随附的只读检查器，路径相对当前 Skill：`python3 scripts/check_canvas.py --vault <vault根目录> <vault相对路径.canvas>`。它递归检查 file 节点与 wikilink 引用到的 Canvas，要求链接使用明确的 vault 相对路径；不解析普通 Markdown 链接或 Obsidian 的模糊短名，也不验证 Markdown 标题、块 ID 或外部 URL 内容。其他链接需另行核对。
 2. 从目标 vault 根解析 file 节点与导航链接，确认文件存在。检查子图嵌入关系无环；返回父图的普通链接不算嵌入环。
 3. 抽查关键关系是否有来源。确认推断没有被画成事实。
 4. 在 Obsidian 打开总览，缩放到全图，再放大一个核心节点。确认主线清楚、文字完整、节点无意外遮挡。多图模式实际进入一个子图并返回。只检查 JSON 不能声明视觉验收通过。
