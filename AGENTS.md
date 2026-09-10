@@ -27,7 +27,7 @@ skills/
 │   ├── sales-skills/      #   Sales & GTM (8)
 │   └── (20 direct skills) #   Career, AI, communication, etc.
 ├── meta-skills/           # Skills about skills (6)
-├── obsidian-skills/       # Obsidian vault management (6)
+├── obsidian-skills/       # Obsidian vault management (8)
 └── tools-skills/          # Tooling & automation (5)
 ```
 
