@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+"""Verify the handwritten README two-layer skill map against the repo tree."""
+
+from __future__ import annotations
+
+import re
+import sys
+from collections import Counter
+from pathlib import Path
+
+BUCKETS = (
+    "base-skills",
+    "devops-skills",
+    "lenny-skills",
+    "meta-skills",
+    "obsidian-skills",
+    "tools-skills",
+)
+COLLISIONS = (
+    "agent-browser",
+    "excalidraw-diagram",
+    "find-skills",
+    "mermaid-visualizer",
+    "remotion-best-practices",
+    "skill-creator",
+)
+
+
+def is_skill_dir(path: Path) -> bool:
+    return path.is_dir() and (path / "SKILL.md").exists()
+
+
+def root_skills(repo: Path) -> list[str]:
+    names = [
+        child.name
+        for child in repo.iterdir()
+        if is_skill_dir(child) and child.name not in BUCKETS
+    ]
+    return sorted(names)
+
+
+def all_skill_dirs(repo: Path) -> list[Path]:
+    found = [repo / name for name in root_skills(repo)]
+    for bucket in BUCKETS:
+        bucket_dir = repo / bucket
+        if not bucket_dir.is_dir():
+            continue
+        found.extend(path.parent for path in bucket_dir.rglob("SKILL.md"))
+    return found
+
+
+def standalone_section(readme: str) -> str | None:
+    match = re.search(
+        r"^### Standalone Skills.*?(?=^### |\Z)",
+        readme,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    return match.group(0) if match else None
+
+
+def listed_in_standalone(section: str, name: str) -> bool:
+    return bool(
+        re.search(rf"\*\*{re.escape(name)}\*\*", section)
+        or re.search(rf"\[{re.escape(name)}\]\(", section)
+    )
+
+
+def parse_stat(readme: str, label: str) -> int | None:
+    match = re.search(
+        rf"\*\*{re.escape(label)}\*\*:\s*(\d+)",
+        readme,
+    )
+    return int(match.group(1)) if match else None
+
+
+def check(repo: Path) -> list[str]:
+    errors: list[str] = []
+    readme_path = repo / "README.md"
+    if not readme_path.is_file():
+        return ["check-readme-map: missing README.md"]
+
+    readme = readme_path.read_text(encoding="utf-8")
+    standalone = standalone_section(readme)
+    if standalone is None:
+        errors.append("check-readme-map: README missing ### Standalone Skills section")
+        standalone = ""
+
+    for name in root_skills(repo):
+        if not listed_in_standalone(standalone, name):
+            errors.append(
+                f"check-readme-map: Standalone Skills missing root skill {name}"
+            )
+
+    for name in COLLISIONS:
+        if not re.search(rf"`{re.escape(name)}`", readme):
+            errors.append(
+                f"check-readme-map: README missing collision mark `{name}`"
+            )
+
+    dirs = all_skill_dirs(repo)
+    unique = {path.name for path in dirs}
+    want_dirs = len(dirs)
+    want_unique = len(unique)
+    got_dirs = parse_stat(readme, "Skill directories")
+    got_unique = parse_stat(readme, "Unique names")
+    if got_dirs != want_dirs:
+        errors.append(
+            "check-readme-map: README **Skill directories** is "
+            f"{got_dirs!r}, tree has {want_dirs}"
+        )
+    if got_unique != want_unique:
+        errors.append(
+            "check-readme-map: README **Unique names** is "
+            f"{got_unique!r}, tree has {want_unique}"
+        )
+
+    counts = Counter(path.name for path in dirs)
+    live_collisions = sorted(name for name, n in counts.items() if n > 1)
+    if live_collisions != list(COLLISIONS):
+        errors.append(
+            "check-readme-map: live collisions "
+            f"{live_collisions} != documented {list(COLLISIONS)}"
+        )
+
+    return errors
+
+
+def main() -> int:
+    repo = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]
+    errors = check(repo)
+    if errors:
+        print("\n".join(errors), file=sys.stderr)
+        return 1
+    print("check-readme-map: README two-layer map matches the repo tree.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

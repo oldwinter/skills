@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+# Fixture tests for scripts/check-readme-map.
+set -euo pipefail
+
+root="$(cd "$(dirname "$0")/.." && pwd)"
+check="$root/scripts/check-readme-map"
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+fail() {
+  echo "test-check-readme-map: $1" >&2
+  exit 1
+}
+
+chmod +x "$check"
+
+"$check" "$root" >/dev/null || fail "live README should satisfy the map check"
+
+fixture="$tmp/skills"
+mkdir -p "$fixture/add-just-doctor" "$fixture/github-cli-root" \
+  "$fixture/base-skills/context7" "$fixture/devops-skills/github-cli" \
+  "$fixture/scripts"
+printf '%s\n' '---' 'name: add-just-doctor' 'description: demo' '---' >"$fixture/add-just-doctor/SKILL.md"
+printf '%s\n' '---' 'name: github-cli-root' 'description: demo' '---' >"$fixture/github-cli-root/SKILL.md"
+printf '%s\n' '---' 'name: context7' 'description: demo' '---' >"$fixture/base-skills/context7/SKILL.md"
+printf '%s\n' '---' 'name: github-cli' 'description: demo' '---' >"$fixture/devops-skills/github-cli/SKILL.md"
+# One documented collision name, plus a live extra collision so the check
+# can report both "missing mark" and "live collisions != documented".
+mkdir -p "$fixture/agent-browser" "$fixture/tools-skills/agent-browser"
+printf '%s\n' '---' 'name: agent-browser' 'description: demo' '---' >"$fixture/agent-browser/SKILL.md"
+printf '%s\n' '---' 'name: agent-browser' 'description: demo' '---' >"$fixture/tools-skills/agent-browser/SKILL.md"
+
+cat >"$fixture/README.md" <<'EOF'
+### Other
+nothing
+## Statistics
+- **Total Skills**: 1
+EOF
+
+if "$check" "$fixture" >/dev/null 2>"$tmp/empty.err"; then
+  fail "incomplete README should fail"
+fi
+grep -q 'Standalone Skills' "$tmp/empty.err" || fail "should require Standalone Skills"
+grep -q 'add-just-doctor' "$tmp/empty.err" || fail "should name missing root skill"
+grep -q 'Skill directories' "$tmp/empty.err" || fail "should reject missing directory count"
+
+cat >"$fixture/README.md" <<'EOF'
+### Standalone Skills
+- **add-just-doctor** — demo
+- **github-cli-root** — demo
+- **agent-browser** — demo
+
+Collisions: `agent-browser` `excalidraw-diagram` `find-skills` `mermaid-visualizer` `remotion-best-practices` `skill-creator`
+
+## Statistics
+- **Skill directories**: 5
+- **Unique names**: 4
+EOF
+
+if "$check" "$fixture" >/dev/null 2>"$tmp/partial.err"; then
+  fail "README with wrong counts / extra live collision should fail"
+fi
+grep -q 'Skill directories' "$tmp/partial.err" || fail "should report directory count drift"
+
+cat >"$fixture/README.md" <<'EOF'
+### Standalone Skills
+- **add-just-doctor** — demo
+- **github-cli-root** — demo
+- **agent-browser** — demo
+
+Collisions: `agent-browser` `excalidraw-diagram` `find-skills` `mermaid-visualizer` `remotion-best-practices` `skill-creator`
+
+## Statistics
+- **Skill directories**: 6
+- **Unique names**: 5
+EOF
+
+if "$check" "$fixture" >/dev/null 2>"$tmp/collision.err"; then
+  fail "README whose live collisions differ from the documented six should fail"
+fi
+grep -q 'live collisions' "$tmp/collision.err" || fail "should report live vs documented collisions"
+
+# Complete fixture: only the six documented collision names, matching counts.
+rm -rf "$fixture/agent-browser" "$fixture/tools-skills"
+for name in agent-browser excalidraw-diagram find-skills mermaid-visualizer remotion-best-practices skill-creator; do
+  mkdir -p "$fixture/$name" "$fixture/meta-skills/$name"
+  printf '%s\n' '---' "name: $name" 'description: demo' '---' >"$fixture/$name/SKILL.md"
+  printf '%s\n' '---' "name: $name" 'description: demo' '---' >"$fixture/meta-skills/$name/SKILL.md"
+done
+
+cat >"$fixture/README.md" <<'EOF'
+### Standalone Skills
+- **add-just-doctor** — demo
+- **github-cli-root** — demo
+- **agent-browser** — demo
+- **excalidraw-diagram** — demo
+- **find-skills** — demo
+- **mermaid-visualizer** — demo
+- **remotion-best-practices** — demo
+- **skill-creator** — demo
+
+Collisions: `agent-browser` `excalidraw-diagram` `find-skills` `mermaid-visualizer` `remotion-best-practices` `skill-creator`
+
+## Statistics
+- **Skill directories**: 16
+- **Unique names**: 10
+EOF
+
+"$check" "$fixture" >/dev/null || fail "complete README fixture should pass"
+
+echo "test-check-readme-map: ok"
