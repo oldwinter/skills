@@ -1,50 +1,44 @@
 ---
 name: skills-readme-updater
-description: This skill should be used after creating or modifying skills to update the main README.md file. It scans all skills in ~/.claude/skills/, extracts metadata from SKILL.md files, and regenerates the README with categorized skill listings. Triggers on requests mentioning "update skills readme", "refresh skills list", or after adding new skills.
+description: Audit this repository's two-layer skill tree against the handwritten README. Use after adding or moving skills, or when asked to refresh the skills directory map. Prints drift; does not write README.md.
 ---
 
 # Skills README Updater
 
-Automatically scan and update the skills README.md when skills are added, modified, or removed.
+Audit the **repository** skill tree. Do not scan `~/.claude/skills/` and do not overwrite `README.md`.
+
+The public catalog is the handwritten two-layer map in `README.md`: root standalone skills plus `*-skills/` buckets (`base`, `devops`, `lenny` and its sub-buckets, `meta`, `obsidian`, `tools`). This skill reports what the tree has that the README does not, the reverse, and root-vs-bucket name collisions.
 
 ## Usage
 
-After adding or modifying a skill, run the update script:
+From the repository root:
 
 ```bash
-python3 ~/.claude/skills/skills-readme-updater/scripts/update_readme.py
+python3 meta-skills/skills-readme-updater/scripts/update_readme.py
+```
+
+Or point at a checkout:
+
+```bash
+python3 meta-skills/skills-readme-updater/scripts/update_readme.py --repo .
 ```
 
 The script will:
-1. Scan all subdirectories in `~/.claude/skills/`
-2. Parse YAML frontmatter from each `SKILL.md`
-3. Categorize skills based on predefined categories
-4. Generate an updated `README.md` with:
-   - Categorized skill tables
-   - Directory structure
-   - Usage instructions
-   - Timestamp
 
-## Categories
+1. Scan root directories that contain `SKILL.md`
+2. Scan `base-skills/`, `devops-skills/`, `lenny-skills/` (including sub-buckets), `meta-skills/`, `obsidian-skills/`, and `tools-skills/`
+3. Print those lists, name collisions, and README drift
+4. Leave `README.md` unchanged
 
-Skills are organized into these categories:
+## Workflow: after adding a skill
 
-| Category | Skills |
-|----------|--------|
-| 云基础设施 | aws-cli, aws-cost-explorer, eksctl |
-| Kubernetes & GitOps | kubectl, argocd-cli, kargo-cli, sync-to-prod |
-| 代码仓库 | github-cli, gitlab-cli, changelog-generator |
-| 开发工具 | justfile, skill-creator, skills-readme-updater |
-| 内容处理 | humanizer-zh, obsidian-dashboard |
+1. Add the skill directory (root or a category bucket)
+2. Update the handwritten `README.md` map if the skill should be listed
+3. Run the auditor and confirm the new name appears under the right bucket
+4. Do not run a generator that writes `README.md`
 
-To add a new category or reassign skills, edit the `CATEGORIES` dict in `scripts/update_readme.py`.
+## Tests
 
-## Workflow: Adding a New Skill
-
-1. Create the skill using `skill-creator`
-2. Edit `SKILL.md` with proper metadata
-3. Run the README updater:
-   ```bash
-   python3 ~/.claude/skills/skills-readme-updater/scripts/update_readme.py
-   ```
-4. Verify the README was updated correctly
+```bash
+bash meta-skills/skills-readme-updater/scripts/test_update_readme.sh
+```
