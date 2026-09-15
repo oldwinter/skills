@@ -5,6 +5,7 @@
 #   just test-sync
 #   OBSIDIAN_VAULT=/path/to/vault just obsidian-sync
 #   just validate-skill obsidian-skills/obsidian-bases
+#   just check-readme-map
 #
 # This justfile focuses on the real workflows in this repository:
 # - validate one skill or skill pack
@@ -26,6 +27,8 @@ help:
     @echo ""
     @echo "Validation"
     @echo "  just test-sync                  Run sync-manager unit tests"
+    @echo "  just check-readme-map           Verify README lists every root skill"
+    @echo "  just test-readme-map            Fixture-test the README map check"
     @echo "  just validate-skill <dir>       Quick-validate one skill directory (requires PyYAML)"
     @echo "  just validate-skillpack <dir>   Strict validate one skill pack (requires PyYAML)"
     @echo ""
@@ -50,6 +53,12 @@ help:
 
 test-sync:
     python3 -m unittest meta-skills/sync-skills-manager/scripts/test_agent_skills_audit.py meta-skills/sync-skills-manager/scripts/test_flatten_system_skills_layout.py meta-skills/sync-skills-manager/scripts/test_reclassify_system_skills.py meta-skills/sync-skills-manager/scripts/test_skills_profiles.py meta-skills/sync-skills-manager/scripts/test_export_skills_to_obsidian.py meta-skills/sync-skills-manager/scripts/test_obsidian_skill_state.py -v
+
+check-readme-map:
+    python3 scripts/check-readme-map
+
+test-readme-map:
+    bash scripts/test-check-readme-map
 
 validate-skill skill_dir:
     python3 -c 'import importlib.util, sys; sys.exit(0 if importlib.util.find_spec("yaml") else 1)' || { echo "PyYAML is required for validate-skill. Install it with: python3 -m pip install pyyaml"; exit 1; }
