@@ -10,7 +10,7 @@ Skills about creating, reviewing, syncing, and managing skills themselves.
 | `lenny-skillpack-creator` | Convert Lenny skills to agent-executable skill pack format |
 | `skill-creator` | Guide for creating new skills |
 | `skill-review` | Skill quality review |
-| `skills-readme-updater` | Update README.md from skill metadata |
+| `skills-readme-updater` | Audit the repo skill tree against the handwritten README |
 | `sync-skills-manager` | Sync skills between repo and system directories |
 
 ## WHERE TO LOOK

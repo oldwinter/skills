@@ -26,6 +26,8 @@ help:
     @echo ""
     @echo "Validation"
     @echo "  just test-sync                  Run sync-manager unit tests"
+    @echo "  just audit-readme               Audit repo skill tree vs handwritten README"
+    @echo "  just test-readme-updater        Fixture-test the README auditor"
     @echo "  just validate-skill <dir>       Quick-validate one skill directory (requires PyYAML)"
     @echo "  just validate-skillpack <dir>   Strict validate one skill pack (requires PyYAML)"
     @echo ""
@@ -50,6 +52,12 @@ help:
 
 test-sync:
     python3 -m unittest meta-skills/sync-skills-manager/scripts/test_agent_skills_audit.py meta-skills/sync-skills-manager/scripts/test_flatten_system_skills_layout.py meta-skills/sync-skills-manager/scripts/test_reclassify_system_skills.py meta-skills/sync-skills-manager/scripts/test_skills_profiles.py meta-skills/sync-skills-manager/scripts/test_export_skills_to_obsidian.py meta-skills/sync-skills-manager/scripts/test_obsidian_skill_state.py -v
+
+audit-readme:
+    python3 meta-skills/skills-readme-updater/scripts/update_readme.py
+
+test-readme-updater:
+    bash meta-skills/skills-readme-updater/scripts/test_update_readme.sh
 
 validate-skill skill_dir:
     python3 -c 'import importlib.util, sys; sys.exit(0 if importlib.util.find_spec("yaml") else 1)' || { echo "PyYAML is required for validate-skill. Install it with: python3 -m pip install pyyaml"; exit 1; }
