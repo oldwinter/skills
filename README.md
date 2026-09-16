@@ -260,20 +260,13 @@ Common commands:
 just help
 just test-sync
 just validate-skill obsidian-skills/obsidian-bases
-just obsidian-import
-just obsidian-export
-just obsidian-sync
 just sync-status
 just sync-diff
 ```
 
 `just validate-skill` and `just validate-skillpack` require `PyYAML` because they wrap the repository validator scripts.
 
-Override the default Obsidian vault path when needed:
-
-```bash
-OBSIDIAN_VAULT=/path/to/vault just obsidian-sync
-```
+Obsidian sidecar import/export is still a plan in `docs/plans/2026-03-08-obsidian-skill-state-sync.md`. There is no `just obsidian-*` recipe until those scripts land in the tree.
 
 ## License
 
