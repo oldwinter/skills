@@ -1,0 +1,4 @@
+interface:
+  display_name: "Windows Storage Audit"
+  short_description: "Measure Windows disk usage and verify scoped cleanup"
+  default_prompt: "Use $windows-storage-audit to scan this Windows device and prepare or execute the authorized cleanup scope."
