@@ -32,7 +32,7 @@ skills 一散，各端各写各的，过两周就对不上。这里是我的唯�
 
 ```
 skills/
-├── AGENTS.md              # Agent instructions (CLAUDE.md → symlink)
+├── AGENTS.md              # Agent instructions
 ├── README.md
 ├── base-skills/           # Foundational / cross-domain skills (6 skills)
 ├── devops-skills/         # DevOps and infrastructure (16 skills)

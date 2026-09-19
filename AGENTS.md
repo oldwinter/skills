@@ -1,6 +1,6 @@
 # AGENTS.md (repo instructions for agentic coding)
 
-This is the canonical agent instruction file for this repository. Root `CLAUDE.md` is a symlink to this file.
+This is the canonical agent instruction file for this repository.
 
 This repository is a **skills library** (Markdown-first). Most work is editing `SKILL.md` files and related docs/scripts.
 
