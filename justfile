@@ -49,7 +49,7 @@ help:
     @echo "  just plans                      List implementation plans in docs/plans"
 
 test-sync:
-    python3 -m unittest meta-skills/sync-skills-manager/scripts/test_agent_skills_audit.py meta-skills/sync-skills-manager/scripts/test_flatten_system_skills_layout.py meta-skills/sync-skills-manager/scripts/test_reclassify_system_skills.py meta-skills/sync-skills-manager/scripts/test_skills_profiles.py meta-skills/sync-skills-manager/scripts/test_export_skills_to_obsidian.py meta-skills/sync-skills-manager/scripts/test_obsidian_skill_state.py -v
+    python3 -m unittest discover -s meta-skills/sync-skills-manager/scripts -p 'test_*.py' -v
 
 validate-skill skill_dir:
     python3 -c 'import importlib.util, sys; sys.exit(0 if importlib.util.find_spec("yaml") else 1)' || { echo "PyYAML is required for validate-skill. Install it with: python3 -m pip install pyyaml"; exit 1; }
