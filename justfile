@@ -3,38 +3,30 @@
 # Common usage:
 #   just help
 #   just test-sync
-#   OBSIDIAN_VAULT=/path/to/vault just obsidian-sync
+#   just audit-readme
 #   just validate-skill obsidian-skills/obsidian-bases
 #
 # This justfile focuses on the real workflows in this repository:
 # - validate one skill or skill pack
 # - run sync-manager unit tests
-# - sync repo skills <-> Obsidian
+# - audit the handwritten README skill map
 # - sync repo categories <-> runtime agent installs
+#
+# Obsidian sidecar import/export is still a plan
+# (docs/plans/2026-03-08-obsidian-skill-state-sync.md). Recipes below fail closed.
 
-vault_root := env_var_or_default("OBSIDIAN_VAULT", "/Users/oldwinter/oldwinter-notes")
-repo_root := "."
-state_file := "meta-skills/sync-skills-manager/data/obsidian-skill-state.yaml"
+obsidian_plan := "docs/plans/2026-03-08-obsidian-skill-state-sync.md"
 
 default: help
 
 help:
     @echo "Skills repository task runner"
     @echo ""
-    @echo "Environment"
-    @echo "  OBSIDIAN_VAULT={{vault_root}}"
-    @echo ""
     @echo "Validation"
     @echo "  just test-sync                  Run sync-manager unit tests"
+    @echo "  just audit-readme               Audit repo skill tree vs handwritten README"
     @echo "  just validate-skill <dir>       Quick-validate one skill directory (requires PyYAML)"
     @echo "  just validate-skillpack <dir>   Strict validate one skill pack (requires PyYAML)"
-    @echo ""
-    @echo "Obsidian"
-    @echo "  just obsidian-import            Import personal state from Obsidian into the repo sidecar"
-    @echo "  just obsidian-export            Export repo skills to Obsidian and write the Base file"
-    @echo "  just obsidian-export-dry        Dry-run repo-to-Obsidian export"
-    @echo "  just obsidian-sync              Import from Obsidian, then export back to Obsidian"
-    @echo "  just obsidian-state             Print the current sidecar file"
     @echo ""
     @echo "Runtime sync"
     @echo "  just sync-status                Show repo/runtime sync status"
@@ -49,7 +41,21 @@ help:
     @echo "  just plans                      List implementation plans in docs/plans"
 
 test-sync:
-    python3 -m unittest meta-skills/sync-skills-manager/scripts/test_agent_skills_audit.py meta-skills/sync-skills-manager/scripts/test_flatten_system_skills_layout.py meta-skills/sync-skills-manager/scripts/test_reclassify_system_skills.py meta-skills/sync-skills-manager/scripts/test_skills_profiles.py meta-skills/sync-skills-manager/scripts/test_export_skills_to_obsidian.py meta-skills/sync-skills-manager/scripts/test_obsidian_skill_state.py -v
+    python3 -m unittest meta-skills/sync-skills-manager/scripts/test_agent_skills_audit.py meta-skills/sync-skills-manager/scripts/test_flatten_system_skills_layout.py meta-skills/sync-skills-manager/scripts/test_reclassify_system_skills.py meta-skills/sync-skills-manager/scripts/test_skills_profiles.py meta-skills/sync-skills-manager/scripts/test_justfile.py meta-skills/skills-readme-updater/scripts/test_update_readme.py -v
+
+audit-readme:
+    python3 meta-skills/skills-readme-updater/scripts/update_readme.py
+
+obsidian-unavailable:
+    @echo "error  Obsidian sidecar scripts are not in this repo yet"
+    @echo "try: {{obsidian_plan}}"
+    @exit 2
+
+obsidian-import: obsidian-unavailable
+obsidian-export: obsidian-unavailable
+obsidian-export-dry: obsidian-unavailable
+obsidian-sync: obsidian-unavailable
+obsidian-state: obsidian-unavailable
 
 validate-skill skill_dir:
     python3 -c 'import importlib.util, sys; sys.exit(0 if importlib.util.find_spec("yaml") else 1)' || { echo "PyYAML is required for validate-skill. Install it with: python3 -m pip install pyyaml"; exit 1; }
@@ -58,22 +64,6 @@ validate-skill skill_dir:
 validate-skillpack skill_dir:
     python3 -c 'import importlib.util, sys; sys.exit(0 if importlib.util.find_spec("yaml") else 1)' || { echo "PyYAML is required for validate-skillpack. Install it with: python3 -m pip install pyyaml"; exit 1; }
     python3 meta-skills/lenny-skillpack-creator/scripts/lint_skillpack.py {{skill_dir}}
-
-obsidian-import:
-    python3 meta-skills/sync-skills-manager/scripts/import_obsidian_skill_state.py --vault-root {{vault_root}} --repo-root {{repo_root}} --state-path {{state_file}}
-
-obsidian-export:
-    python3 meta-skills/sync-skills-manager/scripts/export_skills_to_obsidian.py --vault-root {{vault_root}} --repo-root {{repo_root}} --state-path {{state_file}} --write-base
-
-obsidian-export-dry:
-    python3 meta-skills/sync-skills-manager/scripts/export_skills_to_obsidian.py --vault-root {{vault_root}} --repo-root {{repo_root}} --state-path {{state_file}} --dry-run --write-base
-
-obsidian-sync:
-    python3 meta-skills/sync-skills-manager/scripts/import_obsidian_skill_state.py --vault-root {{vault_root}} --repo-root {{repo_root}} --state-path {{state_file}}
-    python3 meta-skills/sync-skills-manager/scripts/export_skills_to_obsidian.py --vault-root {{vault_root}} --repo-root {{repo_root}} --state-path {{state_file}} --write-base
-
-obsidian-state:
-    test -f {{state_file}} && sed -n '1,200p' {{state_file}} || echo "No sidecar file yet: {{state_file}}"
 
 sync-status:
     bash meta-skills/sync-skills-manager/sync-skills.sh status

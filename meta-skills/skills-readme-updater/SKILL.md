@@ -1,6 +1,6 @@
 ---
 name: skills-readme-updater
-description: This skill should be used after creating or modifying skills to update the main README.md file. It scans all skills in ~/.claude/skills/, extracts metadata from SKILL.md files, and regenerates the README with categorized skill listings. Triggers on requests mentioning "update skills readme", "refresh skills list", or after adding new skills.
+description: Audit this repo's handwritten README against root SKILL.md directories. Default is check-only; --write is rejected so it cannot overwrite the two-layer map with a ~/.claude five-bucket dump. Triggers on "update skills readme", "audit-readme", or after adding a root skill.
 ---
 
 # Skills README Updater
@@ -9,21 +9,18 @@ Automatically scan and update the skills README.md when skills are added, modifi
 
 ## Usage
 
-After adding or modifying a skill, run the update script:
+After adding a root-level skill, audit the handwritten map:
 
 ```bash
-python3 ~/.claude/skills/skills-readme-updater/scripts/update_readme.py
+just audit-readme
+python3 meta-skills/skills-readme-updater/scripts/update_readme.py
 ```
 
 The script will:
-1. Scan all subdirectories in `~/.claude/skills/`
-2. Parse YAML frontmatter from each `SKILL.md`
-3. Categorize skills based on predefined categories
-4. Generate an updated `README.md` with:
-   - Categorized skill tables
-   - Directory structure
-   - Usage instructions
-   - Timestamp
+1. Scan this repository (not `~/.claude/skills/`)
+2. Require each root directory with `SKILL.md` to appear in `README.md`
+3. Exit 1 with `try: just audit-readme` if names are missing
+4. Refuse `--write` so it cannot replace the two-layer README
 
 ## Categories
 

@@ -4,12 +4,15 @@ Skills README 自动更新脚本
 扫描 skills 目录，提取每个 skill 的信息并更新 README.md
 """
 
+import argparse
 import os
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 
 
+REPO_ROOT = Path(__file__).resolve().parents[3]
 SKILLS_DIR = Path(os.path.expanduser("~/.claude/skills"))
 README_PATH = SKILLS_DIR / "README.md"
 
@@ -210,25 +213,53 @@ def generate_readme(categorized: dict[str, list[dict]]) -> str:
     return "\n".join(lines)
 
 
-def main():
-    """主函数"""
-    print("🔍 扫描 skills 目录...")
-    categorized = scan_skills()
+def root_skill_names(root: Path) -> list[str]:
+    names = []
+    for child in sorted(root.iterdir()):
+        if child.is_dir() and not child.name.startswith(".") and (child / "SKILL.md").is_file():
+            names.append(child.name)
+    return names
 
-    total = sum(len(skills) for skills in categorized.values())
-    print(f"✅ 发现 {total} 个 skills")
 
-    print("📝 生成 README...")
-    readme_content = generate_readme(categorized)
+def mentioned_in_readme(readme: str, name: str) -> bool:
+    return re.search(rf"(^|[^A-Za-z0-9_-]){re.escape(name)}([^A-Za-z0-9_-]|$)", readme) is not None
 
-    README_PATH.write_text(readme_content, encoding="utf-8")
-    print(f"✅ README 已更新: {README_PATH}")
 
-    # 输出摘要
-    print("\n📊 Skills 统计:")
-    for category, skills in categorized.items():
-        print(f"  {category}: {len(skills)} 个")
+def audit_readme(root: Path, readme_path: Path) -> int:
+    if not readme_path.is_file():
+        print(f"error  README not found: {readme_path}", file=sys.stderr)
+        print("try: just audit-readme", file=sys.stderr)
+        return 2
+    names = root_skill_names(root)
+    text = readme_path.read_text(encoding="utf-8")
+    missing = [name for name in names if not mentioned_in_readme(text, name)]
+    if missing:
+        print("error  README omits root skills: " + ", ".join(missing), file=sys.stderr)
+        print("try: just audit-readme", file=sys.stderr)
+        return 1
+    print(f"ok  README mentions {len(names)} root skills")
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Audit the handwritten README against this repo's skill tree. Does not rewrite README."
+    )
+    parser.add_argument("--root", type=Path, default=REPO_ROOT)
+    parser.add_argument("--readme", type=Path, default=None)
+    parser.add_argument(
+        "--write",
+        action="store_true",
+        help="Rejected: would overwrite the two-layer README with a ~/.claude five-bucket dump.",
+    )
+    args = parser.parse_args(argv)
+    if args.write:
+        print("error  --write would replace the handwritten two-layer README", file=sys.stderr)
+        print("try: just audit-readme", file=sys.stderr)
+        return 2
+    readme = args.readme if args.readme is not None else args.root / "README.md"
+    return audit_readme(args.root, readme)
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

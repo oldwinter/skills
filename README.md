@@ -22,7 +22,7 @@ npx --yes skills@latest add oldwinter/skills --global --skill add-just-doctor --
 
 skills 一散，各端各写各的，过两周就对不上。这里是我的唯一源头：仓库、本机 runtime、Obsidian 库三路同步。同步命令在 `general-tasks` 里，这个仓库自己也有 `just sync-status`。
 
-完整目录在下面，由 `skills-readme-updater` 根据元数据生成。
+完整目录在下面。`just audit-readme` 核对根目录 `SKILL.md` 是否都出现在这份地图里；不要用 updater 覆盖手写两层结构。
 
 ## 我是谁
 
@@ -51,8 +51,51 @@ skills/
 
 ### Standalone Skills
 
-- **change-evidence** — Screen-recorded acceptance evidence for user-facing UI/UX and frontend changes.
-- [herdr-worktrunk](herdr-worktrunk/SKILL.md) prepares task environments, checks dev services, resumes Herdr agents, and verifies delivery through Worktrunk project commands.
+Root-level skill directories (each has `SKILL.md`). Some names also exist under a category bucket.
+
+- [add-just-doctor](add-just-doctor/SKILL.md)
+- [agent-browser](agent-browser/SKILL.md)
+- [ast-grep](ast-grep/SKILL.md)
+- [automation-memory](automation-memory/SKILL.md)
+- [browser](browser/SKILL.md)
+- [browser-harness](browser-harness/SKILL.md)
+- [caveman](caveman/SKILL.md)
+- [change-evidence](change-evidence/SKILL.md)
+- [chendongdong-digital-twin](chendongdong-digital-twin/SKILL.md)
+- [codex-dynamic-workflows](codex-dynamic-workflows/SKILL.md)
+- [computer-use](computer-use/SKILL.md)
+- [darwin-skill](darwin-skill/SKILL.md)
+- [diagnose](diagnose/SKILL.md)
+- [excalidraw-diagram](excalidraw-diagram/SKILL.md)
+- [find-skills](find-skills/SKILL.md)
+- [go-live](go-live/SKILL.md)
+- [grill-me](grill-me/SKILL.md)
+- [grill-with-docs](grill-with-docs/SKILL.md)
+- [handoff](handoff/SKILL.md)
+- [herdr-worktrunk](herdr-worktrunk/SKILL.md)
+- [huashu-nuwa](huashu-nuwa/SKILL.md)
+- [improve-codebase-architecture](improve-codebase-architecture/SKILL.md)
+- [loop](loop/SKILL.md)
+- [mermaid-visualizer](mermaid-visualizer/SKILL.md)
+- [obsidian-canvas-creator](obsidian-canvas-creator/SKILL.md)
+- [oldwinter-mode](oldwinter-mode/SKILL.md)
+- [orca-cli](orca-cli/SKILL.md)
+- [orchestration](orchestration/SKILL.md)
+- [planning-with-files-zh](planning-with-files-zh/SKILL.md)
+- [prototype](prototype/SKILL.md)
+- [remotion-best-practices](remotion-best-practices/SKILL.md)
+- [setup-matt-pocock-skills](setup-matt-pocock-skills/SKILL.md)
+- [skill-creator](skill-creator/SKILL.md)
+- [skillshare](skillshare/SKILL.md)
+- [supergoal](supergoal/SKILL.md)
+- [tdd](tdd/SKILL.md)
+- [to-issues](to-issues/SKILL.md)
+- [to-prd](to-prd/SKILL.md)
+- [triage](triage/SKILL.md)
+- [windows-storage-audit](windows-storage-audit/SKILL.md)
+- [write-a-skill](write-a-skill/SKILL.md)
+- [yansu-agent-cli](yansu-agent-cli/SKILL.md)
+- [zoom-out](zoom-out/SKILL.md)
 
 ### Base Skills (6 skills)
 Foundational skills used across many workflows:
@@ -259,21 +302,15 @@ Common commands:
 ```bash
 just help
 just test-sync
+just audit-readme
 just validate-skill obsidian-skills/obsidian-bases
-just obsidian-import
-just obsidian-export
-just obsidian-sync
 just sync-status
 just sync-diff
 ```
 
 `just validate-skill` and `just validate-skillpack` require `PyYAML` because they wrap the repository validator scripts.
 
-Override the default Obsidian vault path when needed:
-
-```bash
-OBSIDIAN_VAULT=/path/to/vault just obsidian-sync
-```
+Obsidian sidecar import/export is still a plan (`docs/plans/2026-03-08-obsidian-skill-state-sync.md`). `just obsidian-sync` exits 2 and prints that path.
 
 ## License
 
