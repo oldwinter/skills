@@ -3,7 +3,7 @@
 ## OVERVIEW
 DevOps, infrastructure, CI/CD, and cloud operations skills.
 
-## SKILLS (16)
+## SKILLS (13)
 | Skill | Description |
 |-------|-------------|
 | `argocd-cli` | GitOps deployments with ArgoCD |
@@ -18,10 +18,7 @@ DevOps, infrastructure, CI/CD, and cloud operations skills.
 | `kubectl-cli` | Kubernetes cluster operations |
 | `release-skills` | Universal release workflow (Node.js, Python, Rust, etc.) |
 | `simplex-cli` | Simplex Router admin CLI |
-| `sync-ci-to-staging` | Sync CI configs to staging |
-| `sync-ci-to-staging-prod` | Sync CI configs to staging and production |
 | `sync-env` | Sync CI environment configs with safety gates |
-| `sync-to-prod` | Promote staging configuration to production |
 
 ## WHERE TO LOOK
 | Task | Location |

@@ -22,7 +22,7 @@ npx --yes skills@latest add oldwinter/skills --global --skill add-just-doctor --
 
 skills 一散，各端各写各的，过两周就对不上。这里是我的唯一源头：仓库、本机 runtime、Obsidian 库三路同步。同步命令在 `general-tasks` 里，这个仓库自己也有 `just sync-status`。
 
-完整目录在下面，由 `skills-readme-updater` 根据元数据生成。
+完整目录是手写的两层地图：`*-skills/` 分类桶，加上仓库根上的 standalone skill。`npx skills add` 和 agent 按目录名解析。`just audit-readme` 核对树和地图，不会改写这份 README。
 
 ## 我是谁
 
@@ -32,27 +32,74 @@ skills 一散，各端各写各的，过两周就对不上。这里是我的唯�
 
 ```
 skills/
-├── AGENTS.md              # Agent instructions (CLAUDE.md → symlink)
+├── AGENTS.md
 ├── README.md
-├── base-skills/           # Foundational / cross-domain skills (6 skills)
-├── devops-skills/         # DevOps and infrastructure (16 skills)
-├── lenny-skills/          # Lenny / Refound AI skill packs (119 skills)
-│   ├── leadership-skills/ #   Leadership & management (29 skills)
-│   ├── marketing-skills/  #   Marketing & content (25 skills)
-│   ├── product-skills/    #   Product management & growth (37 skills)
-│   ├── sales-skills/      #   Sales & GTM (8 skills)
-│   └── (direct skills)    #   Career, AI, communication, etc. (20 skills)
-├── meta-skills/           # Skills about skills — creation, sync, review (6 skills)
-├── obsidian-skills/       # Obsidian note-taking & vault management (8 skills)
-└── tools-skills/          # Tooling & automation helpers (5 skills)
+├── <43 root skill directories>  # standalone install names; list below
+├── base-skills/                 # 6
+├── devops-skills/               # 13
+├── lenny-skills/                # 119
+│   ├── leadership-skills/
+│   ├── marketing-skills/
+│   ├── product-skills/
+│   └── sales-skills/
+├── meta-skills/                 # 6
+├── obsidian-skills/             # 8
+└── tools-skills/                # 6
 ```
+
+分类桶是分类真源。根目录那 43 个目录也是合法 skill 名；六个名字两边都有，根上的副本可能分叉。
 
 ## Skills by Category
 
 ### Standalone Skills
 
+仓库根上带 `SKILL.md` 的目录（43）。装或改之前先看路径，不要只认分类桶。
+
+- **add-just-doctor** — Add a repository `just doctor` that checks the local env file and service deps.
+- **agent-browser** — Browser automation CLI for AI agents.
+- **ast-grep** — Structural code search and analysis with ast-grep rules.
+- **automation-memory** — Resolve and maintain recurring Codex automation memory.
+- **browser** — Browser automation over Chrome DevTools Protocol.
+- **browser-harness** — Direct browser control via CDP.
+- **caveman** — Ultra-compressed communication mode.
 - **change-evidence** — Screen-recorded acceptance evidence for user-facing UI/UX and frontend changes.
-- [herdr-worktrunk](herdr-worktrunk/SKILL.md) prepares task environments, checks dev services, resumes Herdr agents, and verifies delivery through Worktrunk project commands.
+- **chendongdong-digital-twin** — Evidence-based Chen Dongdong operating perspective.
+- **codex-dynamic-workflows** — Plan and run Codex-native dynamic workflows.
+- **computer-use** — Drive local desktop apps through Orca computer-use.
+- **darwin-skill** — Autonomous skill optimizer inspired by Karpathy's autoresearch.
+- **diagnose** — Disciplined diagnosis loop for hard bugs and performance regressions.
+- **excalidraw-diagram** — Generate Excalidraw diagrams from text.
+- **find-skills** — Discover and install agent skills.
+- **go-live** — 每次改完就部署到公开预览/生产 URL。
+- **grill-me** — Interview a plan or design until the decision tree is resolved.
+- **grill-with-docs** — Grill a plan against the domain model and update docs.
+- **handoff** — Compact the current conversation into a handoff document.
+- **herdr-worktrunk** — Prepare Herdr/Worktrunk task environments and verify delivery.
+- **huashu-nuwa** — 从人名/主题生成可运行的人物 Skill。
+- **improve-codebase-architecture** — Find deepening opportunities from CONTEXT.md and ADRs.
+- **loop** — Recurring prompt loop (`$loop` only).
+- **mermaid-visualizer** — Turn text into Mermaid diagrams.
+- **obsidian-canvas-creator** — Create Obsidian Canvas files from text.
+- **oldwinter-mode** — Personal working conventions: terse Chinese-first replies, evidence-first verification, commit-to-merge ship loop.
+- **orca-cli** — Drive a running Orca editor (worktrees, terminals, embedded browser).
+- **orchestration** — Multi-agent coordination through Orca orchestration.
+- **planning-with-files-zh** — Manus 风格的文件规划（task_plan / findings / progress）。
+- **prototype** — Build a throwaway prototype before committing to a design.
+- **remotion-best-practices** — Best practices for Remotion video in React.
+- **setup-matt-pocock-skills** — Wire engineering skills to this repo's issue tracker.
+- **skill-creator** — Guide for creating new skills.
+- **skillshare** — Sync AI CLI skills across many tools from one source.
+- **supergoal** — Plan and autonomously build a software task end-to-end.
+- **tdd** — Test-driven development with a red-green-refactor loop.
+- **to-issues** — Break a plan into independently grabbable tracker issues.
+- **to-prd** — Turn the current conversation into a PRD on the tracker.
+- **triage** — Triage issues through a role-driven state machine.
+- **windows-storage-audit** — Scan Windows disks, explain physical storage use, and run scoped cleanup with evidence.
+- **write-a-skill** — Create skills with progressive disclosure and bundled resources.
+- **yansu-agent-cli** — Sync project knowledge and run Yansu workflow commands.
+- **zoom-out** — Zoom out to broader context or a higher-level view.
+
+六个名字同时出现在根目录和分类桶：`agent-browser`、`excalidraw-diagram`、`find-skills`、`mermaid-visualizer`、`remotion-best-practices`、`skill-creator`。分类桶是分类真源；根目录副本可能分叉（`find-skills` 已经和 `meta-skills/find-skills` 分叉）。
 
 ### Base Skills (6 skills)
 Foundational skills used across many workflows:
@@ -63,7 +110,7 @@ Foundational skills used across many workflows:
 - **supabase-postgres-best-practices** — Postgres performance optimization from Supabase
 - **ui-ux-pro-max** — UI/UX design intelligence (50 styles, 9 stacks, shadcn/ui)
 
-### DevOps Skills (16 skills)
+### DevOps Skills (13 skills)
 Infrastructure, CI/CD, cloud operations, and environment management:
 - **argocd-cli** — GitOps deployments with ArgoCD
 - **aws-api-billing-service-onboarding** — AWS billing/quota monitoring integration
@@ -77,10 +124,7 @@ Infrastructure, CI/CD, cloud operations, and environment management:
 - **kubectl-cli** — Kubernetes cluster operations
 - **release-skills** — Universal release workflow (Node.js, Python, Rust, etc.)
 - **simplex-cli** — Simplex Router admin CLI
-- **sync-ci-to-staging** — Sync CI configs to staging
-- **sync-ci-to-staging-prod** — Sync CI configs to staging and production
 - **sync-env** — Sync CI environment configs with safety gates
-- **sync-to-prod** — Promote staging configuration to production
 
 ### Lenny Skills (119 skills)
 Skill packs from [Refound AI](https://refoundai.com/lenny-skills/) covering product, leadership, marketing, sales, career, and more.
@@ -164,7 +208,7 @@ Skills about creating, reviewing, and managing skills:
 - **lenny-skillpack-creator** — Convert Lenny skills to skill pack format
 - **skill-creator** — Guide for creating new skills
 - **skill-review** — Skill quality review
-- **skills-readme-updater** — Update README.md from skill metadata
+- **skills-readme-updater** — Audit the repo skill tree against this handwritten README; does not write README.md
 - **sync-skills-manager** — Sync skills between repo and system directories
 
 ### Obsidian Skills (8 skills)
@@ -178,18 +222,22 @@ Note-taking and knowledge management with Obsidian:
 - **obsidian-markdown** — Obsidian Flavored Markdown syntax
 - **obsidian-note-capture** — Capture docs, research, and deliverables into oldwinter-notes
 
-### Tools Skills (5 skills)
+### Tools Skills (6 skills)
 Automation and tooling helpers:
 - **agent-browser** — Browser automation CLI for AI agents
 - **justfile** — Justfile creation and management
+- **lev8-multi-case-pressure-test** — Lev8 multi-case browser pressure tests from CSV/tabular cases
 - **mermaid-visualizer** — Text-to-Mermaid diagram generation
 - **notebooklm** — Google NotebookLM automation
 - **project-guidelines-example** — Project guidelines template
 
 ## Statistics
 
-- **Total Skills**: 161 (unique by directory name)
-- **Top-level Categories**: 7 (`base-skills`, `devops-skills`, `lenny-skills`, `meta-skills`, `obsidian-skills`, `tools-skills`, plus `lenny-skills` sub-categories)
+- **Skill directories**: 201
+- **Unique names**: 195
+- **Root / standalone**: 43
+- **Category buckets**: `base-skills` (6), `devops-skills` (13), `lenny-skills` (119), `meta-skills` (6), `obsidian-skills` (8), `tools-skills` (6)
+- **Name collisions**: 6
 
 ## Multi-Agent Global Paths
 
@@ -259,21 +307,15 @@ Common commands:
 ```bash
 just help
 just test-sync
+just audit-readme
 just validate-skill obsidian-skills/obsidian-bases
-just obsidian-import
-just obsidian-export
-just obsidian-sync
 just sync-status
 just sync-diff
 ```
 
 `just validate-skill` and `just validate-skillpack` require `PyYAML` because they wrap the repository validator scripts.
 
-Override the default Obsidian vault path when needed:
-
-```bash
-OBSIDIAN_VAULT=/path/to/vault just obsidian-sync
-```
+Obsidian sidecar import/export is still a plan in `docs/plans/2026-03-08-obsidian-skill-state-sync.md`. There is no `just obsidian-*` recipe until those scripts land in the tree.
 
 ## License
 
@@ -284,5 +326,6 @@ Skills are sourced from various providers:
 
 ---
 
-**Last Updated**: 2026-08-10
-**Total Skills**: 160
+**Last Updated**: 2026-09-21
+**Skill directories**: 201
+**Unique names**: 195
