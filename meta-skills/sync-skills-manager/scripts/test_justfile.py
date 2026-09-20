@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -14,6 +15,7 @@ MISSING_OBSIDIAN_SCRIPTS = (
     "meta-skills/sync-skills-manager/scripts/test_export_skills_to_obsidian.py",
     "meta-skills/sync-skills-manager/scripts/test_obsidian_skill_state.py",
 )
+OBSIDIAN_PLAN = "docs/plans/2026-03-08-obsidian-skill-state-sync.md"
 
 
 class JustfileTests(unittest.TestCase):
@@ -21,21 +23,23 @@ class JustfileTests(unittest.TestCase):
         content = JUSTFILE.read_text(encoding="utf-8")
         referenced = sorted(set(LOCAL_SCRIPT_RE.findall(content)))
         missing = [path for path in referenced if not (REPO_ROOT / path).is_file()]
+        self.assertGreater(len(referenced), 0)
+        self.assertEqual(missing, [], f"justfile still points at missing scripts: {missing}")
 
-        self.assertGreater(len(referenced), 0, "Expected the justfile to invoke local scripts")
-        self.assertEqual(missing, [], f"Missing scripts referenced by justfile: {missing}")
-
-    def test_obsidian_recipes_are_not_advertised_without_scripts(self) -> None:
+    def test_obsidian_recipes_fail_closed_with_plan_try(self) -> None:
         content = JUSTFILE.read_text(encoding="utf-8")
         still_present = [path for path in MISSING_OBSIDIAN_SCRIPTS if path in content]
-        self.assertEqual(
-            still_present,
-            [],
-            f"justfile still points at scripts that are not in the tree: {still_present}",
+        self.assertEqual(still_present, [])
+        result = subprocess.run(
+            ["just", "obsidian-sync"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
         )
-        self.assertNotIn("obsidian-import", content)
-        self.assertNotIn("obsidian-export", content)
-        self.assertNotIn("obsidian-sync", content)
+        self.assertEqual(result.returncode, 2, result.stderr + result.stdout)
+        self.assertIn("try: " + OBSIDIAN_PLAN, result.stdout + result.stderr)
+        self.assertNotIn("No such file", result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

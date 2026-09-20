@@ -85,6 +85,31 @@ class CanvasCheckTests(unittest.TestCase):
             self.assertEqual(report["canvases"], 2)
             self.assertEqual(report["references"], 2)
 
+    def test_missing_file_is_invalid_and_does_not_write(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result = subprocess.run(
+                [sys.executable, str(SCRIPT), "--vault", directory, "missing.canvas"],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 1, result.stderr)
+            report = json.loads(result.stdout)
+            self.assertFalse(report["valid"])
+            self.assertTrue(any("missing.canvas" in item for item in report["errors"]))
+            self.assertEqual(list(root.iterdir()), [])
+
+    def test_missing_vault_flag_exits_2(self) -> None:
+        result = subprocess.run(
+            [sys.executable, str(SCRIPT), "check.canvas"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("--vault", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

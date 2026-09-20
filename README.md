@@ -315,7 +315,7 @@ just sync-diff
 
 `just validate-skill` and `just validate-skillpack` require `PyYAML` because they wrap the repository validator scripts.
 
-Obsidian sidecar import/export is still a plan in `docs/plans/2026-03-08-obsidian-skill-state-sync.md`. There is no `just obsidian-*` recipe until those scripts land in the tree.
+Obsidian sidecar import/export is still a plan in `docs/plans/2026-03-08-obsidian-skill-state-sync.md`. `just obsidian-sync` (and friends) exit 2 and print that path.
 
 ## License
 

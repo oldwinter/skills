@@ -13,7 +13,9 @@
 # - sync repo categories <-> runtime agent installs
 #
 # Obsidian sidecar import/export is still a plan
-# (docs/plans/2026-03-08-obsidian-skill-state-sync.md), not a just recipe.
+# (docs/plans/2026-03-08-obsidian-skill-state-sync.md). Recipes below fail closed.
+
+obsidian_plan := "docs/plans/2026-03-08-obsidian-skill-state-sync.md"
 
 default: help
 
@@ -43,6 +45,17 @@ test-sync:
 
 audit-readme:
     python3 meta-skills/skills-readme-updater/scripts/update_readme.py
+
+obsidian-unavailable:
+    @echo "error  Obsidian sidecar scripts are not in this repo yet"
+    @echo "try: {{obsidian_plan}}"
+    @exit 2
+
+obsidian-import: obsidian-unavailable
+obsidian-export: obsidian-unavailable
+obsidian-export-dry: obsidian-unavailable
+obsidian-sync: obsidian-unavailable
+obsidian-state: obsidian-unavailable
 
 validate-skill skill_dir:
     python3 -c 'import importlib.util, sys; sys.exit(0 if importlib.util.find_spec("yaml") else 1)' || { echo "PyYAML is required for validate-skill. Install it with: python3 -m pip install pyyaml"; exit 1; }

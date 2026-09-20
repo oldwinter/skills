@@ -31,6 +31,7 @@ The script will:
 3. Print those lists, name collisions, and README drift
 4. Leave `README.md` unchanged
 5. Exit 1 if the handwritten map drifted from the tree
+6. Refuse `--write` with `try: just audit-readme` so it cannot dump `~/.claude/skills` over the map
 
 ## Workflow: after adding a skill
 

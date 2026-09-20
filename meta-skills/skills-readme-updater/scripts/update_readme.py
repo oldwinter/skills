@@ -199,7 +199,16 @@ def main() -> int:
         default=str(repo_root_from_script()),
         help="Repository root (default: this checkout)",
     )
+    parser.add_argument(
+        "--write",
+        action="store_true",
+        help="Rejected: would overwrite the handwritten two-layer README.",
+    )
     args = parser.parse_args()
+    if args.write:
+        print("error  --write would replace the handwritten two-layer README", file=sys.stderr)
+        print("try: just audit-readme", file=sys.stderr)
+        return 2
     repo = Path(args.repo).resolve()
     print_inventory(repo)
     errors = check(repo)

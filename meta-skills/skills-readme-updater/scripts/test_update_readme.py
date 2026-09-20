@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -134,6 +135,17 @@ class UpdateReadmeTests(unittest.TestCase):
             "- **json-canvas** — demo\n"
         )
         self.assertEqual(names, {"canvas-atlas", "json-canvas"})
+
+    def test_write_is_rejected_with_try_line(self) -> None:
+        result = subprocess.run(
+            [sys.executable, str(SCRIPTS_DIR / "update_readme.py"), "--write"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("error  --write would replace the handwritten two-layer README", result.stderr)
+        self.assertIn("try: just audit-readme", result.stderr)
 
 
 if __name__ == "__main__":
