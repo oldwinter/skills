@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: extractions/setup-just@v2
+      - run: just test-sync
+      - run: just audit-readme
+      - run: python3 -m unittest obsidian-skills/canvas-atlas/tests/test_check_canvas.py
+      - name: obsidian recipes fail closed
+        run: |
+          set +e
+          just obsidian-sync
+          test $? -eq 2
