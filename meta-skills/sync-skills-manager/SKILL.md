@@ -51,7 +51,7 @@ This solves two common issues:
 - Too many skills loaded everywhere (context bloat) while still keeping one global registry.
 
 **Config**
-- Default config file: `system-skills/sync-skills-manager/skills-profiles.json`
+- Default config file: `meta-skills/sync-skills-manager/skills-profiles.json`
 
 **Safety model**
 - `apply` and `normalize` default to **dry-run**. Use `--apply` to change files.
@@ -62,35 +62,35 @@ This solves two common issues:
 **Commands**
 ```bash
 # Show registry + per-agent status
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py status
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py status
 
 # Preview what would change (desired vs current)
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py diff
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py diff
 
 # 1) Sync Codex/registry/repo (incremental, no delete)
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py sync
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py sync
 
 # 2) Normalize drift (copies/non-canonical links -> canonical symlinks, with backups)
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py normalize --dry-run
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py normalize --apply
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py normalize --dry-run
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py normalize --apply
 
 # 3) Apply enable/disable sets (remove extra canonical links, add missing links)
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py apply --dry-run
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py apply --apply
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py apply --dry-run
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py apply --apply
 
 # One-shot daily workflow (sync -> normalize -> apply)
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py refresh --apply
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py refresh --apply
 
 # Manage by star ratings (1-7)
 # Keep only 7-star skills (other agents). claude-code registry itself is skipped.
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode only --stars 7 --dry-run
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode only --stars 7 --apply
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode only --stars 7 --dry-run
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode only --stars 7 --apply
 
 # Batch install by stars (e.g. add 6-star and 5-star)
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode install --stars 6,5 --apply
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode install --stars 6,5 --apply
 
 # Batch uninstall by stars
-python3 system-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode uninstall --stars 5 --apply
+python3 meta-skills/sync-skills-manager/scripts/skills_profiles.py stars --mode uninstall --stars 5 --apply
 ```
 
 **Backups**
@@ -107,25 +107,25 @@ Check which supported agents are installed locally, list recognized skills, and 
 
 ```bash
 # Scan all supported agents
-python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py scan
+python3 meta-skills/sync-skills-manager/scripts/agent_skills_audit.py scan
 
 # Only installed agents, with skills preview
-python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py scan --installed-only --with-skills
+python3 meta-skills/sync-skills-manager/scripts/agent_skills_audit.py scan --installed-only --with-skills
 
 # List full skills for selected agents
-python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py skills --installed-only --agent codex,cursor
+python3 meta-skills/sync-skills-manager/scripts/agent_skills_audit.py skills --installed-only --agent codex,cursor
 
 # Diff codex vs cursor
-python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py diff --left codex --right cursor
+python3 meta-skills/sync-skills-manager/scripts/agent_skills_audit.py diff --left codex --right cursor
 
 # Diff one baseline against multiple agents
-python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py diff --left codex --right cursor,amp,claude-code
+python3 meta-skills/sync-skills-manager/scripts/agent_skills_audit.py diff --left codex --right cursor,amp,claude-code
 
 # Sync check: compare installed agents against canonical claude-code
-python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py sync-check --canonical-agent claude-code --installed-only
+python3 meta-skills/sync-skills-manager/scripts/agent_skills_audit.py sync-check --canonical-agent claude-code --installed-only
 
 # Sync check for selected agents
-python3 system-skills/sync-skills-manager/scripts/agent_skills_audit.py sync-check --canonical-agent claude-code --agent codex,cursor,amp
+python3 meta-skills/sync-skills-manager/scripts/agent_skills_audit.py sync-check --canonical-agent claude-code --agent codex,cursor,amp
 ```
 
 ### `scripts/reclassify_system_skills.py` (category rebalancer)
@@ -134,22 +134,22 @@ Rebalance `system-skills` category distribution (defaults to reclassifying `tool
 
 ```bash
 # Preview reclassification plan
-python3 system-skills/sync-skills-manager/scripts/reclassify_system_skills.py --from-category tools-skills
+python3 meta-skills/sync-skills-manager/scripts/reclassify_system_skills.py --from-category tools-skills
 
 # Apply reclassification
-python3 system-skills/sync-skills-manager/scripts/reclassify_system_skills.py --from-category tools-skills --apply
+python3 meta-skills/sync-skills-manager/scripts/reclassify_system_skills.py --from-category tools-skills --apply
 ```
 
 ### `scripts/flatten_system_skills_layout.py` (layout simplifier)
 
-Flatten legacy `system-skills/<category>/<skill>` into repo-root `<category>/<skill>` while preserving `system-skills/sync-skills-manager/`.
+Flatten legacy `system-skills/<category>/<skill>` into repo-root `<category>/<skill>` while preserving `meta-skills/sync-skills-manager/`.
 
 ```bash
 # Preview flatten/migration actions
-python3 system-skills/sync-skills-manager/scripts/flatten_system_skills_layout.py
+python3 meta-skills/sync-skills-manager/scripts/flatten_system_skills_layout.py
 
 # Apply migration actions
-python3 system-skills/sync-skills-manager/scripts/flatten_system_skills_layout.py --apply
+python3 meta-skills/sync-skills-manager/scripts/flatten_system_skills_layout.py --apply
 ```
 
 ## Usage

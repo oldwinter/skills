@@ -158,7 +158,7 @@ def list_registry_skills(registry_dir: Path) -> tuple[set[str], set[str]]:
 
 
 def guess_repo_root() -> Path:
-    # This script lives at: <repo>/system-skills/sync-skills-manager/scripts/skills_profiles.py
+    # This script lives at: <repo>/meta-skills/sync-skills-manager/scripts/skills_profiles.py
     return Path(__file__).resolve().parents[3]
 
 

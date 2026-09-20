@@ -1,4 +1,4 @@
-# system-skills/sync-skills-manager
+# meta-skills/sync-skills-manager
 
 ## OVERVIEW
 Sync tooling for repository-canonical skill categories ↔ runtime installs (`~/.claude/skills` and other agents).
