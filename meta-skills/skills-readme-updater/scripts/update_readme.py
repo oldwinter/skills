@@ -20,6 +20,14 @@ BUCKETS = (
     "obsidian-skills",
     "tools-skills",
 )
+BUCKET_HEADINGS = {
+    "base-skills": "Base Skills",
+    "devops-skills": "DevOps Skills",
+    "lenny-skills": "Lenny Skills",
+    "meta-skills": "Meta Skills",
+    "obsidian-skills": "Obsidian Skills",
+    "tools-skills": "Tools Skills",
+}
 COLLISIONS = (
     "agent-browser",
     "excalidraw-diagram",
@@ -28,6 +36,7 @@ COLLISIONS = (
     "remotion-best-practices",
     "skill-creator",
 )
+SKILL_NAME = r"[A-Za-z0-9][A-Za-z0-9_.-]*"
 
 
 def repo_root_from_script() -> Path:
@@ -68,20 +77,23 @@ def all_skill_dirs(repo: Path) -> list[Path]:
     return found
 
 
-def standalone_section(readme: str) -> str | None:
+def heading_section(readme: str, heading: str) -> str | None:
     match = re.search(
-        r"^### Standalone Skills.*?(?=^### |\Z)",
+        rf"^### {re.escape(heading)}.*?(?=^### |\Z)",
         readme,
         flags=re.MULTILINE | re.DOTALL,
     )
     return match.group(0) if match else None
 
 
-def listed_in_standalone(section: str, name: str) -> bool:
-    return bool(
-        re.search(rf"\*\*{re.escape(name)}\*\*", section)
-        or re.search(rf"\[{re.escape(name)}\]\(", section)
-    )
+def standalone_section(readme: str) -> str | None:
+    return heading_section(readme, "Standalone Skills")
+
+
+def listed_skill_names(section: str) -> set[str]:
+    names = set(re.findall(rf"\*\*({SKILL_NAME})\*\*", section))
+    names.update(re.findall(rf"\[({SKILL_NAME})\]\(", section))
+    return names
 
 
 def parse_stat(readme: str, label: str) -> int | None:
@@ -101,9 +113,28 @@ def check(repo: Path) -> list[str]:
         errors.append("audit-readme: README missing ### Standalone Skills section")
         standalone = ""
 
-    for name in root_skills(repo):
-        if not listed_in_standalone(standalone, name):
+    roots = root_skills(repo)
+    listed_standalone = listed_skill_names(standalone)
+    for name in roots:
+        if name not in listed_standalone:
             errors.append(f"audit-readme: Standalone Skills missing root skill {name}")
+    for name in sorted(listed_standalone - set(roots)):
+        errors.append(f"audit-readme: Standalone Skills lists unknown {name}")
+
+    buckets = bucket_skills(repo)
+    for bucket, heading in BUCKET_HEADINGS.items():
+        if bucket not in buckets:
+            continue
+        tree_names = set(buckets[bucket])
+        section = heading_section(readme, heading)
+        if section is None:
+            errors.append(f"audit-readme: README missing ### {heading} section")
+            continue
+        listed = listed_skill_names(section)
+        for name in sorted(tree_names - listed):
+            errors.append(f"audit-readme: {heading} missing {name}")
+        for name in sorted(listed - tree_names):
+            errors.append(f"audit-readme: {heading} lists unknown {name}")
 
     for name in COLLISIONS:
         if not re.search(rf"`{re.escape(name)}`", readme):
