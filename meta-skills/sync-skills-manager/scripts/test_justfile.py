@@ -41,6 +41,19 @@ class JustfileTests(unittest.TestCase):
         self.assertIn("try: " + OBSIDIAN_PLAN, result.stdout + result.stderr)
         self.assertNotIn("No such file", result.stdout + result.stderr)
 
+    def test_test_sync_recipe_uses_discovery_for_path_based_tests(self) -> None:
+        result = subprocess.run(
+            ["just", "--dry-run", "test-sync"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        dry_run = result.stdout + result.stderr
+        self.assertIn("python3 -m unittest discover", dry_run)
+        self.assertNotIn("meta-skills/sync-skills-manager/scripts/test_", dry_run)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
