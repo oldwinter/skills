@@ -14,22 +14,26 @@ Primary unit = a *skill directory* containing:
 
 ### Structure
 
+Two layers. Category buckets are the classification source of truth; 41 root directories are also installable skill names. Six names exist in both layers and may diverge (`find-skills` already does). See `README.md` Standalone Skills.
+
 ```
 skills/
 ├── AGENTS.md
 ├── README.md
+├── <41 root skill directories>
 ├── base-skills/           # Foundational / cross-domain skills (6)
-├── devops-skills/         # DevOps and infrastructure (16)
+├── devops-skills/         # DevOps and infrastructure (13)
 ├── lenny-skills/          # Lenny / Refound AI skill packs (119)
-│   ├── leadership-skills/ #   Leadership & management (29)
-│   ├── marketing-skills/  #   Marketing & content (25)
-│   ├── product-skills/    #   Product & growth (37)
-│   ├── sales-skills/      #   Sales & GTM (8)
-│   └── (20 direct skills) #   Career, AI, communication, etc.
+│   ├── leadership-skills/
+│   ├── marketing-skills/
+│   ├── product-skills/
+│   └── sales-skills/
 ├── meta-skills/           # Skills about skills (6)
 ├── obsidian-skills/       # Obsidian vault management (8)
-└── tools-skills/          # Tooling & automation (5)
+└── tools-skills/          # Tooling & automation (6)
 ```
+
+`just check-readme-map` verifies the handwritten README map against this tree.
 
 ## Multi-Agent Global Paths (vercel-labs/skills)
 
@@ -121,6 +125,8 @@ The frontmatter is parsed by scripts; keep it simple:
 
 | Need | Location |
 |------|----------|
+| Root / standalone skills | repo root (`add-just-doctor`, `change-evidence`, …) |
+| Name collisions | `README.md` Standalone Skills |
 | Foundational skills | `base-skills/` |
 | DevOps / infra skills | `devops-skills/` |
 | Lenny / product skills | `lenny-skills/` |
