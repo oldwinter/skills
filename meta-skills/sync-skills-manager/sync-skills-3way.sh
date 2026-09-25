@@ -270,8 +270,11 @@ cmd_status() {
   codex_list="$(mktemp)"
   repo_list="$(mktemp)"
 
+  # comm(1) checks C collation. Locale sort (de_DE, en_US) treats '-' as
+  # ignorable, so code-review / codebase-design look unsorted and
+  # `just sync-3way-status` dies with no next step.
   find "$CLAUDE_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) \
-    -exec sh -c '[ -f "$1/SKILL.md" ] && basename "$1"' _ {} \; | sort -u > "$claude_list"
+    -exec sh -c '[ -f "$1/SKILL.md" ] && basename "$1"' _ {} \; | LC_ALL=C sort -u > "$claude_list"
 
   if [ -d "$CODEX_DIR/.system" ]; then
     find "$CODEX_DIR/.system" -mindepth 1 -maxdepth 1 -type d \
@@ -282,10 +285,10 @@ cmd_status() {
 
   find "$CODEX_DIR" -mindepth 1 -maxdepth 1 \( -type d -o -type l \) \
     -exec sh -c 'name="$(basename "$1")"; [ "$name" = ".system" ] && exit 0; [ -f "$1/SKILL.md" ] && echo "$name"' _ {} \; \
-    | sort -u >> "$codex_list"
-  sort -u "$codex_list" -o "$codex_list"
+    | LC_ALL=C sort -u >> "$codex_list"
+  LC_ALL=C sort -u "$codex_list" -o "$codex_list"
 
-  find "$REPO_ROOT" -type f -name 'SKILL.md' -exec dirname {} \; | xargs -I{} basename {} | sort -u > "$repo_list"
+  find "$REPO_ROOT" -type f -name 'SKILL.md' -exec dirname {} \; | xargs -I{} basename {} | LC_ALL=C sort -u > "$repo_list"
 
   local claude_count codex_count repo_count
   claude_count="$(wc -l < "$claude_list" | tr -d ' ')"
@@ -305,10 +308,10 @@ cmd_status() {
   echo ""
 
   local claude_only repo_only codex_only codex_diff
-  claude_only="$(comm -23 "$claude_list" "$repo_list" | wc -l | tr -d ' ')"
-  repo_only="$(comm -13 "$claude_list" "$repo_list" | wc -l | tr -d ' ')"
-  codex_only="$(comm -23 "$codex_list" "$claude_list" | wc -l | tr -d ' ')"
-  codex_diff="$(comm -3 "$codex_list" "$claude_list" | wc -l | tr -d ' ')"
+  claude_only="$(LC_ALL=C comm -23 "$claude_list" "$repo_list" | wc -l | tr -d ' ')"
+  repo_only="$(LC_ALL=C comm -13 "$claude_list" "$repo_list" | wc -l | tr -d ' ')"
+  codex_only="$(LC_ALL=C comm -23 "$codex_list" "$claude_list" | wc -l | tr -d ' ')"
+  codex_diff="$(LC_ALL=C comm -3 "$codex_list" "$claude_list" | wc -l | tr -d ' ')"
 
   echo "name-level diff summary"
   echo "  claude only vs repo : $claude_only"
