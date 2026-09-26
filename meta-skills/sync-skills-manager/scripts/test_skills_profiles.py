@@ -6,6 +6,7 @@ import sys
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest.mock import patch
 
 
 def load_module(path: Path):
@@ -24,6 +25,20 @@ SKILLS_PROFILES = load_module(Path(__file__).resolve().parent / "skills_profiles
 def _write_skill(dir_path: Path) -> None:
     dir_path.mkdir(parents=True, exist_ok=True)
     (dir_path / "SKILL.md").write_text("---\nname: test\ndescription: test\n---\n", encoding="utf-8")
+
+
+class SyncTests(unittest.TestCase):
+    def test_run_sync_uses_bundled_script(self) -> None:
+        with TemporaryDirectory() as td:
+            repo_root = Path(td)
+            with patch.object(SKILLS_PROFILES.subprocess, "run") as run:
+                SKILLS_PROFILES.run_sync(repo_root)
+
+            script = Path(__file__).resolve().parents[1] / "sync-skills-3way.sh"
+            run.assert_called_once_with(
+                ["bash", str(script), "sync"], cwd=str(repo_root), check=True
+            )
+            self.assertTrue(Path(run.call_args.args[0][1]).is_file())
 
 
 class DesiredSetTests(unittest.TestCase):

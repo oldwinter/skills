@@ -537,7 +537,7 @@ def normalize_agent(
 
 
 def run_sync(repo_root: Path) -> None:
-    script = repo_root / "sync-skills-3way.sh"
+    script = Path(__file__).resolve().parents[1] / "sync-skills-3way.sh"
     if not script.exists():
         die(f"Sync script not found: {script}")
     subprocess.run(["bash", str(script), "sync"], cwd=str(repo_root), check=True)
