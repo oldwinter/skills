@@ -10,6 +10,9 @@ import tempfile
 import unittest
 from unittest import mock
 
+# Resolve the sibling module when unittest runs from the repository root.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 import scan_storage
 
 SCANNER = Path(__file__).with_name("scan_storage.py")
