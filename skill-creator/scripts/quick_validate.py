@@ -39,7 +39,12 @@ def validate_skill(skill_path):
         return False, f"Invalid YAML in frontmatter: {e}"
 
     # Define allowed properties
-    ALLOWED_PROPERTIES = {'name', 'description', 'license', 'allowed-tools', 'metadata'}
+    ALLOWED_PROPERTIES = {
+        # agentskills.io spec fields
+        'name', 'description', 'license', 'compatibility', 'allowed-tools', 'metadata',
+        # Behavioral keys consumed by agent runtimes; must stay top-level.
+        'argument-hint', 'disable-model-invocation', 'user-invocable', 'hidden', 'hooks',
+    }
 
     # Check for unexpected properties (excluding nested keys under metadata)
     unexpected_keys = set(frontmatter.keys()) - ALLOWED_PROPERTIES

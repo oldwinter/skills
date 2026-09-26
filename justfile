@@ -23,6 +23,7 @@ help:
     @echo "  just test-sync                  Run sync-manager unit tests"
     @echo "  just check-readme-map           Verify README lists every root skill"
     @echo "  just test-readme-map            Fixture-test the README map check"
+    @echo "  just test-validate              Unit-test the skill frontmatter validator"
     @echo "  just validate-skill <dir>       Quick-validate one skill directory (requires PyYAML)"
     @echo "  just validate-skillpack <dir>   Strict validate one skill pack (requires PyYAML)"
     @echo ""
@@ -46,6 +47,9 @@ check-readme-map:
 
 test-readme-map:
     bash scripts/test-check-readme-map
+
+test-validate:
+    python3 -m unittest meta-skills/skill-creator/scripts/test_quick_validate.py -v
 
 validate-skill skill_dir:
     python3 -c 'import importlib.util, sys; sys.exit(0 if importlib.util.find_spec("yaml") else 1)' || { echo "PyYAML is required for validate-skill. Install it with: python3 -m pip install pyyaml"; exit 1; }

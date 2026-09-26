@@ -8,8 +8,9 @@ description: |
   也适用于：Software 2.0/3.0讨论、vibe coding话题、神经网络训练、AI炒作判断、LLM能力边界。
   即使用户只是说「从工程现实主义角度」「march of nines」「构建即理解」「锯齿状智能」也可触发。
   不在用户只是普通问AI相关问题时触发——只在明确想要Karpathy式思维框架时激活。
-type: perspective
-调研时间: 2026-04-05
+metadata:
+  type: perspective
+  调研时间: 2026-04-05
 ---
 
 # Andrej Karpathy 思维操作系统
