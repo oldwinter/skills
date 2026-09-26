@@ -34,7 +34,7 @@ skills 一散，各端各写各的，过两周就对不上。这里是我的唯�
 skills/
 ├── AGENTS.md
 ├── README.md
-├── <41 root skill directories>  # standalone install names; list below
+├── <43 root skill directories>  # standalone install names; list below
 ├── base-skills/                 # 6
 ├── devops-skills/               # 13
 ├── lenny-skills/                # 119
@@ -47,13 +47,13 @@ skills/
 └── tools-skills/                # 6
 ```
 
-分类桶是分类真源。根目录那 41 个目录也是合法 skill 名；六个名字两边都有，根上的副本可能分叉。
+分类桶是分类真源。根目录那 43 个目录也是合法 skill 名；六个名字两边都有，根上的副本可能分叉。
 
 ## Skills by Category
 
 ### Standalone Skills
 
-仓库根上带 `SKILL.md` 的目录（41）。装或改之前先看路径，不要只认分类桶。
+仓库根上带 `SKILL.md` 的目录（43）。装或改之前先看路径，不要只认分类桶。
 
 - **add-just-doctor** — Add a repository `just doctor` that checks the local env file and service deps.
 - **agent-browser** — Browser automation CLI for AI agents.
@@ -80,6 +80,7 @@ skills/
 - **loop** — Recurring prompt loop (`$loop` only).
 - **mermaid-visualizer** — Turn text into Mermaid diagrams.
 - **obsidian-canvas-creator** — Create Obsidian Canvas files from text.
+- **oldwinter-mode** — oldwinter's agent style: terse Chinese-first replies, gated autonomy, evidence-first shipping.
 - **orca-cli** — Drive a running Orca editor (worktrees, terminals, embedded browser).
 - **orchestration** — Multi-agent coordination through Orca orchestration.
 - **planning-with-files-zh** — Manus 风格的文件规划（task_plan / findings / progress）。
@@ -93,6 +94,7 @@ skills/
 - **to-issues** — Break a plan into independently grabbable tracker issues.
 - **to-prd** — Turn the current conversation into a PRD on the tracker.
 - **triage** — Triage issues through a role-driven state machine.
+- **windows-storage-audit** — Scan Windows disks and run authorized cleanup with before/after evidence.
 - **write-a-skill** — Create skills with progressive disclosure and bundled resources.
 - **yansu-agent-cli** — Sync project knowledge and run Yansu workflow commands.
 - **zoom-out** — Zoom out to broader context or a higher-level view.
@@ -231,9 +233,9 @@ Automation and tooling helpers:
 
 ## Statistics
 
-- **Skill directories**: 199
-- **Unique names**: 193
-- **Root / standalone**: 41
+- **Skill directories**: 201
+- **Unique names**: 195
+- **Root / standalone**: 43
 - **Category buckets**: `base-skills` (6), `devops-skills` (13), `lenny-skills` (119), `meta-skills` (6), `obsidian-skills` (8), `tools-skills` (6)
 - **Name collisions**: 6
 
@@ -324,5 +326,5 @@ Skills are sourced from various providers:
 ---
 
 **Last Updated**: 2026-09-16
-**Skill directories**: 199
-**Unique names**: 193
+**Skill directories**: 201
+**Unique names**: 195
