@@ -270,6 +270,15 @@ relink_target_dir() {
   local target_dir="$1"
   mkdir -p "$target_dir"
 
+  # Refuse to wipe non-skill dirs: targets must resolve to a `skills` dir under $HOME.
+  local resolved_dir resolved_home
+  resolved_dir="$(cd "$target_dir" && pwd -P)"
+  resolved_home="$(cd "$HOME" && pwd -P)"
+  if [ "$(basename "$resolved_dir")" != "skills" ] || [[ "$resolved_dir" != "$resolved_home"/* ]]; then
+    log_warn "Skipping link-all target (not a skills dir under \$HOME): $target_dir"
+    return 0
+  fi
+
   while IFS= read -r -d '' entry; do
     local name
     name="$(basename "$entry")"
