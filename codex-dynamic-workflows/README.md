@@ -17,7 +17,7 @@ npx skills@latest add oldwinter/codex-dynamic-workflows -g -y
 Or install from a local checkout:
 
 ```bash
-npx skills@latest add /Users/oldwinter/codex-dynamic-workflows -g -y
+npx skills@latest add /path/to/codex-dynamic-workflows -g -y
 ```
 
 For a project-level install, run the same command inside the target project without `-g`.

@@ -113,8 +113,8 @@ When presenting improvements:
 | Missing skill-review | New requirement | Created skill-review |
 
 ## Files Modified
-- `/Users/oldwinter/.claude/skills/tasknotes-skill/SKILL.md`
-- `/Users/oldwinter/.claude/skills/skill-review/SKILL.md`
+- `~/.claude/skills/tasknotes-skill/SKILL.md`
+- `~/.claude/skills/skill-review/SKILL.md`
 ```
 
 ## Integration with Previous Session

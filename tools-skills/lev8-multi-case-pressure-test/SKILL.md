@@ -106,7 +106,7 @@ Use statuses such as `success`, `running`, `blocked_needs_info`, `timeout_no_tab
 Use:
 
 ```bash
-python3 /Users/cdd/.codex/skills/lev8-multi-case-pressure-test/scripts/extract_cases.py \
+python3 ~/.codex/skills/lev8-multi-case-pressure-test/scripts/extract_cases.py \
   /path/to/cases.csv --limit 10
 ```
 
