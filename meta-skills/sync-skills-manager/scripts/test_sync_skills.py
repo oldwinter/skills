@@ -81,6 +81,43 @@ class LinkAllTargetGuardTests(unittest.TestCase):
                 str(registry / "skill-a"),
             )
 
+    def test_link_all_skips_symlinked_ancestor_with_dotdot(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            home = root / "home"
+            home.mkdir()
+            (home / "skills").mkdir()
+            registry = root / "claude-skills"
+            _write_skill(registry / "skill-a")
+
+            outside_skills = root / "outside" / "skills"
+            outside_skills.mkdir(parents=True)
+            (outside_skills / "keepme.txt").write_text("sentinel", encoding="utf-8")
+            deep = root / "outside" / "deep"
+            deep.mkdir()
+            (home / "alias").symlink_to(deep, target_is_directory=True)
+
+            # Logically $HOME/skills, physically <outside>/skills.
+            sneaky = str(home / "alias") + "/../skills"
+            legit = home / "agent" / "skills"
+
+            proc = _run_link_all(home, registry, [sneaky, str(legit)])
+
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertEqual(
+                (outside_skills / "keepme.txt").read_text(encoding="utf-8"),
+                "sentinel",
+            )
+            self.assertFalse((outside_skills / "skill-a").exists())
+            self.assertFalse((outside_skills / "skill-a").is_symlink())
+            self.assertEqual(proc.stdout.count("Skipping link-all target"), 1)
+
+            self.assertTrue((legit / "skill-a").is_symlink())
+            self.assertEqual(
+                os.readlink(legit / "skill-a"),
+                str(registry / "skill-a"),
+            )
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
