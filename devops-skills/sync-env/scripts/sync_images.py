@@ -19,6 +19,7 @@ Options:
 """
 
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
@@ -33,12 +34,15 @@ OVERLAY_MAP = {
 
 
 def find_gitops_root() -> Path:
-    """查找 simplex-gitops 仓库根目录。"""
+    """查找 simplex-gitops 仓库根目录（优先使用 SIMPLEX_GITOPS_ROOT 环境变量）。"""
     candidates = [
         Path.cwd(),
         Path.cwd() / "simplex-gitops",
-        Path.home() / "Code" / "all-code-in-mba" / "simplex-gitops",
     ]
+
+    env_root = os.environ.get("SIMPLEX_GITOPS_ROOT")
+    if env_root:
+        candidates.insert(0, Path(env_root).expanduser())
 
     for candidate in candidates:
         if (candidate / "kubernetes" / "overlays").exists():

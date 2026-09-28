@@ -362,11 +362,15 @@ make compare-images-detail                     # 详细 Python 对比
 
 ### 脚本未找到仓库
 
-确保你在 simplex-gitops 目录中或明确设置路径：
+确保你在 simplex-gitops 目录中，或通过 `SIMPLEX_GITOPS_ROOT` 环境变量指定仓库路径：
 
 ```bash
 cd /path/to/simplex-gitops
 python3 ~/.cursor/skills/sync-env/scripts/sync_images.py --diff
+
+# 或者显式指定仓库根目录
+SIMPLEX_GITOPS_ROOT=/path/to/simplex-gitops \
+  python3 ~/.cursor/skills/sync-env/scripts/sync_images.py --diff
 ```
 
 ### CI 中未找到镜像
