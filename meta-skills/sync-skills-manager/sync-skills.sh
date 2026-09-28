@@ -248,16 +248,50 @@ get_canonical_skill_names() {
     -exec sh -c 'p="$1"; [ -f "$p/SKILL.md" ] && basename "$p"' _ {} \; 2>/dev/null | sort -u
 }
 
+# Print the canonical physical form of a directory path. Existing components
+# are resolved with `cd -P` so symlinked ancestors cannot hide `..` escapes;
+# trailing components that do not exist yet are appended and collapsed
+# lexically, which is sound below an already-canonical prefix.
+physical_dir() {
+  local dir="$1" tail=""
+  while [ ! -d "$dir" ]; do
+    tail="/${dir##*/}$tail"
+    case "$dir" in
+      */*)
+        dir="${dir%/*}"
+        [ -n "$dir" ] || dir="/"
+        ;;
+      *) dir="." ;;
+    esac
+  done
+  local resolved
+  resolved="$(cd -P -- "$dir" 2>/dev/null && pwd -P)" || return 1
+
+  local combined="${resolved%/}$tail"
+  local -a parts
+  local comp norm=""
+  IFS='/' read -r -a parts <<< "$combined"
+  for comp in "${parts[@]}"; do
+    case "$comp" in
+      ""|.) ;;
+      ..) norm="${norm%/*}" ;;
+      *) norm="$norm/$comp" ;;
+    esac
+  done
+  printf '%s\n' "${norm:-/}"
+}
+
 is_reserved_entry() {
   local target_dir="$1"
   local entry_name="$2"
+  local home_dir="${3:-$HOME}"
 
   case "$target_dir" in
-    "$HOME/.codex/skills")
+    "$home_dir/.codex/skills")
       [ "$entry_name" = ".system" ]
       return
       ;;
-    "$HOME/.factory/skills")
+    "$home_dir/.factory/skills")
       [ "$entry_name" = "template" ]
       return
       ;;
@@ -268,6 +302,23 @@ is_reserved_entry() {
 
 relink_target_dir() {
   local target_dir="$1"
+
+  # Refuse to wipe non-skill dirs: targets must resolve to a `skills` dir under $HOME.
+  local resolved_dir resolved_home
+  if ! resolved_dir="$(physical_dir "$target_dir")"; then
+    log_warn "Skipping link-all target (unresolvable path): $target_dir"
+    return 0
+  fi
+  if ! resolved_home="$(physical_dir "$HOME")"; then
+    log_warn "Skipping link-all target (unresolvable \$HOME): $target_dir"
+    return 0
+  fi
+  if [ "$(basename "$resolved_dir")" != "skills" ] || [[ "$resolved_dir" != "$resolved_home"/* ]]; then
+    log_warn "Skipping link-all target (not a skills dir under \$HOME): $target_dir"
+    return 0
+  fi
+
+  target_dir="$resolved_dir"
   mkdir -p "$target_dir"
 
   while IFS= read -r -d '' entry; do
@@ -279,7 +330,7 @@ relink_target_dir() {
       continue
     fi
 
-    if is_reserved_entry "$target_dir" "$name"; then
+    if is_reserved_entry "$target_dir" "$name" "$resolved_home"; then
       continue
     fi
 
@@ -289,7 +340,7 @@ relink_target_dir() {
   local linked=0
   while IFS= read -r skill_name; do
     [ -n "$skill_name" ] || continue
-    if is_reserved_entry "$target_dir" "$skill_name"; then
+    if is_reserved_entry "$target_dir" "$skill_name" "$resolved_home"; then
       continue
     fi
     ln -s "$SYSTEM_SKILLS_DIR/$skill_name" "$target_dir/$skill_name"
