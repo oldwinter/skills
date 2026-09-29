@@ -748,5 +748,5 @@ Use your preferred AEO monitoring tool to track citation frequency, context, and
 
 - [Google Search Central](https://developers.google.com/search)
 - [Schema.org](https://schema.org/)
-- [Core Web Vitals](../core-web-vitals/SKILL.md)
-- [Web Quality Audit](../web-quality-audit/SKILL.md)
+- [Website Audit](../audit-website/SKILL.md)
+- [SEO Audit](../seo-audit/SKILL.md)
