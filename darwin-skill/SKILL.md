@@ -372,8 +372,12 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
    - data-field="improvement-1/2/3" → 实际改进摘要
    - data-field="date" → 当前日期
 3. 随机选择风格：hash 设为 swiss/terminal/newspaper 之一
-4. 用 scripts/screenshot.mjs 截图（2x 高清，只截 .card 元素，自动 open 图片）：
+4. 安装依赖，再用 scripts/screenshot.mjs 截图（2x 高清，只截 .card 元素）：
+   cd /path/to/darwin-skill
+   npm install
+   npx playwright install chromium
    node scripts/screenshot.mjs /abs/path/to/card.html /abs/path/to/output.png
+   # 脚本会尝试用当前系统的图片打开命令。打开失败不影响已生成的截图。
    # 回退方案（脚本失败时）：
    npx playwright screenshot "file:///path/to/card.html#[theme]" \
      output.png --viewport-size=960,1280 --wait-for-timeout=2000
@@ -385,7 +389,7 @@ timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 |---|---|
 | `templates/result-card.html` | 3风格主模板（swiss/terminal/newspaper，hash切换） |
 | `templates/result-card-dark.html` / `-white.html` | 单一风格替代模板（需要锁定风格时用） |
-| `scripts/screenshot.mjs` | 2x 高清截图，只截 .card，自动 open |
+| `scripts/screenshot.mjs` | 2x 高清截图，只截 .card，跨平台尝试打开输出 |
 | `results.tsv` | 历次优化日志（9列含 eval_mode） |
 | `{skill目录}/test-prompts.json` | 每个 skill 的测试 prompt 集（用于维度8实测） |
 ```
