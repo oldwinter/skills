@@ -125,5 +125,5 @@ ingress:
 ## See Also
 
 - [workers](../workers/) - Workers with Tunnel integration
-- [access](../access/) - Zero Trust access policies
-- [warp](../warp/) - WARP client for private networks
+- [networking](./networking.md) - Firewall and connectivity requirements
+- [patterns](./patterns.md) - Docker, Kubernetes, and production deployment
