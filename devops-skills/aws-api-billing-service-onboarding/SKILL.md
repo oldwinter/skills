@@ -1,5 +1,5 @@
 ---
-name: api-billing-service-onboarding
+name: aws-api-billing-service-onboarding
 description: This skill should be used when the user requests to add a new third-party API service to the AWS billing/quota monitoring system. It handles the complete onboarding process including adapter creation, Lambda deployment, CloudWatch alarms, Dashboard updates, and verification. Triggers on requests mentioning "add service monitoring", "monitor API balance", "setup quota alerts", "add to billing dashboard", or similar service integration requests.
 ---
 

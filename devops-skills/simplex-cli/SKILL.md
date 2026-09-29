@@ -1,5 +1,5 @@
 ---
-name: simplex-cli-admin
+name: simplex-cli
 description: Use when operating the Simplex Router Admin CLI (`simplex-cli`) or explaining Simplex Router backend terms in Chinese (邀请码/invite codes、白名单/whitelist、积分/credits、成本/cost limits、token 用量/usage、排名/ranking、活跃用户/active users、项目/project data、转化/GTM conversion、邮件/email). Covers auth/config, invite codes & usages, user registration, internal accounts, credits, cost, token usage/stats, rankings, active users, project queries, GTM conversion, and Resend email sending.
 ---
 
