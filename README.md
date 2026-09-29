@@ -77,6 +77,7 @@ skills/
 - **herdr-worktrunk** — Prepare Herdr/Worktrunk task environments and verify delivery.
 - **huashu-nuwa** — 从人名/主题生成可运行的人物 Skill。
 - **improve-codebase-architecture** — Find deepening opportunities from CONTEXT.md and ADRs.
+- **lark-reimbursement** — 飞书采购审批前置核验、报销提单与附件内容验收。
 - **loop** — Recurring prompt loop (`$loop` only).
 - **mermaid-visualizer** — Turn text into Mermaid diagrams.
 - **obsidian-canvas-creator** — Create Obsidian Canvas files from text.
