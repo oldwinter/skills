@@ -100,7 +100,7 @@ Append a `## 补充笔记` section for newly created notes when the sidecar cont
 ### Task 5: Document the workflow
 
 **Files:**
-- Modify: `/Users/oldwinter/oldwinter-notes/Atlas/Skills/∑ Skills 管理.md`
+- Modify: `/path/to/oldwinter-notes/Atlas/Skills/∑ Skills 管理.md`
 
 **Step 1: Add bidirectional sync commands**
 
@@ -126,12 +126,12 @@ Expected: PASS
 
 **Step 2: Import real vault state**
 
-Run: `python3 meta-skills/sync-skills-manager/scripts/import_obsidian_skill_state.py --vault-root /Users/oldwinter/oldwinter-notes`
+Run: `python3 meta-skills/sync-skills-manager/scripts/import_obsidian_skill_state.py --vault-root /path/to/oldwinter-notes`
 
 Expected: sidecar file written under `meta-skills/sync-skills-manager/data/`.
 
 **Step 3: Verify export stays clean**
 
-Run: `python3 meta-skills/sync-skills-manager/scripts/export_skills_to_obsidian.py --vault-root /Users/oldwinter/oldwinter-notes --dry-run --write-base`
+Run: `python3 meta-skills/sync-skills-manager/scripts/export_skills_to_obsidian.py --vault-root /path/to/oldwinter-notes --dry-run --write-base`
 
 Expected: `created=0, updated=0` after import and one fresh export.

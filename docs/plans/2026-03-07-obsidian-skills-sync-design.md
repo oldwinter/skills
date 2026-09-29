@@ -4,7 +4,7 @@
 
 ## Goal
 
-Build a repo-to-Obsidian sync flow so skills from this repository can be managed inside `/Users/oldwinter/oldwinter-notes` with personal ratings, statuses, and tags, without polluting `SKILL.md` frontmatter in the repository.
+Build a repo-to-Obsidian sync flow so skills from this repository can be managed inside `/path/to/oldwinter-notes` with personal ratings, statuses, and tags, without polluting `SKILL.md` frontmatter in the repository.
 
 ## Scope
 

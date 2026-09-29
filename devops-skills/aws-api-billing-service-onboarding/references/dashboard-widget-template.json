@@ -1,0 +1,29 @@
+{
+  "type": "metric",
+  "x": 0,
+  "y": 0,
+  "width": 12,
+  "height": 6,
+  "properties": {
+    "metrics": [
+      [
+        "ThirdPartyAPIBilling",
+        "RemainingRatio",
+        "Service",
+        "SERVICE_NAME"
+      ]
+    ],
+    "view": "timeSeries",
+    "stacked": false,
+    "region": "AWS_REGION",
+    "title": "SERVICE_DISPLAY_NAME remaining ratio",
+    "period": 1800,
+    "stat": "Average",
+    "yAxis": {
+      "left": {
+        "min": 0,
+        "max": 1
+      }
+    }
+  }
+}

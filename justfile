@@ -22,6 +22,7 @@ help:
     @echo "Validation"
     @echo "  just test-sync                  Run sync-manager unit tests"
     @echo "  just check-readme-map           Verify README lists every root skill"
+    @echo "  just check-skill-contracts      Verify audited skill paths and metadata"
     @echo "  just test-readme-map            Fixture-test the README map check"
     @echo "  just validate-skill <dir>       Quick-validate one skill directory (requires PyYAML)"
     @echo "  just validate-skillpack <dir>   Strict validate one skill pack (requires PyYAML)"
@@ -43,6 +44,9 @@ test-sync:
 
 check-readme-map:
     python3 scripts/check-readme-map
+
+check-skill-contracts:
+    python3 scripts/check-skill-contracts
 
 test-readme-map:
     bash scripts/test-check-readme-map

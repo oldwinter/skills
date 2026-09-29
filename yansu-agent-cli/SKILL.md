@@ -11,24 +11,26 @@ description: Use the bundled Yansu CLI to sync project knowledge/context/skills 
 Need to sync Yansu knowledge/context/skills, check Yansu project status, update project knowledge after changes, or manage cron automation jobs.
 
 ## How To Use
-Use the bundled Yansu CLI first, then fallback to PATH:
-- Preferred: "C:\Users\Administrator\.yansu-agent\bin\yansu.exe"
-- Fallback: yansu
+Resolve `yansu` from `PATH` first. If it is not installed on `PATH`, use the bundled binary for the current user:
+- Windows PowerShell: `$env:USERPROFILE\.yansu-agent\bin\yansu.exe`
+- POSIX shells: `$HOME/.yansu-agent/bin/yansu`
+
+The examples below use `yansu`. Replace it with the resolved bundled path when `PATH` lookup fails.
 
 ## Common Commands
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" status
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" pull
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" push
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" sync
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" analyze
+- `yansu status`
+- `yansu pull`
+- `yansu push`
+- `yansu sync`
+- `yansu analyze`
 
 ## Cron Automation Commands
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" cron list                          — list all cron jobs
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" cron show <job-id>                 — show job details
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" cron add --name "X" --schedule "every 5m" --prompt "do Y" [--project /path] [--model sonnet] — create a job
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" cron update <job-id> [--name X] [--schedule X] [--prompt X] [--enabled true|false] — update a job
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" cron delete <job-id>               — delete a job
-- "C:\Users\Administrator\.yansu-agent\bin\yansu.exe" cron run <job-id>                  — trigger immediate execution
+- `yansu cron list` — list all cron jobs
+- `yansu cron show <job-id>` — show job details
+- `yansu cron add --name "X" --schedule "every 5m" --prompt "do Y" [--project /path] [--model sonnet]` — create a job
+- `yansu cron update <job-id> [--name X] [--schedule X] [--prompt X] [--enabled true|false]` — update a job
+- `yansu cron delete <job-id>` — delete a job
+- `yansu cron run <job-id>` — trigger immediate execution
 
 ## Notes
 - Run commands from the target project root (the directory containing .something/project.json).

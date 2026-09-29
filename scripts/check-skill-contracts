@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+
+import json
+import re
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parent.parent
+FAILURES: list[str] = []
+
+
+def fail(message: str) -> None:
+    FAILURES.append(message)
+
+
+def text(relative: str) -> str:
+    return (ROOT / relative).read_text(encoding="utf-8")
+
+
+def require_file(relative: str) -> None:
+    if not (ROOT / relative).is_file():
+        fail(f"missing file: {relative}")
+
+
+def check_frontmatter_names() -> None:
+    for skill_file in sorted(ROOT.rglob("SKILL.md")):
+        content = skill_file.read_text(encoding="utf-8")
+        if not content.startswith("---\n"):
+            continue
+        end = content.find("\n---", 4)
+        if end < 0:
+            continue
+        match = re.search(r"^name:\s*['\"]?([^'\"\n]+)['\"]?\s*$", content[4:end], re.MULTILINE)
+        if match and match.group(1) != skill_file.parent.name:
+            path = skill_file.relative_to(ROOT)
+            fail(f"frontmatter name mismatch: {path}: {match.group(1)} != {skill_file.parent.name}")
+
+
+def check_browser() -> None:
+    content = text("browser/SKILL.md")
+    if ".Codex" in content:
+        fail("browser/SKILL.md uses the non-portable ~/.Codex path")
+    if re.search(r"scripts/(start|nav|eval|screenshot|pick)\.js", content):
+        fail("browser/SKILL.md refers to missing .js commands")
+    for name in ("start", "nav", "eval", "screenshot", "pick"):
+        require_file(f"browser/scripts/{name}.cjs")
+
+
+def check_yansu() -> None:
+    content = text("yansu-agent-cli/SKILL.md")
+    if "Administrator" in content:
+        fail("yansu-agent-cli/SKILL.md embeds the Administrator account")
+    for marker in ("PATH", "USERPROFILE", "$HOME"):
+        if marker not in content:
+            fail(f"yansu-agent-cli/SKILL.md lacks {marker} resolution guidance")
+
+
+def check_links() -> None:
+    expected = {
+        "devops-skills/cloudflare-deploy/references/durable-objects/README.md": [
+            "devops-skills/cloudflare-deploy/references/durable-objects/patterns.md",
+        ],
+        "devops-skills/cloudflare-deploy/references/tunnel/README.md": [
+            "devops-skills/cloudflare-deploy/references/tunnel/networking.md",
+            "devops-skills/cloudflare-deploy/references/tunnel/patterns.md",
+        ],
+        "lenny-skills/continuous-learning/SKILL.md": [
+            "lenny-skills/continuous-learning-v2/SKILL.md",
+        ],
+        "lenny-skills/marketing-skills/seo-aeo-audit/SKILL.md": [
+            "lenny-skills/marketing-skills/audit-website/SKILL.md",
+            "lenny-skills/marketing-skills/seo-audit/SKILL.md",
+        ],
+        "base-skills/remotion-best-practices/rules/voiceover.md": [
+            "base-skills/remotion-best-practices/rules/calculate-metadata.md",
+        ],
+    }
+    for source, targets in expected.items():
+        require_file(source)
+        for target in targets:
+            require_file(target)
+
+    if "](./calculate-metadata)" in text("base-skills/remotion-best-practices/rules/voiceover.md"):
+        fail("voiceover.md contains the extensionless calculateMetadata link")
+    if re.search(r"\.\./(websockets|access|warp)(?:/|\b)", text("devops-skills/cloudflare-deploy/references/durable-objects/README.md") + text("devops-skills/cloudflare-deploy/references/tunnel/README.md")):
+        fail("Cloudflare reference indexes contain links to missing imported sections")
+    if re.search(r"core-web-vitals|web-quality-audit", text("lenny-skills/marketing-skills/seo-aeo-audit/SKILL.md")):
+        fail("seo-aeo-audit links to skills that are not in the repository")
+
+
+def check_aws_scaffold() -> None:
+    template = ROOT / "devops-skills/aws-api-billing-service-onboarding/references/dashboard-widget-template.json"
+    require_file(str(template.relative_to(ROOT)))
+    if template.is_file():
+        try:
+            json.loads(template.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as error:
+            fail(f"invalid dashboard widget JSON: {error}")
+    for relative in (
+        "devops-skills/aws-api-billing-service-onboarding/assets/example_asset.txt",
+        "devops-skills/aws-api-billing-service-onboarding/references/api_reference.md",
+        "devops-skills/aws-api-billing-service-onboarding/scripts/example.py",
+    ):
+        if (ROOT / relative).exists():
+            fail(f"generated placeholder still exists: {relative}")
+
+
+def check_personal_paths() -> None:
+    pattern = re.compile(r"/Users/(oldwinter|alchain|affoon)(?:/|\b)")
+    for path in sorted(ROOT.rglob("*")):
+        if not path.is_file() or ".git" in path.parts:
+            continue
+        try:
+            content = path.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        if pattern.search(content):
+            fail(f"personal machine path: {path.relative_to(ROOT)}")
+
+
+def main() -> int:
+    check_frontmatter_names()
+    check_browser()
+    check_yansu()
+    check_links()
+    check_aws_scaffold()
+    check_personal_paths()
+    if FAILURES:
+        for message in sorted(FAILURES):
+            print(message, file=sys.stderr)
+        return 1
+    print("check-skill-contracts: audited skill contracts pass.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
