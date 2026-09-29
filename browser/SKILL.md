@@ -9,61 +9,62 @@ Minimal Chrome DevTools Protocol (CDP) helpers for browser automation without MC
 
 ## Setup
 
-Install dependencies before first use:
+Run the setup from the skill directory before first use:
 
 ```bash
-npm install --prefix ~/.Codex/skills/browser/browser ws
+cd /path/to/browser
+npm install --prefix browser
 ```
 
 ## Scripts
 
 All scripts connect to Chrome on `localhost:9222`.
 
-### start.js - Launch Chrome
+### start.cjs - Launch Chrome
 
 ```bash
-scripts/start.js              # Fresh profile
-scripts/start.js --profile    # Use persistent profile (keeps cookies/auth)
+node scripts/start.cjs              # Fresh profile
+node scripts/start.cjs --profile    # Use persistent profile (keeps cookies/auth)
 ```
 
-### nav.js - Navigate
+### nav.cjs - Navigate
 
 ```bash
-scripts/nav.js https://example.com        # Navigate current tab
-scripts/nav.js https://example.com --new  # Open in new tab
+node scripts/nav.cjs https://example.com        # Navigate current tab
+node scripts/nav.cjs https://example.com --new  # Open in new tab
 ```
 
-### eval.js - Execute JavaScript
+### eval.cjs - Execute JavaScript
 
 ```bash
-scripts/eval.js 'document.title'
-scripts/eval.js '(() => { const x = 1; return x + 1; })()'
+node scripts/eval.cjs 'document.title'
+node scripts/eval.cjs '(() => { const x = 1; return x + 1; })()'
 ```
 
 Use single expressions or IIFE for multiple statements.
 
-### screenshot.js - Capture Screenshot
+### screenshot.cjs - Capture Screenshot
 
 ```bash
-scripts/screenshot.js
+node scripts/screenshot.cjs
 ```
 
 Returns `{ path, filename }` of saved PNG in temp directory.
 
-### pick.js - Visual Element Picker
+### pick.cjs - Visual Element Picker
 
 ```bash
-scripts/pick.js "Click the submit button"
+node scripts/pick.cjs "Click the submit button"
 ```
 
 Returns element metadata: tag, id, classes, text, href, selector, rect.
 
 ## Workflow
 
-1. Launch Chrome: `scripts/start.js --profile` for authenticated sessions
-2. Navigate: `scripts/nav.js <url>`
-3. Inspect: `scripts/eval.js 'document.querySelector(...)'`
-4. Capture: `scripts/screenshot.js` or `scripts/pick.js`
+1. Launch Chrome: `node scripts/start.cjs --profile` for authenticated sessions
+2. Navigate: `node scripts/nav.cjs <url>`
+3. Inspect: `node scripts/eval.cjs 'document.querySelector(...)'`
+4. Capture: `node scripts/screenshot.cjs` or `node scripts/pick.cjs`
 5. Return gathered data
 
 ## Key Points
