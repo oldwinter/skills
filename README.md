@@ -236,7 +236,7 @@ Automation and tooling helpers:
 
 - **Skill directories**: 202
 - **Unique names**: 196
-- **Root / standalone**: 41
+- **Root / standalone**: 44
 - **Category buckets**: `base-skills` (6), `devops-skills` (13), `lenny-skills` (119), `meta-skills` (6), `obsidian-skills` (8), `tools-skills` (6)
 - **Name collisions**: 6
 
@@ -326,6 +326,6 @@ Skills are sourced from various providers:
 
 ---
 
-**Last Updated**: 2026-09-16
+**Last Updated**: 2026-09-29
 **Skill directories**: 202
 **Unique names**: 196
