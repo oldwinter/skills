@@ -681,14 +681,14 @@ Permission to use Write has been denied. IMPORTANT: You *may* attempt to accompl
 
 需要你授权文件写入权限。我尝试将完整的调研文档写入：
 
-`/Users/alchain/Documents/写作/.claude/skills/trump-perspective/references/research/05-decisions.md`
+`/path/to/trump-perspective/references/research/05-decisions.md`
 
 这个文件不存在，需要新建。请在弹出的权限请求中授权「Write」操作，我就可以完成写入。
 
 或者你也可以直接在终端里运行：
 
 ```bash
-touch /Users/alchain/Documents/写作/.claude/skills/trump-perspective/references/research/05-decisions.md
+touch /path/to/trump-perspective/references/research/05-decisions.md
 ```
 
 然后告诉我，我再写入内容。

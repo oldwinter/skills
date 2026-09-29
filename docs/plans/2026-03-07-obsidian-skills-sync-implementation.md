@@ -64,21 +64,21 @@ Expected: PASS
 
 **Step 2: Dry-run against the real vault**
 
-Run: `python3 meta-skills/sync-skills-manager/scripts/export_skills_to_obsidian.py --vault-root /Users/oldwinter/oldwinter-notes --dry-run`
+Run: `python3 meta-skills/sync-skills-manager/scripts/export_skills_to_obsidian.py --vault-root /path/to/oldwinter-notes --dry-run`
 
 Expected: summary of notes that would be created/updated and base file target.
 
 **Step 3: Apply against the real vault**
 
-Run: `python3 meta-skills/sync-skills-manager/scripts/export_skills_to_obsidian.py --vault-root /Users/oldwinter/oldwinter-notes --write-base`
+Run: `python3 meta-skills/sync-skills-manager/scripts/export_skills_to_obsidian.py --vault-root /path/to/oldwinter-notes --write-base`
 
 Expected: notes synced into `Atlas/Skills` and `Atlas/Bases/skills管理.base` rewritten with the new views.
 
 ### Task 4: Final verification
 
 **Files:**
-- Read: `/Users/oldwinter/oldwinter-notes/Atlas/Skills/*.md`
-- Read: `/Users/oldwinter/oldwinter-notes/Atlas/Bases/skills管理.base`
+- Read: `/path/to/oldwinter-notes/Atlas/Skills/*.md`
+- Read: `/path/to/oldwinter-notes/Atlas/Bases/skills管理.base`
 
 **Step 1: Inspect a sample note**
 

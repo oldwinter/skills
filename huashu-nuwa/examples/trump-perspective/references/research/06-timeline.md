@@ -641,7 +641,7 @@ Permission to use Write has been denied. IMPORTANT: You *may* attempt to accompl
 
 请允许文件写入权限，以便将调研结果保存到：
 
-`/Users/alchain/Documents/写作/.claude/skills/trump-perspective/references/research/06-timeline.md`
+`/path/to/trump-perspective/references/research/06-timeline.md`
 
 如果你希望继续，有两个选项：
 

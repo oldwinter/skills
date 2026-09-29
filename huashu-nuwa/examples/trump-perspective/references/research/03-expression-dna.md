@@ -474,7 +474,7 @@ Permission to use Bash has been denied. IMPORTANT: You *may* attempt to accompli
 
 ---
 
-需要使用Bash创建目录。请问可以允许一下Bash工具权限吗？我需要创建 `/Users/alchain/Documents/写作/.claude/skills/trump-perspective/references/research/` 目录，然后写入调研文件。
+需要使用 Bash 创建目录。请允许创建 `/path/to/trump-perspective/references/research/`，然后写入调研文件。
 
 或者，我可以尝试直接用Write工具写文件，看它是否会自动创建目录。
 
@@ -489,6 +489,6 @@ Permission to use Write has been denied. IMPORTANT: You *may* attempt to accompl
 
 请允许一下文件写入权限，我就可以把调研结果写入：
 
-`/Users/alchain/Documents/写作/.claude/skills/trump-perspective/references/research/03-expression-dna.md`
+`/path/to/trump-perspective/references/research/03-expression-dna.md`
 
 如果目录不存在，也需要Bash权限来创建它。
