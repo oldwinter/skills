@@ -31,9 +31,10 @@ INHERITED_DIR = INSTINCTS_DIR / "inherited"
 EVOLVED_DIR = HOMUNCULUS_DIR / "evolved"
 OBSERVATIONS_FILE = HOMUNCULUS_DIR / "observations.jsonl"
 
-# Ensure directories exist
-for d in [PERSONAL_DIR, INHERITED_DIR, EVOLVED_DIR / "skills", EVOLVED_DIR / "commands", EVOLVED_DIR / "agents"]:
-    d.mkdir(parents=True, exist_ok=True)
+def ensure_dirs():
+    """Ensure directories exist."""
+    for d in [PERSONAL_DIR, INHERITED_DIR, EVOLVED_DIR / "skills", EVOLVED_DIR / "commands", EVOLVED_DIR / "agents"]:
+        d.mkdir(parents=True, exist_ok=True)
 
 
 # ─────────────────────────────────────────────
@@ -471,6 +472,8 @@ def main():
     evolve_parser.add_argument('--generate', action='store_true', help='Generate evolved structures')
 
     args = parser.parse_args()
+
+    ensure_dirs()
 
     if args.command == 'status':
         return cmd_status(args)
