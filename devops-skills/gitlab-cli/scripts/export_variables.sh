@@ -49,4 +49,4 @@ else
 fi
 
 echo "✅ 已导出到 $OUTPUT"
-cat "$OUTPUT"
+echo "⚠️ 文件可能包含敏感信息，请妥善保管。"
