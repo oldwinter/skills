@@ -150,6 +150,32 @@ class WorkflowScriptTests(unittest.TestCase):
             self.assertTrue((workflow_dir / "packets" / "02-module-summary.md").is_file())
             self.assertIn("repo inventory", (workflow_dir / "state.json").read_text(encoding="utf-8"))
 
+    def test_codex_workflow_adapter_unescapes_prompts_once(self) -> None:
+        cases = [
+            (r"\\n", r"\n"),
+            (r"C:\\new", r"C:\new"),
+            (r"\\t", r"\t"),
+            (r"C:\\temp", r"C:\temp"),
+            (r"first\nsecond\tthird", "first\nsecond\tthird"),
+            (r"\\\n", "\\\n"),
+            (r"\\", "\\"),
+            (r"\'\"\`", "'\"`"),
+            (r"\q", r"\q"),
+        ]
+        for source, expected in cases:
+            with self.subTest(source=source):
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    script = Path(temp_dir) / "escapes.workflow.js"
+                    script.write_text(
+                        "export const meta = { name: 'escapes', description: 'escapes' }\n"
+                        f"await agent('before {source} after', {{ label: 'escapes' }})\n",
+                        encoding="utf-8",
+                    )
+                    parsed = self.run_script(str(CODEX_WORKFLOW), str(script), "--json")
+                    data = json.loads(parsed.stdout)
+
+                    self.assertEqual(data["agents"][0]["prompt"], f"before {expected} after")
+
     def test_codex_workflow_adapter_rejects_nondeterminism(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             script = Path(temp_dir) / "bad.workflow.js"

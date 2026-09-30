@@ -257,14 +257,19 @@ def static_js_string(match: re.Match[str], group_name: str, context: str) -> str
 
 
 def unescape_js_string(value: str) -> str:
-    return (
-        value.replace(r"\'", "'")
-        .replace(r"\"", '"')
-        .replace(r"\`", "`")
-        .replace(r"\n", "\n")
-        .replace(r"\t", "\t")
-        .replace(r"\\", "\\")
-    )
+    """Decode supported escapes once, preserving unknown escape sequences."""
+
+    escapes = {"\\": "\\", "n": "\n", "t": "\t", "'": "'", '"': '"', "`": "`"}
+    result: list[str] = []
+    index = 0
+    while index < len(value):
+        if value[index] == "\\" and index + 1 < len(value):
+            result.append(escapes.get(value[index + 1], value[index : index + 2]))
+            index += 2
+        else:
+            result.append(value[index])
+            index += 1
+    return "".join(result)
 
 
 def slugify(value: str) -> str:
