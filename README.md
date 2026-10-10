@@ -53,7 +53,7 @@ skills/
 
 ### Standalone Skills
 
-仓库根上带 `SKILL.md` 的目录（44）。装或改之前先看路径，不要只认分类桶。
+仓库根上带 `SKILL.md` 的目录（45）。装或改之前先看路径，不要只认分类桶。
 
 - **add-just-doctor** — Add a repository `just doctor` that checks the local env file and service deps.
 - **agent-browser** — Browser automation CLI for AI agents.
@@ -68,6 +68,7 @@ skills/
 - **computer-use** — Drive local desktop apps through Orca computer-use.
 - **darwin-skill** — Autonomous skill optimizer inspired by Karpathy's autoresearch.
 - **diagnose** — Disciplined diagnosis loop for hard bugs and performance regressions.
+- **done** — Finish a change: validate, commit, open and merge the PR/MR, reconcile issues (`$done` / `/done` only).
 - **excalidraw-diagram** — Generate Excalidraw diagrams from text.
 - **find-skills** — Discover and install agent skills.
 - **go-live** — 每次改完就部署到公开预览/生产 URL。
@@ -234,9 +235,9 @@ Automation and tooling helpers:
 
 ## Statistics
 
-- **Skill directories**: 202
-- **Unique names**: 196
-- **Root / standalone**: 44
+- **Skill directories**: 203
+- **Unique names**: 197
+- **Root / standalone**: 45
 - **Category buckets**: `base-skills` (6), `devops-skills` (13), `lenny-skills` (119), `meta-skills` (6), `obsidian-skills` (8), `tools-skills` (6)
 - **Name collisions**: 6
 
