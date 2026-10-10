@@ -53,7 +53,7 @@ skills/
 
 ### Standalone Skills
 
-仓库根上带 `SKILL.md` 的目录（45）。装或改之前先看路径，不要只认分类桶。
+仓库根上带 `SKILL.md` 的目录（47）。装或改之前先看路径，不要只认分类桶。
 
 - **add-just-doctor** — Add a repository `just doctor` that checks the local env file and service deps.
 - **agent-browser** — Browser automation CLI for AI agents.
@@ -93,6 +93,8 @@ skills/
 - **skillshare** — Sync AI CLI skills across many tools from one source.
 - **supergoal** — Plan and autonomously build a software task end-to-end.
 - **tdd** — Test-driven development with a red-green-refactor loop.
+- **tdd-pstack** — pstack's bug-fix TDD: a failing regression test before the fix (renamed fork of pstack-claude `tdd`).
+- **teach-pstack** — pstack's teach: explain code plainly through `how` and `why` (renamed fork of pstack-claude `teach`).
 - **to-issues** — Break a plan into independently grabbable tracker issues.
 - **to-prd** — Turn the current conversation into a PRD on the tracker.
 - **triage** — Triage issues through a role-driven state machine.
@@ -235,9 +237,9 @@ Automation and tooling helpers:
 
 ## Statistics
 
-- **Skill directories**: 203
-- **Unique names**: 197
-- **Root / standalone**: 45
+- **Skill directories**: 205
+- **Unique names**: 199
+- **Root / standalone**: 47
 - **Category buckets**: `base-skills` (6), `devops-skills` (13), `lenny-skills` (119), `meta-skills` (6), `obsidian-skills` (8), `tools-skills` (6)
 - **Name collisions**: 6
 
