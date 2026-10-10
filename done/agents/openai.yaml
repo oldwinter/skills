@@ -1,0 +1,7 @@
+interface:
+  display_name: "Done"
+  short_description: "Validate, merge, and reconcile an authorized change"
+  default_prompt: "Use $done to validate, deliver, merge, and reconcile this explicitly authorized change."
+
+policy:
+  allow_implicit_invocation: false
