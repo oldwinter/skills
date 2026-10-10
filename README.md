@@ -215,7 +215,7 @@ Skills about creating, reviewing, and managing skills:
 - **skills-readme-updater** — Intended to refresh skill listings; currently scans `~/.claude/skills/`, not this repo
 - **sync-skills-manager** — Sync skills between repo and system directories
 
-### Obsidian Skills (8 skills)
+### Obsidian Skills (9 skills)
 Note-taking and knowledge management with Obsidian:
 - [canvas-atlas](obsidian-skills/canvas-atlas/SKILL.md) — Source-backed architecture maps with single-canvas and nested navigation modes
 - **excalidraw-diagram** — Generate Excalidraw diagrams from text
@@ -225,6 +225,7 @@ Note-taking and knowledge management with Obsidian:
 - **obsidian-cli-automation** — Terminal automation for Obsidian vaults
 - **obsidian-markdown** — Obsidian Flavored Markdown syntax
 - **obsidian-note-capture** — Capture docs, research, and deliverables into oldwinter-notes
+- **to-note** — Save content as a note in any Obsidian vault, found by its `.obsidian` folder
 
 ### Tools Skills (6 skills)
 Automation and tooling helpers:
@@ -237,10 +238,10 @@ Automation and tooling helpers:
 
 ## Statistics
 
-- **Skill directories**: 205
-- **Unique names**: 199
+- **Skill directories**: 206
+- **Unique names**: 200
 - **Root / standalone**: 47
-- **Category buckets**: `base-skills` (6), `devops-skills` (13), `lenny-skills` (119), `meta-skills` (6), `obsidian-skills` (8), `tools-skills` (6)
+- **Category buckets**: `base-skills` (6), `devops-skills` (13), `lenny-skills` (119), `meta-skills` (6), `obsidian-skills` (9), `tools-skills` (6)
 - **Name collisions**: 6
 
 ## Multi-Agent Global Paths
