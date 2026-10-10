@@ -1,0 +1,7 @@
+interface:
+  display_name: "To Note"
+  short_description: "Save content as a note in the Obsidian vault"
+  default_prompt: "Use $to-note to save this as a note in my Obsidian vault."
+
+policy:
+  allow_implicit_invocation: true
