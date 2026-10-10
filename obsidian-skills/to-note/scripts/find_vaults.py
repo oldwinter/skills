@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Print Obsidian vaults as `source<TAB>path`: every folder that contains a .obsidian directory.
 
-Sources, best first: env (OBSIDIAN_VAULT_ROOT), open (open in Obsidian now), recent (opened
-before, newest first), found (a shallow search of the home folder, run only when nothing else
-turned up). Standard library only.
+OBSIDIAN_VAULT_ROOT, when it names a vault, is printed alone as `env`. Otherwise, best first:
+open (open in Obsidian now), recent (opened before, newest first), found (a shallow search of the
+home folder, run only when Obsidian lists no vault). Standard library only.
 """
 
 from __future__ import annotations
@@ -60,10 +60,11 @@ def searched() -> Iterator[tuple[str, Path]]:
 
 
 def main() -> int:
-    candidates: list[tuple[str, Path]] = []
-    if os.environ.get("OBSIDIAN_VAULT_ROOT"):
-        candidates.append(("env", Path(os.environ["OBSIDIAN_VAULT_ROOT"]).expanduser()))
-    candidates += registered()
+    env = Path(os.environ.get("OBSIDIAN_VAULT_ROOT", "")).expanduser()
+    if os.environ.get("OBSIDIAN_VAULT_ROOT") and (env / ".obsidian").is_dir():
+        print(f"env\t{env.resolve()}")
+        return 0
+    candidates = list(registered())
     if not any((path / ".obsidian").is_dir() for _, path in candidates):
         candidates += searched()
     seen: set[Path] = set()
