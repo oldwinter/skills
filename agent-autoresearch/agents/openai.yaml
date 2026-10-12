@@ -1,0 +1,7 @@
+interface:
+  display_name: "Agent Autoresearch"
+  short_description: "Measured, reversible experiment loop for any metric"
+  default_prompt: "Use $agent-autoresearch to improve a measurable metric in this repository through autonomous, measured experiments."
+
+policy:
+  allow_implicit_invocation: false

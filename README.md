@@ -53,9 +53,10 @@ skills/
 
 ### Standalone Skills
 
-仓库根上带 `SKILL.md` 的目录（47）。装或改之前先看路径，不要只认分类桶。
+仓库根上带 `SKILL.md` 的目录（48）。装或改之前先看路径，不要只认分类桶。
 
 - **add-just-doctor** — Add a repository `just doctor` that checks the local env file and service deps.
+- **agent-autoresearch** — Harness-agnostic autoresearch loop: edit, measure, keep or revert, log; one stdlib controller for Claude Code, Codex, pi, and other agents.
 - **agent-browser** — Browser automation CLI for AI agents.
 - **ast-grep** — Structural code search and analysis with ast-grep rules.
 - **automation-memory** — Resolve and maintain recurring Codex automation memory.
@@ -237,9 +238,9 @@ Automation and tooling helpers:
 
 ## Statistics
 
-- **Skill directories**: 205
-- **Unique names**: 199
-- **Root / standalone**: 47
+- **Skill directories**: 206
+- **Unique names**: 200
+- **Root / standalone**: 48
 - **Category buckets**: `base-skills` (6), `devops-skills` (13), `lenny-skills` (119), `meta-skills` (6), `obsidian-skills` (8), `tools-skills` (6)
 - **Name collisions**: 6
 
