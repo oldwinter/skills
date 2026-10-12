@@ -1,28 +1,13 @@
 # obsidian-skills
 
 ## OVERVIEW
-Obsidian note-taking and vault management skills.
+Obsidian note-taking skills.
 
-## SKILLS (8)
+## SKILLS (2)
 | Skill | Description |
 |-------|-------------|
 | `canvas-atlas` | Source-backed architecture maps with single and nested Canvas modes |
-| `excalidraw-diagram` | Generate Excalidraw diagrams from text |
-| `json-canvas` | Create and edit JSON Canvas files (`.canvas`) |
-| `mdbase` | Manage markdown-as-database collections |
-| `obsidian-bases` | Obsidian Bases (`.base` files) with views and filters |
-| `obsidian-cli-automation` | Terminal automation for Obsidian vaults |
-| `obsidian-markdown` | Obsidian Flavored Markdown syntax |
 | `to-note` | Save content as a note in any Obsidian vault, found by its `.obsidian` folder |
-
-## WHERE TO LOOK
-| Task | Location |
-|------|----------|
-| Obsidian Markdown conventions | `obsidian-markdown/SKILL.md` |
-| Save content as a note in a vault | `to-note/SKILL.md` |
-| Canvas / Bases | `json-canvas/`, `obsidian-bases/` |
-| CLI automation | `obsidian-cli-automation/SKILL.md` |
-| Markdown-as-database | `mdbase/SKILL.md` |
 
 ## CONVENTIONS
 - Skills here are user-facing helpers; most logic is described in Markdown rather than code.
