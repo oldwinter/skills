@@ -7,8 +7,9 @@ This repo owns reusable Skill implementations only. Device inventory, consumer e
 ## Layout
 
 - A skill is a directory named by its identifier (hyphen-case) with a required `SKILL.md` and optional `references/`, `rules/`, `scripts/`.
-- Two layers: category buckets (`base-skills/`, `devops-skills/`, `lenny-skills/`, `meta-skills/`, `obsidian-skills/`, `tools-skills/`) are the classification source of truth; root directories are also installable skill names. A few names exist in both layers and may diverge; README → Standalone Skills lists them.
-- Adding, removing, or renaming a root skill means updating the README map; `just check-readme-map` enforces it.
+- Skills live at the repo root, except Obsidian ones under `obsidian-skills/`. Only skills in use stay on `main`; third-party skills are installed from their upstream, not copied here.
+- Retired skills are removed from `main` and kept in the `archive/2026-10-13` tag; README → 归档 lists them. Restore with `git checkout archive/2026-10-13 -- <path>`.
+- Adding, removing, or renaming a skill means updating the README list; `just check` enforces it.
 
 ## Skill rules
 
@@ -17,5 +18,4 @@ This repo owns reusable Skill implementations only. Device inventory, consumer e
 
 ## Verify
 
-- `just validate-skill <dir>` for any changed skill; `just validate-skillpack <dir>` for Lenny-style packs (`skillpack.json`, `references/`). Both need PyYAML.
-- `just check-readme-map` after structural changes; `just test-sync` when touching `meta-skills/sync-skills-manager` or `scripts/`.
+- `just check` after any change: the README list matches the tree, frontmatter names match directories, and no personal machine paths.
