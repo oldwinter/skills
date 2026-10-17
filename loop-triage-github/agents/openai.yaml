@@ -1,0 +1,7 @@
+interface:
+  display_name: "Loop Triage: GitHub"
+  short_description: "One approved GitHub triage tick over the owner's own issues and PRs"
+  default_prompt: "Use $loop-triage-github to run one GitHub triage tick and draft every outbound action to the Reply Desk."
+
+policy:
+  allow_implicit_invocation: false

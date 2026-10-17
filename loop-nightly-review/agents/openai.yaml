@@ -1,0 +1,7 @@
+interface:
+  display_name: "Loop Nightly Review"
+  short_description: "Review merged work, keep lessons, promote rules"
+  default_prompt: "Use $loop-nightly-review to review the commits merged since the last review and keep the lessons ratchet current."
+
+policy:
+  allow_implicit_invocation: false
