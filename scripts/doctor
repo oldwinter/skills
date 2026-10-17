@@ -39,6 +39,18 @@ def tool(name: str, why: str) -> tuple[str, str, str]:
     return ("PASS", name, tool_version(name))
 
 
+def shell(name: str, why: str) -> tuple[str, str, str]:
+    """A shell row that names the resolved binary, not just its version.
+
+    On Windows the first `bash` on PATH may be WSL bash, which does not share
+    the filesystem; showing the path makes that visible instead of a bare PASS.
+    """
+    resolved = shutil.which(name)
+    if not resolved:
+        return ("FAIL", name, f"not on PATH — needed {why}")
+    return ("PASS", name, f"{resolved} ({tool_version(name)})")
+
+
 def claude_link() -> tuple[str, str, str]:
     path = ROOT / "CLAUDE.md"
     if path.is_symlink():
@@ -61,7 +73,7 @@ def checks() -> list[tuple[str, str, str]]:
         rows.append(
             ("FAIL", "python3", f"{vi.major}.{vi.minor}.{vi.micro} — scripts require >= 3.9")
         )
-    rows.append(tool("bash", "to run scripts/test-*"))
+    rows.append(shell("bash", "to run scripts/test-*"))
     rows.append(tool("git", "for versioning and the archive tag"))
     rows.append(tool("just", "to run the recipes in justfile"))
     rows.append(claude_link())

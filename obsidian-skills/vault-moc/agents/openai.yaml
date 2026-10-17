@@ -1,0 +1,7 @@
+interface:
+  display_name: "Vault MOC"
+  short_description: "Build or refresh Markdown MOC index notes over an existing Obsidian vault"
+  default_prompt: "Use $vault-moc to build or refresh a map-of-content index note in my Obsidian vault."
+
+policy:
+  allow_implicit_invocation: true

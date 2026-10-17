@@ -1,0 +1,7 @@
+interface:
+  display_name: "Teach Pstack"
+  short_description: "Explain a body of work so a person understands it"
+  default_prompt: "Use $teach-pstack to explain this change or subsystem at a person's pace."
+
+policy:
+  allow_implicit_invocation: true

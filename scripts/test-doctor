@@ -16,6 +16,8 @@ py="$(command -v python3)"
 
 "$py" "$doctor" >"$tmp/ok.out" || fail "doctor should pass in the current environment"
 grep -q 'PASS *python3' "$tmp/ok.out" || fail "should report python3"
+grep -q 'PASS *bash' "$tmp/ok.out" || fail "should report bash"
+grep -Eq '^PASS +bash +([A-Za-z]:)?[/\\]' "$tmp/ok.out" || fail "should show which bash resolves on PATH"
 grep -q 'SKIP *env file' "$tmp/ok.out" || fail "should document that no env file is required"
 grep -q 'SKIP *services' "$tmp/ok.out" || fail "should document the empty service inventory"
 grep -q 'CLAUDE.md' "$tmp/ok.out" || fail "should check the CLAUDE.md symlink"

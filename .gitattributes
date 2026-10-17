@@ -1,0 +1,4 @@
+# Keep the published tree LF in git and in every checkout, so shell scripts and
+# fixtures behave the same on Windows, macOS, and Linux. Files are stored LF
+# already; this only prevents future CRLF worktree checkouts.
+* text=auto eol=lf

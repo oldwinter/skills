@@ -1,6 +1,6 @@
 ---
 name: agent-autoresearch
-description: Autoresearch loop for any coding agent harness (Claude Code, Codex, pi, others with a shell) - repeatedly edit, measure, keep or revert, and log experiments that push one numeric metric (speed, size, score, loss, error count) toward a goal, unattended for hours if needed. Use to start an autoresearch or overnight optimization run, or to check, resume, or report an existing one.
+description: Autoresearch loop for any coding agent harness (Claude Code, Codex, pi, others with a shell) - repeatedly edit, measure, keep or revert, and log experiments that push one numeric metric (speed, size, score, loss, error count) toward a goal, unattended for hours if needed. Use to start an autoresearch or overnight optimization run, or to check, resume, or report an existing one. Not for grading or optimizing SKILL.md files; use darwin-skill for that.
 ---
 
 # Agent Autoresearch
@@ -11,7 +11,7 @@ Karpathy-style autoresearch that runs the same way in every harness. You are the
 hypothesis -> edit -> trial (measure, gate, keep or revert, log) -> learn -> repeat
 ```
 
-`<skill-dir>` is the directory containing this file. Before `init`, call the controller as `python3 <skill-dir>/scripts/autoresearch.py <command>` from inside the target repository. `init` writes a launcher, so afterwards call `.autoresearch/ar <command>` from the repository root (or by its absolute path from anywhere); it also works for a fresh context that never saw this skill. On Windows the `ar` launcher is a POSIX shell script: run `sh .autoresearch/ar <command>` (Git Bash's `sh` works; WSL's does not share the filesystem) or call the `.py` directly. Session hooks also run through `sh` on Windows. `<command> --help` lists every flag.
+`<skill-dir>` is the directory containing this file. Before `init`, call the controller as `python3 <skill-dir>/scripts/autoresearch.py <command>` from inside the target repository. `init` writes a launcher: on Windows the `ar` launcher is a POSIX shell script, so run `sh .autoresearch/ar <command>` (Git Bash's `sh` works; WSL's does not share the filesystem) or call the `.py` directly; everywhere else call `.autoresearch/ar <command>` from the repository root (or by its absolute path from anywhere). The launcher also works from a fresh context that never saw this skill. Session hooks also run through `sh` on Windows. Measure and checks commands run through the platform shell (`cmd.exe` on Windows), so keep them single-line or prefix them with `sh -c`. `<command> --help` lists every flag.
 
 ## Route the request
 
@@ -43,7 +43,7 @@ hypothesis -> edit -> trial (measure, gate, keep or revert, log) -> learn -> rep
      --max-iterations N --budget-minutes M --target X
    ```
 
-   Drop the flags that do not apply. The time budget starts at `init`; once any limit is hit the controller refuses new trials and prints `next: STOP`. `init` creates the branch `autoresearch/<tag>-<date>`, measures the baseline (probing noise on fast benchmarks), and writes the git-ignored `.autoresearch/`: `log.jsonl` (source of truth), `program.md` (the brief), `ideas.md` (the backlog), and `ar`. If it reports a noisy metric, apply its rebaseline suggestion. Done when it prints the baseline.
+   Drop the flags that do not apply; on Windows run this as one line. The time budget starts at `init`; once any limit is hit the controller refuses new trials and prints `next: STOP`. `init` creates the branch `autoresearch/<tag>-<date>`, measures the baseline (probing noise on fast benchmarks), and writes the git-ignored `.autoresearch/`: `log.jsonl` (source of truth), `program.md` (the brief), `ideas.md` (the backlog), and `ar`. If it reports a noisy metric, apply its rebaseline suggestion. Done when it prints the baseline.
 
 4. **Write the brief.** Fill in Constraints and Strategy notes in `.autoresearch/program.md`: what produces the metric, where the cost or error comes from (profile it or read the measure output), and the first hypotheses ranked by expected gain. A fresh context resumes from this file. Done when a stranger could start the loop from it.
 

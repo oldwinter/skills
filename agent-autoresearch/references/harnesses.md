@@ -69,6 +69,8 @@ nohup .autoresearch/ar relay --agent codex > .autoresearch/relay.out 2>&1 &
 .autoresearch/ar stop --reason "enough for today"    # or: touch .autoresearch/STOP
 ```
 
+On Windows there is no `nohup` or trailing `&`; start the relay through the harness's background-process feature, then use `ar status` and `ar stop` from any shell.
+
 The current worker finishes its trial; the relay then exits. `--worker-timeout` (default 3600 s) bounds a hung worker.
 
 ## Inline continuation aids

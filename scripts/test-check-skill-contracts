@@ -1,0 +1,142 @@
+#!/usr/bin/env bash
+# Fixture tests for scripts/check-skill-contracts.
+set -euo pipefail
+
+root="$(cd "$(dirname "$0")/.." && pwd)"
+check="$root/scripts/check-skill-contracts"
+py="$(command -v python3)"
+tmp="$(mktemp -d)"
+scratch="$tmp/skills"
+trap 'rm -rf "$tmp"' EXIT
+
+fail() {
+  echo "test-check-skill-contracts: $1" >&2
+  exit 1
+}
+
+reset() {
+  rm -rf "$scratch"
+  mkdir -p "$scratch"
+}
+
+# write_skill <dir> <name> <description>
+write_skill() {
+  mkdir -p "$scratch/$1"
+  printf '%s\n' '---' "name: $2" "description: $3" '---' '' "# $2" >"$scratch/$1/SKILL.md"
+}
+
+# expect_failure <label> <stderr phrase> [offending skill dir]
+expect_failure() {
+  local label="$1" phrase="$2" skill="${3:-}"
+  if "$py" "$check" "$scratch" >"$tmp/out" 2>"$tmp/err"; then
+    fail "broken fixture should fail: $label"
+  fi
+  grep -q "$phrase" "$tmp/err" || fail "should report '$phrase' for $label: $(head -1 "$tmp/err")"
+  if [ -n "$skill" ]; then
+    grep -q "$skill" "$tmp/err" || fail "should name offending skill '$skill' for $label"
+  fi
+}
+
+"$py" "$check" "$root" >/dev/null || fail "live tree should satisfy the skill contracts"
+
+# A valid skill passes: resolvable relative links, skipped targets, portable homes.
+reset
+write_skill demo demo "A demo skill used by the contract fixtures."
+mkdir -p "$scratch/demo/references"
+printf 'guide\n' >"$scratch/demo/references/guide.md"
+cat >>"$scratch/demo/SKILL.md" <<'MD'
+
+See [guide](references/guide.md#usage), [dir](references), [query](references/guide.md?raw=1),
+[web](https://example.com/docs), [mail](mailto:maintainers@example.com), [top](#contract),
+and [placeholder](references/<name>.md).
+
+```text
+[fenced example](references/does-not-exist.md)
+```
+
+Portable homes stay allowed: ~/.claude/skills and $HOME/skills.
+MD
+"$py" "$check" "$scratch" >/dev/null || fail "valid fixture with resolvable links should pass"
+
+# Hidden directories are local scratch state, not repo content.
+mkdir -p "$scratch/.scratch/stray-skill"
+printf '%s\n' '---' 'name: stray-skill' 'description: "unterminated' >"$scratch/.scratch/stray-skill/SKILL.md"
+"$py" "$check" "$scratch" >/dev/null || fail "hidden directories should be ignored"
+
+reset
+mkdir -p "$scratch/demo"
+printf '# no frontmatter here\n' >"$scratch/demo/SKILL.md"
+expect_failure "missing frontmatter" "missing frontmatter" demo
+
+reset
+mkdir -p "$scratch/demo"
+printf '%s\n' '---' 'name: demo' 'description: frontmatter never closes.' >"$scratch/demo/SKILL.md"
+expect_failure "unterminated frontmatter" "unterminated frontmatter" demo
+
+reset
+mkdir -p "$scratch/demo"
+printf '%s\n' '---' 'description: name is absent here.' '---' >"$scratch/demo/SKILL.md"
+expect_failure "missing name" "missing or multiline name" demo
+
+reset
+write_skill demo other "name and directory should agree."
+expect_failure "name mismatch" "frontmatter name mismatch" demo
+
+reset
+mkdir -p "$scratch/demo"
+printf '%s\n' '---' 'name: demo' 'description: >' '  folded text' '---' >"$scratch/demo/SKILL.md"
+expect_failure "block scalar" "block-scalar description" demo
+
+reset
+write_skill demo demo "Use <skill-name> placeholders."
+expect_failure "angle bracket" "angle bracket in description" demo
+
+reset
+write_skill bad_name bad_name "Underscores are not hyphen-case."
+expect_failure "invalid name" "invalid skill name" bad_name
+
+reset
+long="$(printf 'x%.0s' {1..1025})"
+write_skill demo demo "$long"
+expect_failure "description over 1024 chars" "description too long" demo
+
+reset
+ok="$(printf 'y%.0s' {1..1024})"
+write_skill demo demo "$ok"
+"$py" "$check" "$scratch" >/dev/null || fail "exactly 1024 description characters should pass"
+
+reset
+quoted="$(printf 'q%.0s' {1..1024})"
+mkdir -p "$scratch/demo"
+printf '%s\n' '---' 'name: demo' "description: \"$quoted\"" '---' >"$scratch/demo/SKILL.md"
+"$py" "$check" "$scratch" >/dev/null || fail "quoted 1024-char description should pass after quote stripping"
+
+reset
+quoted_long="$(printf 'w%.0s' {1..1025})"
+mkdir -p "$scratch/demo"
+printf '%s\n' '---' 'name: demo' "description: \"$quoted_long\"" '---' >"$scratch/demo/SKILL.md"
+expect_failure "quoted description over limit" "description too long" demo
+
+reset
+write_skill demo demo "Relative links must resolve."
+printf '\nSee [guide](references/missing-guide.md).\n' >>"$scratch/demo/SKILL.md"
+expect_failure "missing relative link" "missing relative link" demo
+grep -q 'missing-guide.md' "$tmp/err" || fail "should name the broken relative link target"
+
+user="fixtureuser"
+reset
+write_skill demo demo "A desktop note that must not leak a device path."
+printf '\nNotes live in /Users/%s/Documents.\n' "$user" >>"$scratch/demo/SKILL.md"
+expect_failure "macOS home path" "personal machine path" demo
+
+reset
+write_skill demo demo "A desktop note that must not leak a device path."
+printf '\nHome is /home/%s/work.\n' "$user" >>"$scratch/demo/SKILL.md"
+expect_failure "Linux home path" "personal machine path" demo
+
+reset
+write_skill demo demo "A desktop note that must not leak a device path."
+printf '\nTemp is C:\\Users\\%s\\AppData.\n' "$user" >>"$scratch/demo/SKILL.md"
+expect_failure "Windows home path" "personal machine path" demo
+
+echo "test-check-skill-contracts: ok"

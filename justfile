@@ -2,10 +2,10 @@
 
 default: check
 
-# README list, frontmatter names, and personal paths all match the tree
-check: check-readme-map check-skill-contracts test-readme-map test-doctor
+# README map, skill contracts, fixture tests, and doctor all pass
+check: check-readme-map check-skill-contracts test-readme-map test-skill-contracts test-doctor
 
-# Local toolchain health: python3, bash, git, just, CLAUDE.md symlink
+# Local toolchain health: python3, resolved bash path, git, just, CLAUDE.md symlink
 doctor:
     python3 scripts/doctor
 
@@ -18,6 +18,9 @@ check-skill-contracts:
 test-readme-map:
     bash scripts/test-check-readme-map
 
+test-skill-contracts:
+    bash scripts/test-check-skill-contracts
+
 test-doctor:
     bash scripts/test-doctor
 
@@ -25,3 +28,4 @@ test-doctor:
 test-skills:
     python3 -m unittest discover -s agent-autoresearch/tests -q
     python3 -m unittest discover -s obsidian-skills/canvas-atlas/tests -q
+    python3 -m unittest discover -s longform-fiction/tests -q

@@ -46,4 +46,8 @@ MD
 
 "$check" "$fixture" >/dev/null || fail "complete README fixture should pass"
 
+mkdir -p "$fixture/.scratch/stray-skill"
+printf '%s\n' '---' 'name: stray-skill' 'description: demo' '---' >"$fixture/.scratch/stray-skill/SKILL.md"
+"$check" "$fixture" >/dev/null || fail "hidden scratch skills should be ignored"
+
 echo "test-check-readme-map: ok"

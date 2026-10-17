@@ -9,7 +9,7 @@ Turn what the user hands over (text, a page's content, a research result, or the
 
 ## Steps
 
-1. **Find the vault.** A vault path the user names wins. Otherwise run `python3 <this skill's folder>/scripts/find_vaults.py`. It prints `source<TAB>path` for each folder with `.obsidian/`, best first: `env` (`OBSIDIAN_VAULT_ROOT`, printed alone when set), `open` (open in Obsidian now), `recent`, then `found` by a shallow search of the home folder. Use the `env` line, else the only `open` line, else the only line; with several candidates left, ask once which vault, listing their paths.
+1. **Find the vault.** A vault path the user names wins. Otherwise run `python3` (or `python` / `py -3` where `python3` is not on PATH) `<this skill's folder>/scripts/find_vaults.py`. It prints `source<TAB>path` for each folder with `.obsidian/`, best first: `env` (`OBSIDIAN_VAULT_ROOT`, printed alone when it names a vault), `open` (open in Obsidian now), `recent`, then `found` by a shallow search of the home folder. Use the `env` line, else the only `open` line, else the only line; with several candidates left, ask once which vault, listing their paths.
 
    Done when: exactly one vault root, and it contains `.obsidian/`.
 
@@ -28,6 +28,8 @@ Turn what the user hands over (text, a page's content, a research result, or the
 
    Link with `[[wikilinks]]` the existing notes the content directly mentions. Credentials, raw logs, and absolute machine paths stay out of the vault; summarize what matters from them.
 
+   If the write fails (permissions, read-only vault, sync conflict), report the vault-relative path and the exact error; never claim the note exists.
+
    Done when: the note file exists in the vault.
 
-5. **Verify and report.** Re-read the file: the frontmatter parses and the body says what was meant. Report the vault-relative path, the link `obsidian://open?vault=<vault folder name>&file=<path without .md>` with both values percent-encoded (`%20` for a space, `%2F` for `/`), and each choice made for the user (folder, title, or merging into an existing note).
+5. **Verify and report.** Re-read the file: the frontmatter parses and the body says what was meant. Report the vault-relative path, the link `obsidian://open?vault=<vault folder name>&file=<path without .md>` with both values percent-encoded (`%20` for a space, `%2F` for `/`; on Windows replace `\` with `/` first), and each choice made for the user (folder, title, or merging into an existing note).

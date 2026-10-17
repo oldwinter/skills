@@ -3,17 +3,20 @@
 
 from __future__ import annotations
 
+import os
 import re
 import sys
 from pathlib import Path
 
 
 def skill_dirs(repo: Path) -> list[Path]:
-    return sorted(
-        path.parent
-        for path in repo.rglob("SKILL.md")
-        if ".git" not in path.parts and path.parent != repo
-    )
+    """Skill directories under repo, ignoring hidden local-scratch trees."""
+    dirs: list[Path] = []
+    for dirpath, dirnames, filenames in os.walk(repo):
+        dirnames[:] = [name for name in dirnames if not name.startswith(".")]
+        if "SKILL.md" in filenames and Path(dirpath) != repo:
+            dirs.append(Path(dirpath))
+    return sorted(dirs)
 
 
 def parse_stat(readme: str, label: str) -> int | None:

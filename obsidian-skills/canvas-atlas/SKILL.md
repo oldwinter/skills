@@ -1,6 +1,6 @@
 ---
 name: canvas-atlas
-description: 将代码仓库、笔记集合或研究材料整理成可追溯、可逐层阅读的 Obsidian Canvas 知识地图。用于架构总览、系统理解、主题地图和多 Canvas 导航，支持单图、嵌套图、可选构图与配色及保留人工布局的更新。
+description: Obsidian Canvas 知识地图：将代码仓库、笔记集合或研究材料整理成可追溯、可逐层阅读的 .canvas。用于架构总览、系统理解、主题地图、多 Canvas 导航（architecture map, knowledge map, repo-to-canvas, multi-canvas navigation），支持单图、嵌套图、可选构图与配色及保留人工布局的更新；不用于纯 Mermaid/HTML 图，也不用于没有 Obsidian vault 的一次性示意图。
 ---
 
 # Canvas atlas
@@ -57,6 +57,8 @@ description: 将代码仓库、笔记集合或研究材料整理成可追溯、�
 
 只改受影响内容和关系。保留人工位置、尺寸、颜色、批注及不认识的现存字段。仅换配色时，只修改明确范围内的节点和边的 `color`，保持 ID、正文、坐标、尺寸、端点与连线标签不变。“换主题”未说明范围时，默认只换配色；要求重新构图时才调整布局。不凭标题相似就合并节点。新节点放在相邻空位。整图重排只在用户要求或当前布局无法容纳时进行，并说明原因。
 
+🔴 CHECKPOINT（覆盖前）：确认可恢复副本已生成、更新范围已写清，再写入现有 Canvas。
+
 来源删除或变更不能自动证明节点无用。先标注待复核，保留有人工注释的节点。只有明确属于本轮替换范围的生成内容才移除。修改前保留可恢复副本，写入前确认文件自读取后没有被外部修改。
 
 ## 验证并交付
@@ -64,7 +66,7 @@ description: 将代码仓库、笔记集合或研究材料整理成可追溯、�
 先检查数据，再检查 Obsidian 中的真实阅读体验。
 
 1. 严格解析每个 `.canvas`。检查 ID 唯一、边端点存在、坐标有限、宽高为正及节点必要字段。
-   用 Python 3.10+ 运行随附的只读检查器，路径相对当前 Skill：`python3 scripts/check_canvas.py --vault <vault根目录> <vault相对路径.canvas>`。它递归检查 file 节点与 wikilink 引用到的 Canvas，要求链接使用明确的 vault 相对路径；不解析普通 Markdown 链接或 Obsidian 的模糊短名，也不验证 Markdown 标题、块 ID 或外部 URL 内容。其他链接需另行核对。
+   用 Python 3.9+ 运行随附的只读检查器（与仓库 scripts/ 的最低版本一致），路径相对当前 Skill：`python3 scripts/check_canvas.py --vault <vault根目录> <vault相对路径.canvas>`。它递归检查 file 节点与 wikilink 引用到的 Canvas，要求链接使用明确的 vault 相对路径；不解析普通 Markdown 链接或 Obsidian 的模糊短名，也不验证 Markdown 标题、块 ID 或外部 URL 内容。其他链接需另行核对。
 2. 从目标 vault 根解析 file 节点与导航链接，确认文件存在。检查子图嵌入关系无环；返回父图的普通链接不算嵌入环。
 3. 抽查关键关系是否有来源。确认推断没有被画成事实。
 4. 在 Obsidian 打开总览，缩放到全图，再放大一个核心节点。确认主线清楚、文字完整、节点无意外遮挡。多图模式实际进入一个子图并返回。只检查 JSON 不能声明视觉验收通过。

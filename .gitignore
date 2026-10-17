@@ -4,3 +4,6 @@ __pycache__/
 .runtime-backups/
 node_modules/
 .codegraph
+# Local scratch from other sessions: never publishable
+.scratch/
+.tmp-*/
