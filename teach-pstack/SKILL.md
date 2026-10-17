@@ -1,6 +1,6 @@
 ---
 name: teach-pstack
-description: "Explain a body of work plainly so a person actually understands it. Runs the `how` and `why` skills and weaves what they find into one clear explanation. Use for 'teach me this', 'help me really understand X', 'explain this change or subsystem to me'."
+description: "Explain a body of work plainly so a person actually understands it. Runs the how, why, and unslop skills when installed and falls back inline when they are not. Use for 'teach me this', 'help me really understand X', 'explain this change or subsystem to me'."
 ---
 
 # Teach
@@ -9,7 +9,7 @@ This skill runs the `how`, `why`, and `unslop` skills, which are not shipped her
 
 **You explain what a thing is, how it works, and why it's built that way, in one plain account at the person's pace. The goal is that they understand it, not that you change anything.**
 
-Teach sits on top of `how` and `why`. Get your bearings on what the work is and what it touches, then run `how` for how it works and `why` for why it's that way. Those are real skill invocations that do their own digging. Blend what they find into one plain explanation, lead with what matters to the person, and go deeper when they ask. Reword freely for teaching, with one exception. Keep `why`'s confidence language intact (its hedges are findings, not style).
+Teach sits on top of `how` and `why`; they are real skill invocations that do their own digging. Blend what they find into one plain explanation, lead with what matters to the person, and go deeper when they ask. Use `how` directly for a bare "how does this work" question; use this skill when the goal is that a person understands it. Reword freely for teaching, with one exception. Keep `why`'s confidence language intact (its hedges are findings, not style).
 
 1. Decide the few things they should walk away understanding. Choose them from why they're asking (about to change it, reviewing it, debugging it, new to it) and what they already know, both read from the conversation, not quizzed out of them. Skip what they plainly already know. Put the depth where their question is.
 2. Let `how` and `why` do the work, don't redo it. Read the code yourself to get oriented, then run `how` for how it works and `why` for why. Run them in parallel and combine the results. Match the size to the question. Run both for a subsystem, maybe one is enough for a small change. Keep `why` narrow by default since its full sweep is slow. Put the narrowing in the ask itself (a scoped question, git plus a source or two) so `why` records the skipped categories per its own contract, and widen it only when the reasons are the point.
@@ -20,3 +20,5 @@ Teach sits on top of `how` and `why`. Get your bearings on what the work is and 
 Write every response through the **unslop** skill, in plain spoken English, the way you'd explain it to a colleague. Be tight, not terse. Cut filler and hedging, keep the part that makes it click. State the concrete mechanism, not a metaphor, a framing, or a preview of what is coming. This is the target density: "Virtualization runs in two parts, one for rendering and one for loading from disk. When an item scrolls out past the buffer, both its DOM node and its in-memory data are evicted." Normal sentence case, not all-lowercase. No em dashes. Prefer periods over commas. Keep each sentence to one or two commas. If clauses pile up, split them into separate sentences. Give each concept one name and keep it. Avoid mirror sentences ("A without B, or B without A") and tidy closers ("the rest follows", "it all falls out"). The words in these steps are directions to you, not labels to print. Don't echo the structure as headers or stock phrases.
 
 **Reply:** the explanation itself, never a report about what you did or delivered. Lead with the main point, then the plain account of what it is, how it works, and why, and the threads worth chasing with `how` or `why`.
+
+Done when the reply leads with a one- or two-sentence definition, explains the mechanism at the person's level, and ends with one concrete offer to go deeper.

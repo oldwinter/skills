@@ -1,6 +1,6 @@
 ---
 name: done
-description: Finish the current change by validating, committing, opening and merging a PR or MR, reconciling related issues, and updating the local default-branch worktree.
+description: Finish the current change by validating, committing, opening and merging a PR or MR, reconciling related issues, and updating the local default-branch worktree. Manual invocation only: use when the user says /done or $done.
 disable-model-invocation: true
 ---
 
@@ -20,7 +20,7 @@ Treat user arguments as optional scope, issue context, or merge-method preferenc
 
    Completion criterion: every intended change is represented in the diff, required artifacts are present, and no relevant check is red.
 
-3. **Commit and push.** When on `DEFAULT_BRANCH` or detached HEAD, create a `codex/<short-slug>` branch without disturbing the working tree. Follow recent commit-message style and split independent concerns into atomic commits. Stage only the intended paths, inspect the staged diff, commit, and push with upstream tracking. Resolve ordinary remote divergence without rewriting published history.
+3. **Commit and push.** When on `DEFAULT_BRANCH` or detached HEAD, create a short-lived branch such as `done/<short-slug>` (or the prefix the repository documents) without disturbing the working tree. Follow recent commit-message style and split independent concerns into atomic commits. Stage only the intended paths, inspect the staged diff, commit, and push with upstream tracking. Resolve ordinary remote divergence without rewriting published history.
 
    Completion criterion: every intended change is in a remote-reachable commit and unrelated local changes remain untouched.
 
@@ -36,7 +36,7 @@ Treat user arguments as optional scope, issue context, or merge-method preferenc
 
    Completion criterion: one non-draft PR/MR represents the remote branch and its description matches the delivered change.
 
-6. **Reach the merge gate.** Inspect mergeability, required checks, approvals, and unresolved review threads. Watch pending checks. Fix failures attributable to the change, push the correction, and re-run the same gate. If a remote CI lane fails and this manually invoked skill has explicit push/PR/merge authorization, first read the actual failure and record its run URL, failed lane, confirmed root cause, local equivalent validation result, and unresolved code/test/privacy/security risks in the PR/MR and final report. Under the repository's standing CI-failure policy, that evidence permits proceeding without a second confirmation; it does not permit hiding failures, bypassing protections, force-pushing, or ignoring non-CI merge blockers. After merge, disclose the failed lanes, why the standing policy applied, and local validation status to the user. Respect repository protections and use the repository's established merge method.
+6. **Reach the merge gate.** Inspect mergeability, required checks, approvals, and unresolved review threads. Watch pending checks. Fix failures attributable to the change, push the correction, and re-run the same gate. If a remote CI lane fails and this manually invoked skill has explicit push/PR/merge authorization, first read the actual failure and record its run URL, failed lane, confirmed root cause, local equivalent validation result, and unresolved code/test/privacy/security risks in the PR/MR and final report. If the repository documents a standing CI-failure policy, that evidence permits proceeding without a second confirmation; if it does not, stop and report the failed lane before merging. Neither case permits hiding failures, bypassing protections, force-pushing, or ignoring non-CI merge blockers. 🔴 CHECKPOINT: before merging with any failed required lane, state the run URL, failed lane, root cause, local validation, and residual risk in the PR/MR and the final report. After merge, disclose the failed lanes, why the standing policy applied, and local validation status to the user. Respect repository protections and use the repository's established merge method.
 
    Completion criterion: the PR/MR is mergeable, approvals are satisfied, and checks either pass or each failed CI lane has the required standing-policy evidence and risk disclosure; otherwise report the exact external blocker without claiming completion.
 

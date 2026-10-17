@@ -1,0 +1,7 @@
+interface:
+  display_name: "TDD Pstack"
+  short_description: "Bug-fix TDD: failing regression test before the fix"
+  default_prompt: "Use $tdd-pstack for a bug fix when a cheap local regression test exists."
+
+policy:
+  allow_implicit_invocation: true

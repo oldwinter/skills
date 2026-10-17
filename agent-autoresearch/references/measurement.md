@@ -31,7 +31,7 @@ print(f"METRIC total_s={statistics.median(times):.4f}")
 print(f"METRIC spread_s={max(times) - min(times):.4f}")
 ```
 
-Wrapping an existing tool is usually one line: `uv run train.py > run.log 2>&1; grep '^val_bpb:' run.log | awk '{print "METRIC val_bpb=" $2}'` (keep `run.log` git-ignored).
+Wrapping an existing tool is usually one line: `uv run train.py > run.log 2>&1; grep '^val_bpb:' run.log | awk '{print "METRIC val_bpb=" $2}'` (keep `run.log` git-ignored). On Windows the controller runs the measure command through `cmd.exe`, so wrap POSIX pipelines: `sh -c "uv run train.py > run.log 2>&1; grep '^val_bpb:' run.log | awk '{print \"METRIC val_bpb=\" $2}'"`.
 
 ## Fixed budget
 
