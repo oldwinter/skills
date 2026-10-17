@@ -1,0 +1,7 @@
+interface:
+  display_name: "Agent Harness Repair"
+  short_description: "Diagnose and repair local coding-agent installs"
+  default_prompt: "Use $agent-harness-repair to diagnose and repair this local coding-agent CLI or harness install."
+
+policy:
+  allow_implicit_invocation: true

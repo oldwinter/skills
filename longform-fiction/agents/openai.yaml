@@ -1,0 +1,7 @@
+interface:
+  display_name: "Longform Fiction"
+  short_description: "Plan, draft, and expand a manuscript with bible and count gates"
+  default_prompt: "Use $longform-fiction to plan, draft, or expand this long-form fiction manuscript with a story bible, chapter contracts, continuity checks, and word-count gates."
+
+policy:
+  allow_implicit_invocation: true
