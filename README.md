@@ -80,8 +80,11 @@ git checkout archive/2026-10-13 -- <path>
 ## 校验
 
 ```bash
-just check
+just check        # README 列表、frontmatter、私有路径审计 + 脚本夹具测试
+just doctor       # 本地工具链健康：python3 / bash / git / just / CLAUDE.md 符号链接
 ```
+
+`doctor` 每行一个检查项，状态为 `PASS` / `WARN` / `FAIL` / `SKIP`；有任何 `FAIL` 时退出码非零。本仓库没有本地环境文件和环境化服务，对应行恒为 `SKIP`。
 
 ## License
 

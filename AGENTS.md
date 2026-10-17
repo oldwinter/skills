@@ -19,3 +19,4 @@ This repo owns reusable Skill implementations only. Device inventory, consumer e
 ## Verify
 
 - `just check` after any change: the README list matches the tree, frontmatter names match directories, and no personal machine paths.
+- `just doctor` checks the local toolchain (python3, bash, git, just) and the `CLAUDE.md` symlink; `PASS`/`WARN`/`FAIL`/`SKIP` rows, nonzero exit on any `FAIL`. No env file or services exist in this repo, so the doctor's service inventory is intentionally empty.

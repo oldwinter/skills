@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+"""Local environment doctor for the skills repo.
+
+Checks the toolchain that `just check` and contributor workflows need, plus
+the CLAUDE.md symlink contract. This repo has no local environment file and
+no environment-backed services, so the service inventory is empty by design
+and no SOPS sync hint applies.
+
+Statuses: PASS ok, WARN degraded, FAIL broken (nonzero exit), SKIP n/a.
+"""
+
+from __future__ import annotations
+
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+MIN_PYTHON = (3, 9)  # PEP 585 annotations in scripts/check-*
+
+
+def tool_version(name: str) -> str:
+    try:
+        out = subprocess.run(
+            [name, "--version"], capture_output=True, text=True, timeout=5
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return "version unknown"
+    lines = (out.stdout.strip() or out.stderr.strip()).splitlines()
+    return lines[0].strip() if lines else "version unknown"
+
+
+def tool(name: str, why: str) -> tuple[str, str, str]:
+    if not shutil.which(name):
+        return ("FAIL", name, f"not on PATH — needed {why}")
+    return ("PASS", name, tool_version(name))
+
+
+def claude_link() -> tuple[str, str, str]:
+    path = ROOT / "CLAUDE.md"
+    if path.is_symlink():
+        if path.is_file():
+            return ("PASS", "CLAUDE.md", f"symlink -> {os.readlink(path)}")
+        return ("FAIL", "CLAUDE.md", "dangling symlink")
+    if path.is_file():
+        return ("WARN", "CLAUDE.md", "regular file, not a symlink to AGENTS.md")
+    return ("FAIL", "CLAUDE.md", "missing — should symlink to AGENTS.md")
+
+
+def checks() -> list[tuple[str, str, str]]:
+    rows: list[tuple[str, str, str]] = []
+    vi = sys.version_info
+    if vi[:2] >= MIN_PYTHON:
+        rows.append(
+            ("PASS", "python3", f"{vi.major}.{vi.minor}.{vi.micro} (>= 3.9, runs scripts/check-*)")
+        )
+    else:
+        rows.append(
+            ("FAIL", "python3", f"{vi.major}.{vi.minor}.{vi.micro} — scripts require >= 3.9")
+        )
+    rows.append(tool("bash", "to run scripts/test-*"))
+    rows.append(tool("git", "for versioning and the archive tag"))
+    rows.append(tool("just", "to run the recipes in justfile"))
+    rows.append(claude_link())
+    rows.append(("SKIP", "env file", "repo has no local environment file"))
+    rows.append(("SKIP", "services", "no environment-backed services"))
+    return rows
+
+
+def main() -> int:
+    rows = checks()
+    for status, name, detail in rows:
+        print(f"{status:<4}  {name:<10} {detail}")
+    count = {s: sum(1 for r in rows if r[0] == s) for s in ("PASS", "WARN", "FAIL", "SKIP")}
+    print(
+        f"doctor: {count['PASS']} pass, {count['WARN']} warn, "
+        f"{count['FAIL']} fail, {count['SKIP']} skip"
+    )
+    return 1 if count["FAIL"] else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

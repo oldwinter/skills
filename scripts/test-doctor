@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Fixture tests for scripts/doctor.
+set -euo pipefail
+
+root="$(cd "$(dirname "$0")/.." && pwd)"
+doctor="$root/scripts/doctor"
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+fail() {
+  echo "test-doctor: $1" >&2
+  exit 1
+}
+
+py="$(command -v python3)"
+
+"$py" "$doctor" >"$tmp/ok.out" || fail "doctor should pass in the current environment"
+grep -q 'PASS *python3' "$tmp/ok.out" || fail "should report python3"
+grep -q 'SKIP *env file' "$tmp/ok.out" || fail "should document that no env file is required"
+grep -q 'SKIP *services' "$tmp/ok.out" || fail "should document the empty service inventory"
+grep -q 'CLAUDE.md' "$tmp/ok.out" || fail "should check the CLAUDE.md symlink"
+grep -q '^doctor: ' "$tmp/ok.out" || fail "should print a deterministic summary line"
+if grep -q 'FAIL' "$tmp/ok.out"; then
+  fail "healthy environment should produce no FAIL rows"
+fi
+
+mkdir -p "$tmp/empty"
+if env PATH="$tmp/empty" "$py" "$doctor" >"$tmp/bad.out" 2>&1; then
+  fail "missing tools should exit nonzero"
+fi
+grep -q 'FAIL *bash' "$tmp/bad.out" || fail "should name missing bash"
+grep -q 'FAIL *git' "$tmp/bad.out" || fail "should name missing git"
+grep -q 'FAIL *just' "$tmp/bad.out" || fail "should name missing just"
+grep -q 'PASS *python3' "$tmp/bad.out" || fail "python3 comes from the interpreter, not PATH"
+
+just --show doctor >/dev/null 2>&1 || fail "justfile should expose a doctor recipe"
+
+echo "test-doctor: ok"
