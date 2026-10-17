@@ -1239,7 +1239,7 @@ def run_hooks(session: Session, state: State, entry: Dict[str, Any]) -> None:
         for hook in hooks[:1]:
             try:
                 proc = subprocess.run(
-                    [str(hook)],
+                    [str(hook)] if os.name == "posix" else ["sh", str(hook)],
                     input=json.dumps(payloads[stage]),
                     capture_output=True,
                     text=True,
@@ -1251,6 +1251,8 @@ def run_hooks(session: Session, state: State, entry: Dict[str, Any]) -> None:
                     text = f"(hook exited {proc.returncode}) {proc.stderr.strip()[:500]}"
             except subprocess.TimeoutExpired:
                 text = f"(hook timed out after {HOOK_TIMEOUT}s)"
+            except OSError as exc:
+                text = f"(hook failed to start: {exc.strerror or exc})"
             if text:
                 print(f"hook {stage}: {text}")
 

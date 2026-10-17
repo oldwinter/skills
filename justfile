@@ -20,3 +20,8 @@ test-readme-map:
 
 test-doctor:
     bash scripts/test-doctor
+
+# Skill test suites (unittest; slower, not part of check)
+test-skills:
+    python3 -m unittest discover -s agent-autoresearch/tests -q
+    python3 -m unittest discover -s obsidian-skills/canvas-atlas/tests -q
