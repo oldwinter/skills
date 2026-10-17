@@ -1,6 +1,6 @@
 ---
 name: agent-harness-repair
-description: Diagnose and repair a local coding-agent CLI or harness install (Claude Code, Codex, DeepSeek Harness/DSH, Cursor, Droid, pi, Grok and similar) when the harness itself breaks: a self-update that never reaches the latest version, a failed global npm or pnpm install or expired auth, a hook that errors on every tool call, a command not found because PATH or shims point at a stale install, a config or JSON settings file that no longer parses, an MCP server that fails to start, or a sandbox or permission step that blocks entry. Use for the harness executable, installer, version, config, hooks, credentials, and launch path. Repository environment and service checks belong to add-just-doctor; application bugs belong to diagnosing-bugs.
+description: "Diagnose and repair a local coding-agent CLI or harness install (Claude Code, Codex, DeepSeek Harness/DSH, Cursor, Droid, pi, Grok and similar) when the harness itself breaks: a self-update that never reaches the latest version, a failed global npm or pnpm install or expired auth, a hook that errors on every tool call, a command not found because PATH or shims point at a stale install, a config or JSON settings file that no longer parses, an MCP server that fails to start, or a sandbox or permission step that blocks entry. Use for the harness executable, installer, version, config, hooks, credentials, and launch path. Repository environment and service checks belong to add-just-doctor; application bugs belong to diagnosing-bugs."
 ---
 
 # Agent Harness Repair

@@ -1,6 +1,6 @@
 ---
 name: done
-description: Finish the current change by validating, committing, opening and merging a PR or MR, reconciling related issues, and updating the local default-branch worktree. Manual invocation only: use when the user says /done or $done.
+description: "Finish the current change by validating, committing, opening and merging a PR or MR, reconciling related issues, and updating the local default-branch worktree. Manual invocation only: use when the user says /done or $done."
 disable-model-invocation: true
 ---
 
