@@ -15,18 +15,32 @@ def fail(message: str) -> None:
 
 
 
-def check_frontmatter_names() -> None:
+def check_frontmatter() -> None:
     for skill_file in sorted(ROOT.rglob("SKILL.md")):
+        path = skill_file.relative_to(ROOT)
         content = skill_file.read_text(encoding="utf-8")
         if not content.startswith("---\n"):
+            fail(f"missing frontmatter: {path}")
             continue
         end = content.find("\n---", 4)
         if end < 0:
+            fail(f"unterminated frontmatter: {path}")
             continue
-        match = re.search(r"^name:\s*['\"]?([^'\"\n]+)['\"]?\s*$", content[4:end], re.MULTILINE)
-        if match and match.group(1) != skill_file.parent.name:
-            path = skill_file.relative_to(ROOT)
-            fail(f"frontmatter name mismatch: {path}: {match.group(1)} != {skill_file.parent.name}")
+        block = content[4:end]
+        name = re.search(r"^name:\s*['\"]?([^'\"\n]+)['\"]?\s*$", block, re.MULTILINE)
+        if not name:
+            fail(f"missing or multiline name: {path}")
+        elif name.group(1) != skill_file.parent.name:
+            fail(f"frontmatter name mismatch: {path}: {name.group(1)} != {skill_file.parent.name}")
+        desc = re.search(r"^description:[ \t]*(.*)$", block, re.MULTILINE)
+        if not desc or not desc.group(1).strip():
+            fail(f"missing description: {path}")
+            continue
+        value = desc.group(1).strip()
+        if value.split()[0] in (">", ">-", ">+", "|", "|-", "|+"):
+            fail(f"block-scalar description: {path}")
+        elif "<" in value or ">" in value:
+            fail(f"angle bracket in description: {path}")
 
 
 
@@ -47,7 +61,7 @@ def check_personal_paths() -> None:
 
 
 def main() -> int:
-    check_frontmatter_names()
+    check_frontmatter()
     check_personal_paths()
     if FAILURES:
         for message in sorted(FAILURES):

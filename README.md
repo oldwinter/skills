@@ -22,8 +22,6 @@ npx --yes skills@latest add oldwinter/skills --global --skill done --agent '*' -
 - **agent-autoresearch** — 与 harness 无关的 autoresearch 循环：改、量、留或回退、记录。
 - **change-evidence** — 给 UI/UX 和前端改动录屏取证，覆盖复现、改后行为和验收。
 - **done** — 收尾一次改动：验证、提交、开并合并 PR/MR、对齐 issue（只在 `$done` / `/done` 时用）。
-- **herdr-worktrunk** — 用 Worktrunk 和 Herdr 准备任务环境并核对交付状态。
-- **planning-with-files-zh** — Manus 风格的文件规划（task_plan / findings / progress）。
 - **tdd-pstack** — pstack 的 bug 修复 TDD：先写失败的回归测试再修（pstack-claude `tdd` 的改名 fork）。
 - **teach-pstack** — pstack 的 teach：借 `how` 和 `why` 把代码讲明白（pstack-claude `teach` 的改名 fork）。
 
@@ -34,8 +32,8 @@ npx --yes skills@latest add oldwinter/skills --global --skill done --agent '*' -
 
 ## Statistics
 
-- **Skill directories**: 10
-- **Unique names**: 10
+- **Skill directories**: 8
+- **Unique names**: 8
 
 ## 归档
 
@@ -45,8 +43,10 @@ npx --yes skills@latest add oldwinter/skills --global --skill done --agent '*' -
 
 - [`automation-memory`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/automation-memory) — Resolve and maintain recurring Codex automation memory safely. MUST use whenever prompts include Automation:, 
 - [`chendongdong-digital-twin`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/chendongdong-digital-twin) — Evidence-based Chen Dongdong operating perspective for drafting colleague replies, executing work in his prefe
+- [`herdr-worktrunk`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/herdr-worktrunk) — Automate task environments with Worktrunk and Herdr: prepare dependencies through project hooks, start and health-check per-worktree dev services, report Git and delivery status.
 - [`lark-reimbursement`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/lark-reimbursement) — 采购报销前提醒并核验采购申请已获批准，再根据飞书文档和凭证创建或修正费用报销单，上传附件并回读核验。普通审批处理使用 lark-approval。
 - [`oldwinter-mode`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/oldwinter-mode) — oldwinter's agent style. Terse Chinese-first replies, config-level autonomy behind declared gates, fixed orche
+- [`planning-with-files-zh`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/planning-with-files-zh) — 基于 Manus 风格的文件规划系统，创建 task_plan.md、findings.md 和 progress.md 跟踪复杂任务进度，支持 /clear 后会话恢复。
 - [`windows-storage-audit`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/windows-storage-audit) — Scan Windows disks from their roots, explain physical storage use and cleanup feasibility, then execute scoped
 - [`yansu-agent-cli`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/yansu-agent-cli) — Use the bundled Yansu CLI to sync project knowledge/context/skills and run Yansu workflow commands.
 - [`browser`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/browser) — This skill should be used for browser automation tasks using Chrome DevTools Protocol (CDP). Triggers when use
@@ -80,8 +80,12 @@ git checkout archive/2026-10-13 -- <path>
 ## 校验
 
 ```bash
-just check
+just check        # README 列表、frontmatter、私有路径审计 + 脚本夹具测试
+just doctor       # 本地工具链健康：python3 / bash / git / just / CLAUDE.md 符号链接
+just test-skills  # skill 自带的 unittest 套件（agent-autoresearch、canvas-atlas，约 30s）
 ```
+
+`doctor` 每行一个检查项，状态为 `PASS` / `WARN` / `FAIL` / `SKIP`；有任何 `FAIL` 时退出码非零。本仓库没有本地环境文件和环境化服务，对应行恒为 `SKIP`。
 
 ## License
 

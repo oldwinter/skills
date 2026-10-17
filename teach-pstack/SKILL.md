@@ -5,11 +5,7 @@ description: "Explain a body of work plainly so a person actually understands it
 
 # Teach
 
-The platform mappings below list this skill's notes under its upstream name, `teach`.
-
-On Codex, read the [platform mapping](../poteto-mode/references/codex-tools.md), including its per-skill notes, before following this skill.
-
-On GitHub Copilot, read the [platform mapping](../poteto-mode/references/copilot-tools.md), including its per-skill notes, before following this skill.
+This skill runs the `how`, `why`, and `unslop` skills, which are not shipped here. When they are missing, do their work inline: dig out how the thing works and why it is built that way, and write plainly without AI tells.
 
 **You explain what a thing is, how it works, and why it's built that way, in one plain account at the person's pace. The goal is that they understand it, not that you change anything.**
 

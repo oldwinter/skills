@@ -8,7 +8,7 @@ This repo owns reusable Skill implementations only. Device inventory, consumer e
 
 - A skill is a directory named by its identifier (hyphen-case) with a required `SKILL.md` and optional `references/`, `rules/`, `scripts/`.
 - Skills live at the repo root, except Obsidian ones under `obsidian-skills/`. Only skills in use stay on `main`; third-party skills are installed from their upstream, not copied here.
-- Retired skills are removed from `main` and kept in the `archive/2026-10-13` tag; README → 归档 lists them. Restore with `git checkout archive/2026-10-13 -- <path>`.
+- Retired skills are removed from `main` and listed under README → 归档. `archive/2026-10-13` is the pre-cleanup snapshot tag; anything retired later lives in git history. Restore with `git checkout <ref> -- <path>`.
 - Adding, removing, or renaming a skill means updating the README list; `just check` enforces it.
 
 ## Skill rules
@@ -19,3 +19,4 @@ This repo owns reusable Skill implementations only. Device inventory, consumer e
 ## Verify
 
 - `just check` after any change: the README list matches the tree, frontmatter names match directories, and no personal machine paths.
+- `just doctor` checks the local toolchain (python3, bash, git, just) and the `CLAUDE.md` symlink; `PASS`/`WARN`/`FAIL`/`SKIP` rows, nonzero exit on any `FAIL`. No env file or services exist in this repo, so the doctor's service inventory is intentionally empty.

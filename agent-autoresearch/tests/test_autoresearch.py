@@ -8,6 +8,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -123,8 +124,12 @@ class ControllerTest(unittest.TestCase):
         state = self.status()
         self.assertEqual(state["state"], "active")
         self.assertEqual(state["baseline"], 10.0)
-        launched = subprocess.run([str(launcher), "status", "--json"], capture_output=True, text=True, cwd="/")
-        self.assertEqual(json.loads(launched.stdout)["best"], 10.0)
+        if os.name == "posix" or shutil.which("sh"):
+            cmd = ([str(launcher)] if os.name == "posix" else ["sh", str(launcher)]) + ["status", "--json"]
+            cwd = "/" if os.name == "posix" else tempfile.gettempdir()
+            launched = subprocess.run(cmd, capture_output=True, text=True, cwd=cwd)
+            self.assertEqual(launched.returncode, 0, launched.stderr)
+            self.assertEqual(json.loads(launched.stdout)["best"], 10.0)
 
     def test_init_rejects_dirty_tree_and_existing_session(self) -> None:
         self.write("9\n")
@@ -284,6 +289,7 @@ class ControllerTest(unittest.TestCase):
         out = self.ar("wait", "--timeout", "60")
         self.assertIn("#1 KEEP", out)
 
+    @unittest.skipUnless(os.name == "posix" or shutil.which("sh"), "hooks run through sh")
     def test_hooks_output_reaches_agent(self) -> None:
         self.init()
         hook = self.repo / ".autoresearch" / "hooks" / "after.sh"

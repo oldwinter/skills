@@ -11,7 +11,7 @@ Karpathy-style autoresearch that runs the same way in every harness. You are the
 hypothesis -> edit -> trial (measure, gate, keep or revert, log) -> learn -> repeat
 ```
 
-`<skill-dir>` is the directory containing this file. Before `init`, call the controller as `python3 <skill-dir>/scripts/autoresearch.py <command>` from inside the target repository. `init` writes a launcher, so afterwards call `.autoresearch/ar <command>` from the repository root (or by its absolute path from anywhere); it also works for a fresh context that never saw this skill. `<command> --help` lists every flag.
+`<skill-dir>` is the directory containing this file. Before `init`, call the controller as `python3 <skill-dir>/scripts/autoresearch.py <command>` from inside the target repository. `init` writes a launcher, so afterwards call `.autoresearch/ar <command>` from the repository root (or by its absolute path from anywhere); it also works for a fresh context that never saw this skill. On Windows the `ar` launcher is a POSIX shell script: run `sh .autoresearch/ar <command>` (Git Bash's `sh` works; WSL's does not share the filesystem) or call the `.py` directly. Session hooks also run through `sh` on Windows. `<command> --help` lists every flag.
 
 ## Route the request
 
