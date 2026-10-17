@@ -20,6 +20,31 @@ npx --yes skills@latest add oldwinter/skills --skill to-note vault-moc canvas-at
 - `tdd-pstack` / `teach-pstack` 是上游 `tdd` / `teach` 的改名 fork，和同名上游能力二选一，不要同时安装。
 - 装完在新会话里确认目标 skills 目录下有该 skill；模型上下文里看不到 `done` 属于预期。
 
+### Loop 套装（唯一要整组装的一组）
+
+`loop-kit` 是底座，另外三个是它驱动的一拍循环，四个必须装在同一个 skills 目录下（它们互相用相对路径引用）。一键装齐：
+
+```bash
+npx --yes skills@latest add oldwinter/skills --skill loop-kit loop-triage-github loop-watch-social loop-nightly-review --agent claude-code
+```
+
+然后在目标项目里初始化一次（幂等，可重复跑）：
+
+```bash
+python3 .claude/skills/loop-kit/scripts/loopkit.py init
+python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
+```
+
+`init` 从 `git remote` 认出仓库名，要覆盖就加 `--repo owner/name`；它会写 `.loop/config.json`、`LESSONS.md`、验收规则文件、`AGENTS.md` 里的接线块，并在仓库外建状态目录和 Reply Desk。`doctor` 逐行 `PASS`/`WARN`/`FAIL`/`SKIP`，有 `FAIL` 就别急着开定时器。之后每个循环一个会话：
+
+```text
+/loop 30m /loop-triage-github
+/loop 60m /loop-watch-social
+/loop /loop-nightly-review
+```
+
+调度器换成别的 harness 也行，见 `loop-kit/references/harnesses.md`（Claude Code `/loop`、DSH 定时任务、cron、systemd、任务计划程序）。
+
 ## Skills
 
 ### Standalone Skills
@@ -33,6 +58,13 @@ npx --yes skills@latest add oldwinter/skills --skill to-note vault-moc canvas-at
 - **tdd-pstack** — pstack 的 bug 修复 TDD：先写失败的回归测试再修（pstack-claude `tdd` 的改名 fork；与上游 `tdd` 二选一安装）。
 - **teach-pstack** — pstack 的 teach：借 `how` 和 `why` 把代码讲明白（pstack-claude `teach` 的改名 fork；与上游 `teach` 二选一安装）。
 
+### Loop Skills
+
+- **loop-kit** — 维护循环的公共底座：写 `.loop/config.json`、生成 `LESSONS.md` 与验收规则模板、接线 `AGENTS.md`，带 Reply Desk（对外动作的人工审批闸门）、`doctor` 自检和 tick 锁。装 loop 套装的第一个入口。
+- **loop-triage-github** — GitHub 维护循环的一拍：只读自己的 PR，先复现、先写会失败的测试再修，跟到 CI/评审/合并，所有对外动作先落 Reply Desk 等批准；附事件监听脚本 `watch-prs.py`。
+- **loop-watch-social** — 社区反馈循环的一拍：X/Discord/Reddit 先收集，用小模型过滤后再进主会话，修复真正上线后才回帖；对外回复同样走 Reply Desk。
+- **loop-nightly-review** — 复盘循环的一拍：每晚看合并进 main 的提交，把踩过的坑写进 `LESSONS.md`，同一教训在 3 个不同日子出现就升级成硬规则，并顺手开一次清理 PR。
+
 ### Obsidian Skills
 
 - **canvas-atlas** — 把代码仓库、笔记或研究材料整理成可逐层阅读的 Obsidian Canvas 知识地图。
@@ -41,8 +73,8 @@ npx --yes skills@latest add oldwinter/skills --skill to-note vault-moc canvas-at
 
 ## Statistics
 
-- **Skill directories**: 11
-- **Unique names**: 11
+- **Skill directories**: 15
+- **Unique names**: 15
 
 ## 归档
 
@@ -91,7 +123,7 @@ git checkout archive/2026-10-13 -- <path>
 ```bash
 just check        # README 列表、frontmatter/描述/相对链接/个人路径审计 + 脚本夹具测试
 just doctor       # 本地工具链健康：python3 / bash / git / just / CLAUDE.md 符号链接
-just test-skills  # skill 自带的 unittest 套件（agent-autoresearch、canvas-atlas、longform-fiction，约 35s）
+just test-skills  # skill 自带的 unittest 套件（agent-autoresearch、canvas-atlas、longform-fiction、loop-kit、loop-triage-github）
 ```
 
 `doctor` 每行一个检查项，状态为 `PASS` / `WARN` / `FAIL` / `SKIP`；有任何 `FAIL` 时退出码非零。`bash` 行会显示实际解析到的路径：Windows 上跑 `scripts/test-*` 用 Git Bash，WSL 的 `bash` 不共享文件系统。本仓库没有本地环境文件和环境化服务，对应行恒为 `SKIP`。

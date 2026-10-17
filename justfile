@@ -29,3 +29,5 @@ test-skills:
     python3 -m unittest discover -s agent-autoresearch/tests -q
     python3 -m unittest discover -s obsidian-skills/canvas-atlas/tests -q
     python3 -m unittest discover -s longform-fiction/tests -q
+    python3 -m unittest discover -s loop-kit/tests -q
+    python3 -m unittest discover -s loop-triage-github/tests -q

@@ -128,13 +128,18 @@ def check_skill(skill_file: Path, rel: Path) -> None:
     if not desc or not desc.group(1).strip():
         fail(f"missing description: {rel}")
         return
-    value = desc.group(1).strip()
-    if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
-        value = value[1:-1]
+    raw = desc.group(1).strip()
+    quoted = len(raw) >= 2 and raw[0] == raw[-1] and raw[0] in "\"'"
+    value = raw[1:-1] if quoted else raw
     if not value:
         fail(f"missing description: {rel}")
     elif value.split()[0] in BLOCK_SCALARS:
         fail(f"block-scalar description: {rel}")
+    elif not quoted and ": " in value:
+        # A plain YAML scalar cannot contain ": ": the value parses as a nested
+        # mapping, and the skills CLI skips the whole skill without failing the
+        # install, so it disappears silently. Quote the description instead.
+        fail(f"unquoted description with ': ' (invalid YAML, skipped by installers): {rel}")
     elif "<" in value or ">" in value:
         fail(f"angle bracket in description: {rel}")
     elif len(value) > DESCRIPTION_LIMIT:

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Loop Watch Social"
+  short_description: "One tick of the community feedback loop"
+  default_prompt: "Use $loop-watch-social to run one tick of the community feedback loop."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Loop Kit"
+  short_description: "Set up and check the maintenance-loop suite"
+  default_prompt: "Use $loop-kit to set up or check the maintenance loops in this repository."
+
+policy:
+  allow_implicit_invocation: false

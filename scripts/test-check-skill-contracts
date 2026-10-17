@@ -91,6 +91,17 @@ reset
 write_skill demo demo "Use <skill-name> placeholders."
 expect_failure "angle bracket" "angle bracket in description" demo
 
+# A plain YAML scalar cannot contain ": ": the value parses as a nested mapping and
+# the skills CLI skips the skill silently, so the install looks like it worked.
+reset
+write_skill demo demo "One tick of the loop: collect and act."
+expect_failure "unquoted colon" "unquoted description with" demo
+
+reset
+mkdir -p "$scratch/demo"
+printf '%s\n' '---' 'name: demo' 'description: "One tick of the loop: collect and act."' '---' >"$scratch/demo/SKILL.md"
+"$py" "$check" "$scratch" >/dev/null || fail "a quoted description containing ': ' should pass"
+
 reset
 write_skill bad_name bad_name "Underscores are not hyphen-case."
 expect_failure "invalid name" "invalid skill name" bad_name
