@@ -122,7 +122,7 @@ git checkout archive/2026-10-13 -- <path>
 ## 校验
 
 ```bash
-just check        # README 列表、frontmatter/描述/相对链接/个人路径审计 + 脚本夹具测试
+just check        # README 列表、frontmatter/描述/相对链接/openai.yaml/个人路径审计 + 脚本夹具测试
 just doctor       # 本地工具链健康：python3 / bash / git / just / CLAUDE.md 符号链接
 just test-skills  # skill 自带的 unittest 套件（agent-autoresearch、canvas-atlas、longform-fiction、loop-kit、loop-triage-github）
 ```
@@ -131,4 +131,4 @@ just test-skills  # skill 自带的 unittest 套件（agent-autoresearch、canva
 
 ## License
 
-Skills are written for this repository unless a skill's own `LICENSE` or `NOTICE.md` says otherwise.
+[MIT](LICENSE). Skills are written for this repository unless a skill's own `LICENSE` or `NOTICE.md` says otherwise — the `tdd-pstack` and `teach-pstack` forks carry their own upstream MIT license and attribution.

@@ -18,6 +18,10 @@ README → 校验 lists `just test-skills` as the suite command next to `just ch
 just test-skills 1> (Join-Path $ev "test-skills.txt") 2> (Join-Path $ev "test-skills.err"); "test-skills exit=$LASTEXITCODE"
 ```
 
+```bash
+just test-skills > "$ev/test-skills.txt" 2> "$ev/test-skills.err"; echo "test-skills exit=$?"
+```
+
 Observable end state that proves it works:
 
 - exit `0`;
@@ -29,6 +33,11 @@ A single suite, with the same evidence discipline:
 ```powershell
 python3 -m unittest discover -s loop-kit/tests -q 1> (Join-Path $ev "loop-kit-tests.txt") 2>&1
 "loop-kit exit=$LASTEXITCODE"
+```
+
+```bash
+python3 -m unittest discover -s loop-kit/tests -q > "$ev/loop-kit-tests.txt" 2>&1
+echo "loop-kit exit=$?"
 ```
 
 ## Gotchas

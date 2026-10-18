@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit SKILL.md contracts and repo-wide personal device paths.
+"""Audit SKILL.md contracts, agents/openai.yaml metadata, and personal device paths.
 
 Usage: check-skill-contracts [REPO]
 
@@ -147,6 +147,64 @@ def check_skill(skill_file: Path, rel: Path) -> None:
     check_relative_links(skill_file, rel, content)
 
 
+def parse_yaml_subset(text: str) -> dict | None:
+    """Parse the agents/openai.yaml subset: nested mappings, scalars, comments.
+
+    Returns nested dicts, or None when a line falls outside the subset (tabs,
+    list items, multiline scalars). The file is harness-advisory metadata and
+    stays deliberately flat, so the subset is the contract.
+    """
+    root: dict = {}
+    stack: list[tuple[int, dict]] = [(-1, root)]
+    for line in text.splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        if "\t" in line:
+            return None
+        match = re.match(r"^ *([A-Za-z0-9_-]+):(?:[ \t]+(.*))?$", line)
+        if not match:
+            return None
+        indent = len(line) - len(line.lstrip())
+        while indent <= stack[-1][0]:
+            stack.pop()
+        if not stack:
+            return None
+        key, value = match.group(1), match.group(2)
+        if value:
+            stack[-1][1][key] = value.strip()
+        else:
+            child: dict = {}
+            stack[-1][1][key] = child
+            stack.append((indent, child))
+    return root
+
+
+def check_openai_yaml(skill_file: Path, rel: Path) -> None:
+    """Validate agents/openai.yaml when present: it must parse and advertise
+    the skill's display name, default prompt, and implicit-invocation policy."""
+    yaml_path = skill_file.parent / "agents" / "openai.yaml"
+    if not yaml_path.is_file():
+        return
+    label = f"{rel.parent}/agents/openai.yaml"
+    data = parse_yaml_subset(read_text(yaml_path) or "")
+    if data is None:
+        fail(f"invalid agents/openai.yaml (nested mappings and scalars only): {label}")
+        return
+    interface = data.get("interface")
+    interface = interface if isinstance(interface, dict) else {}
+    policy = data.get("policy")
+    policy = policy if isinstance(policy, dict) else {}
+    for key in ("display_name", "short_description", "default_prompt"):
+        if not interface.get(key):
+            fail(f"agents/openai.yaml missing interface.{key}: {label}")
+    prompt = interface.get("default_prompt") or ""
+    if prompt and f"${skill_file.parent.name}" not in prompt:
+        fail(f"agents/openai.yaml default_prompt does not invoke ${skill_file.parent.name}: {label}")
+    flag = str(policy.get("allow_implicit_invocation", "")).strip("\"' ").lower()
+    if flag not in ("true", "false"):
+        fail(f"agents/openai.yaml policy.allow_implicit_invocation must be true or false: {label}")
+
+
 def check_personal_paths(repo: Path) -> None:
     for path in public_files(repo):
         content = read_text(path)
@@ -157,7 +215,9 @@ def check_personal_paths(repo: Path) -> None:
 def main() -> int:
     repo = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]
     for skill_file in skill_files(repo):
-        check_skill(skill_file, skill_file.relative_to(repo))
+        rel = skill_file.relative_to(repo)
+        check_skill(skill_file, rel)
+        check_openai_yaml(skill_file, rel)
     check_personal_paths(repo)
     if FAILURES:
         for message in sorted(FAILURES):

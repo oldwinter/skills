@@ -15,7 +15,7 @@ This repo owns reusable Skill implementations only. Device inventory, consumer e
 
 - Keep every skill usable outside this owner's machines: no credentials, private sessions, personal memory, private hostnames, or hardcoded device paths; use placeholders or public interfaces in examples.
 - `SKILL.md` frontmatter is parsed by scripts: `---` delimited, `name:` and `description:` as single-line scalars (no `>` block scalars), no angle brackets in `description`. A description containing `: ` must be quoted: an unquoted one is invalid YAML, and the install CLI skips that skill silently, so the install looks like it worked while the skill is missing.
-- `agents/openai.yaml`, when present, advertises the display name, default prompt, and implicit-invocation policy to harnesses that read it; `disable-model-invocation: true` marks a skill explicit-only. Both are harness-advisory metadata, not behavior.
+- `agents/openai.yaml`, when present, advertises the display name, default prompt, and implicit-invocation policy to harnesses that read it; `disable-model-invocation: true` marks a skill explicit-only. Both are harness-advisory metadata, not behavior. The checker validates it when present: `interface.display_name` / `interface.short_description` / `interface.default_prompt` (which must invoke `$<skill-name>`) and a boolean `policy.allow_implicit_invocation`.
 
 ## Verify
 

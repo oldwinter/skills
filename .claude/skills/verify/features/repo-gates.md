@@ -20,6 +20,11 @@ just check       1> (Join-Path $ev "check.txt")       2> (Join-Path $ev "check.e
 just doctor      1> (Join-Path $ev "doctor.txt")      2> (Join-Path $ev "doctor.err");       "doctor exit=$LASTEXITCODE"
 ```
 
+```bash
+just check       > "$ev/check.txt"  2> "$ev/check.err";  echo "check exit=$?"
+just doctor      > "$ev/doctor.txt" 2> "$ev/doctor.err"; echo "doctor exit=$?"
+```
+
 Observable end state that proves it works:
 
 - exit `0` for both;
