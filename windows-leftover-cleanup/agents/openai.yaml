@@ -1,0 +1,7 @@
+interface:
+  display_name: "Windows Leftover Cleanup"
+  short_description: "Remove Windows leftovers of deleted software or drives"
+  default_prompt: "Use $windows-leftover-cleanup to audit and remove Windows leftovers from removed software or a drive that no longer exists."
+
+policy:
+  allow_implicit_invocation: true

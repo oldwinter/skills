@@ -57,6 +57,7 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 - **longform-fiction** — 长篇小说规划、起草与扩写：故事圣经、章节合同、并行写手、连续性合并、字数验收门。
 - **tdd-pstack** — pstack 的 bug 修复 TDD：先写失败的回归测试再修（pstack-claude `tdd` 的改名 fork；与上游 `tdd` 二选一安装）。
 - **teach-pstack** — pstack 的 teach：借 `how` 和 `why` 把代码讲明白（pstack-claude `teach` 的改名 fork；与上游 `teach` 二选一安装）。
+- **windows-leftover-cleanup** — 清理已卸载软件或已消失磁盘留下的 Windows 残留：卸载项、Steam 库配置、防火墙规则、服务注册、文件关联、路径缓存和空目录。
 
 ### Loop Skills
 
@@ -73,8 +74,8 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 
 ## Statistics
 
-- **Skill directories**: 15
-- **Unique names**: 15
+- **Skill directories**: 16
+- **Unique names**: 16
 
 ## 归档
 
