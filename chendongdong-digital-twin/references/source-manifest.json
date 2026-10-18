@@ -143,54 +143,54 @@
     ]
   },
   "latest_supplemental_refresh": {
-    "run_at": "2026-10-11T08:01:03+08:00",
+    "run_at": "2026-10-18T11:21:25+08:00",
     "window": {
-      "start": "2026-10-04T08:01:03+08:00",
-      "end": "2026-10-11T08:01:03+08:00",
+      "start": "2026-10-11T08:01:03+08:00",
+      "end": "2026-10-18T11:21:25+08:00",
       "timezone": "Asia/Shanghai"
     },
+    "window_note": "Window start is aligned to the previous run's window end to remove the 08:01:03-11:21:25 catch-up hole left by the failed scheduled run; the window is therefore 7d3h20m22s rather than exactly seven days. No new coverage gap is introduced.",
     "source_system": "authorized_multi_harness_local_sessions",
     "authorization": "current_user_request_expanding_weekly_collection_scope",
     "status": "partial",
     "raw_content_stored": false,
     "inventory": {
       "harnesses_discovered": 13,
-      "window_user_role_records": 1169,
-      "deduplicated_content_context_fingerprints": 897,
-      "fingerprints_merged": 272,
-      "manual_input_candidates": 439,
-      "historical_content_context_overlap": 49,
-      "prior_window_ledger_fingerprints": 1443,
-      "prior_window_content_context_overlap": 531,
+      "window_user_role_records": 890,
+      "deduplicated_content_context_fingerprints": 643,
+      "fingerprints_merged": 247,
+      "manual_input_candidates": 426,
+      "historical_content_context_overlap": 48,
+      "prior_window_ledger_fingerprints": 897,
+      "prior_window_content_context_overlap": 45,
       "prior_window_ledger_present": true,
-      "new_manual_input_candidates": 149
+      "new_manual_input_candidates": 393
     },
     "source_coverage": {
       "claude": {
-        "files_read": 416,
-        "records_read": 79530,
-        "user_records_read": 10084,
-        "user_characters_read": 4081376,
-        "window_user_messages": 280,
-        "timestamp_native": 280,
-        "nontext_user_records": 9314,
-        "duplicate_timed_bodies": 50,
-        "files_without_session_id": 9,
+        "files_read": 352,
+        "records_read": 71549,
+        "user_records_read": 10531,
+        "user_characters_read": 4255023,
+        "window_user_messages": 317,
+        "timestamp_native": 317,
+        "nontext_user_records": 9641,
+        "duplicate_timed_bodies": 58,
+        "files_without_session_id": 11,
         "duplicate_message_ids": 2,
-        "cross_copy_duplicates": 60,
-        "eligible_unique_candidates": 34,
-        "sessions_inventoried": 231,
-        "window_sessions": 19,
-        "first_window_message": "2026-10-04T11:44:07.990000+08:00",
-        "last_window_message": "2026-10-10T22:06:33.273000+08:00",
+        "cross_copy_duplicates": 127,
+        "eligible_unique_candidates": 42,
+        "sessions_inventoried": 53,
+        "window_sessions": 20,
+        "first_window_message": "2026-10-12T02:07:03.806000+08:00",
+        "last_window_message": "2026-10-17T14:21:36.881000+08:00",
         "status": "complete",
         "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
         "classes": {
-          "system_template_or_probe": 112,
-          "manual_candidate": 49,
-          "ambiguous_long_or_forwarded": 2,
-          "delegated": 115,
-          "automation": 2
+          "manual_candidate": 55,
+          "system_template_or_probe": 38,
+          "delegated": 223,
+          "ambiguous_long_or_forwarded": 1
         },
         "gaps": [],
         "errors": {
@@ -203,34 +203,32 @@
       },
       "codex": {
         "databases_read": 3,
-        "database_pages_read": 248,
-        "database_items_read": 247021,
-        "index_label_format_mismatch": 19,
-        "recorder_journal_paths_located": 44,
-        "files_read": 3418,
-        "records_read": 939646,
-        "user_records_read": 11122,
-        "user_characters_read": 53993038,
-        "event_response_mirrors": 539,
-        "duplicate_timed_bodies": 2717,
-        "duplicate_message_ids": 1745,
-        "window_user_messages": 95,
-        "timestamp_native": 95,
-        "cross_copy_duplicates": 24,
-        "eligible_unique_candidates": 31,
-        "sessions_inventoried": 7863,
-        "window_sessions": 38,
-        "first_window_message": "2026-10-04T19:45:46.013000+08:00",
-        "last_window_message": "2026-10-11T08:00:53.138000+08:00",
+        "database_pages_read": 33,
+        "database_items_read": 31679,
+        "recorder_journal_paths_located": 628,
+        "index_label_format_mismatch": 18,
+        "files_read": 1976,
+        "records_read": 667600,
+        "user_records_read": 4750,
+        "user_characters_read": 14091521,
+        "duplicate_timed_bodies": 160,
+        "event_response_mirrors": 314,
+        "duplicate_message_ids": 1046,
+        "window_user_messages": 79,
+        "timestamp_native": 79,
+        "cross_copy_duplicates": 23,
+        "eligible_unique_candidates": 4,
+        "sessions_inventoried": 6557,
+        "window_sessions": 36,
+        "first_window_message": "2026-10-12T00:56:26.202000+08:00",
+        "last_window_message": "2026-10-16T09:01:16.739000+08:00",
         "status": "complete",
         "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
         "classes": {
-          "system_template_or_probe": 6,
-          "automation": 31,
-          "manual_candidate": 46,
-          "self_refresh_excluded": 2,
-          "delegated": 4,
-          "ambiguous_long_or_forwarded": 6
+          "automation": 35,
+          "manual_candidate": 5,
+          "ambiguous_long_or_forwarded": 5,
+          "system_template_or_probe": 34
         },
         "gaps": [],
         "errors": {
@@ -243,28 +241,27 @@
       },
       "devin": {
         "files_read": 100,
-        "records_read": 2850,
-        "user_records_read": 4377,
-        "user_characters_read": 43883302,
-        "window_user_messages": 162,
-        "timestamp_native": 162,
+        "records_read": 3075,
+        "user_records_read": 4758,
+        "user_characters_read": 44211397,
+        "window_user_messages": 102,
+        "timestamp_native": 102,
         "databases_read": 1,
-        "database_pages_read": 150,
-        "database_items_read": 149083,
-        "duplicate_message_ids": 1670,
-        "duplicate_timed_bodies": 863,
-        "cross_copy_duplicates": 89,
-        "eligible_unique_candidates": 28,
-        "sessions_inventoried": 548,
-        "window_sessions": 109,
-        "first_window_message": "2026-10-04T11:48:09.626525+08:00",
-        "last_window_message": "2026-10-11T08:00:55.297987+08:00",
+        "database_pages_read": 158,
+        "database_items_read": 156635,
+        "duplicate_message_ids": 1883,
+        "duplicate_timed_bodies": 929,
+        "cross_copy_duplicates": 24,
+        "eligible_unique_candidates": 54,
+        "sessions_inventoried": 614,
+        "window_sessions": 66,
+        "first_window_message": "2026-10-11T09:00:55.423375+08:00",
+        "last_window_message": "2026-10-18T08:31:31.469480+08:00",
         "status": "complete",
         "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
         "classes": {
-          "manual_candidate": 146,
-          "ambiguous_long_or_forwarded": 15,
-          "self_refresh_excluded": 1
+          "ambiguous_long_or_forwarded": 8,
+          "manual_candidate": 94
         },
         "gaps": [],
         "errors": {
@@ -276,23 +273,23 @@
         }
       },
       "pi": {
-        "files_read": 63,
-        "records_read": 3590,
-        "user_records_read": 77,
-        "user_characters_read": 32376,
-        "window_user_messages": 61,
-        "timestamp_native": 61,
-        "cross_copy_duplicates": 43,
-        "eligible_unique_candidates": 12,
-        "sessions_inventoried": 63,
-        "window_sessions": 53,
-        "first_window_message": "2026-10-04T08:30:04.054000+08:00",
-        "last_window_message": "2026-10-10T08:30:07.539000+08:00",
+        "files_read": 159,
+        "records_read": 9386,
+        "user_records_read": 179,
+        "user_characters_read": 176729,
+        "window_user_messages": 102,
+        "timestamp_native": 102,
+        "cross_copy_duplicates": 72,
+        "eligible_unique_candidates": 14,
+        "sessions_inventoried": 159,
+        "window_sessions": 96,
+        "first_window_message": "2026-10-11T08:30:50.029000+08:00",
+        "last_window_message": "2026-10-18T11:00:02.480000+08:00",
         "status": "complete",
         "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
         "classes": {
-          "manual_candidate": 52,
-          "ambiguous_long_or_forwarded": 9
+          "manual_candidate": 84,
+          "ambiguous_long_or_forwarded": 18
         },
         "gaps": [],
         "errors": {
@@ -304,27 +301,24 @@
         }
       },
       "droid": {
-        "files_read": 1292,
-        "records_read": 109234,
-        "user_records_read": 67160,
-        "user_characters_read": 30525864,
-        "nontext_user_records": 64259,
-        "window_user_messages": 380,
-        "timestamp_native": 380,
-        "cross_copy_duplicates": 54,
-        "eligible_unique_candidates": 36,
-        "sessions_inventoried": 1292,
-        "window_sessions": 151,
-        "first_window_message": "2026-10-04T08:09:07.943000+08:00",
-        "last_window_message": "2026-10-10T08:31:43.333000+08:00",
+        "files_read": 1298,
+        "records_read": 109276,
+        "user_records_read": 67184,
+        "user_characters_read": 30639375,
+        "nontext_user_records": 64271,
+        "window_user_messages": 12,
+        "timestamp_native": 12,
+        "eligible_unique_candidates": 6,
+        "sessions_inventoried": 1298,
+        "window_sessions": 6,
+        "first_window_message": "2026-10-11T08:31:47.939000+08:00",
+        "last_window_message": "2026-10-18T08:31:13.499000+08:00",
         "status": "complete",
         "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
         "classes": {
-          "automation": 51,
-          "manual_candidate": 123,
-          "system_template_or_probe": 195,
-          "ambiguous_long_or_forwarded": 10,
-          "ambiguous_work_package": 1
+          "system_template_or_probe": 4,
+          "manual_candidate": 6,
+          "automation": 2
         },
         "gaps": [],
         "errors": {
@@ -336,28 +330,32 @@
         }
       },
       "cursor": {
-        "files_read": 40,
-        "records_read": 1200,
-        "user_records_read": 169,
-        "user_characters_read": 156783,
-        "untimed_user_records": 94,
-        "databases_read": 14,
-        "database_pages_read": 31,
-        "database_items_read": 16222,
-        "legacy_chat_containers_read": 24,
+        "files_read": 10,
+        "records_read": 28,
+        "user_records_read": 86,
+        "user_characters_read": 68090,
+        "untimed_user_records": 10,
+        "databases_read": 13,
+        "database_pages_read": 30,
+        "database_items_read": 16316,
+        "window_user_messages": 1,
+        "timestamp_native": 1,
+        "legacy_chat_containers_read": 23,
         "sdk_events_read": 204,
         "sdk_blobs_read": 55,
         "sdk_blob_bytes_read": 223945,
         "sdk_blobs_not_semantically_decoded": 36,
         "nightly_application_roots_checked": 1,
         "nightly_session_databases_present": 0,
-        "sessions_inventoried": 100,
-        "window_sessions": 0,
-        "first_window_message": null,
-        "last_window_message": null,
+        "sessions_inventoried": 95,
+        "window_sessions": 1,
+        "first_window_message": "2026-10-14T00:58:26.793000+08:00",
+        "last_window_message": "2026-10-14T00:58:26.793000+08:00",
         "status": "partial",
         "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
-        "classes": {},
+        "classes": {
+          "manual_candidate": 1
+        },
         "gaps": [
           "transcripts_or_application_records_have_no_original_message_timestamps",
           "sdk_binary_blobs_read_but_not_semantically_decoded"
@@ -371,26 +369,25 @@
         }
       },
       "grok": {
-        "files_read": 2190,
-        "records_read": 88372,
-        "user_records_read": 4213,
-        "user_characters_read": 34712827,
-        "untimed_user_records": 2871,
-        "window_user_messages": 191,
-        "timestamp_rewind_checkpoint_derived": 191,
-        "cross_copy_duplicates": 2,
-        "eligible_unique_candidates": 8,
-        "sessions_inventoried": 757,
-        "window_sessions": 188,
-        "first_window_message": "2026-10-04T08:31:12.619573+08:00",
-        "last_window_message": "2026-10-10T08:31:51.823126+08:00",
+        "files_read": 3012,
+        "records_read": 143850,
+        "user_records_read": 5140,
+        "user_characters_read": 36737102,
+        "untimed_user_records": 3525,
+        "window_user_messages": 273,
+        "timestamp_rewind_checkpoint_derived": 273,
+        "cross_copy_duplicates": 1,
+        "eligible_unique_candidates": 269,
+        "sessions_inventoried": 1034,
+        "window_sessions": 268,
+        "first_window_message": "2026-10-11T08:31:56.387422+08:00",
+        "last_window_message": "2026-10-18T08:31:24.657618+08:00",
         "status": "partial",
         "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
         "classes": {
-          "ambiguous_long_or_forwarded": 18,
-          "manual_candidate": 158,
-          "automation": 6,
-          "system_template_or_probe": 9
+          "manual_candidate": 269,
+          "ambiguous_long_or_forwarded": 1,
+          "automation": 3
         },
         "gaps": [
           "user_records_without_native_time; checkpoint_time_is_derived_not_original_message_time"
@@ -404,23 +401,29 @@
         }
       },
       "omp": {
-        "databases_read": 1,
-        "database_pages_read": 1,
-        "database_items_read": 204,
-        "index_rows": 204,
-        "index_rows_absent": 204,
-        "sessions_inventoried": 0,
-        "window_sessions": 0,
-        "first_window_message": null,
-        "last_window_message": null,
-        "status": "unavailable",
+        "files_read": 1,
+        "records_read": 77,
+        "user_records_read": 8,
+        "user_characters_read": 250,
+        "window_user_messages": 4,
+        "timestamp_native": 4,
+        "databases_read": 2,
+        "database_pages_read": 2,
+        "database_items_read": 5,
+        "index_rows": 1,
+        "index_rows_absent": 0,
+        "duplicate_timed_bodies": 4,
+        "eligible_unique_candidates": 4,
+        "sessions_inventoried": 1,
+        "window_sessions": 1,
+        "first_window_message": "2026-10-12T00:47:00.031000+08:00",
+        "last_window_message": "2026-10-12T02:08:13.851000+08:00",
+        "status": "complete",
         "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
-        "classes": {},
-        "gaps": [
-          "session_root_absent",
-          "all_indexed_omp_sources_absent; local OMP home removed, moved, or never installed this run",
-          "known_session_database_absent"
-        ],
+        "classes": {
+          "manual_candidate": 4
+        },
+        "gaps": [],
         "errors": {
           "read_errors": 0,
           "parse_errors": 0,
@@ -513,18 +516,17 @@
       "antigravity": {
         "databases_read": 1,
         "database_pages_read": 1,
-        "database_items_read": 2,
-        "indexed_source_paths_absent": 2,
-        "sessions_inventoried": 0,
+        "database_items_read": 6,
+        "files_read": 6,
+        "records_read": 1890,
+        "sessions_inventoried": 3,
         "window_sessions": 0,
         "first_window_message": null,
         "last_window_message": null,
-        "status": "unavailable",
+        "status": "empty",
         "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
         "classes": {},
-        "gaps": [
-          "indexed_antigravity_sources_absent; no readable local source"
-        ],
+        "gaps": [],
         "errors": {
           "read_errors": 0,
           "parse_errors": 0,
@@ -540,128 +542,121 @@
           "alias": "local",
           "index_status": {
             "enabled": true,
-            "phase": "degraded",
+            "phase": "current",
             "filesFailed": 0,
-            "degradedRoots": [
-              "~/.gemini/antigravity-cli/brain unlistable",
-              "~/.omp/agent/sessions unlistable"
-            ],
+            "filesIndexed": 5730,
+            "messagesIndexed": 164329,
+            "degradedRoots": [],
             "sessionsByAgent": {
-              "antigravity": 2,
-              "claude": 232,
-              "codex": 742,
-              "cursor": 40,
+              "antigravity": 6,
+              "claude": 55,
+              "codex": 737,
+              "cursor": 10,
               "devin": 100,
-              "droid": 1292,
-              "grok": 757,
-              "omp": 204,
+              "droid": 1298,
+              "grok": 1034,
+              "omp": 1,
               "opencode2": 1,
-              "pi": 45,
+              "pi": 141,
               "rovo": 2
             }
           },
           "conversation_bodies": "local_files_read",
-          "gap": "index_phase_degraded_two_roots_unlistable; antigravity_and_omp_indexed_sources_absent"
+          "gap": "none_at_index_level; body coverage limited to locally readable harness sources"
         },
         {
-          "alias": "paired-01",
+          "alias": "paired-reachable",
           "index_status": {
             "enabled": true,
             "phase": "current",
             "filesFailed": 0,
+            "filesIndexed": 652,
+            "messagesIndexed": 6975,
             "degradedRoots": [],
             "sessionsByAgent": {
               "claude": 3,
-              "codex": 41,
+              "codex": 1,
               "cursor": 10,
               "droid": 71,
               "grok": 530,
-              "pi": 36
+              "pi": 37
             }
           },
           "conversation_bodies": "unavailable",
           "gap": "index_readable_but_CLI_has_no_complete_session_body_reader"
         },
         {
-          "alias": "paired-02",
+          "alias": "paired-unreachable-01",
           "index_status": {
-            "enabled": true,
-            "phase": "current",
-            "filesFailed": 0,
-            "degradedRoots": [],
-            "sessionsByAgent": {
-              "claude": 10,
-              "codex": 621,
-              "cursor": 249,
-              "devin": 53,
-              "droid": 2576,
-              "grok": 366,
-              "omp": 1,
-              "pi": 91
-            }
+            "reachable": false
           },
           "conversation_bodies": "unavailable",
-          "gap": "index_readable_but_CLI_has_no_complete_session_body_reader"
+          "gap": "remote_runtime_unavailable; no login or connection attempted"
         },
         {
-          "alias": "paired-03",
+          "alias": "paired-unreachable-02",
           "index_status": {
-            "enabled": true,
-            "phase": "current",
-            "filesFailed": 0,
-            "degradedRoots": [],
-            "sessionsByAgent": {
-              "claude": 50,
-              "codex": 69,
-              "cursor": 1118,
-              "devin": 36,
-              "droid": 25,
-              "grok": 204,
-              "omp": 9,
-              "opencode": 12,
-              "opencode2": 3,
-              "pi": 57
-            }
+            "reachable": false
           },
           "conversation_bodies": "unavailable",
-          "gap": "index_readable_but_CLI_has_no_complete_session_body_reader"
+          "gap": "remote_runtime_unavailable; no login or connection attempted"
+        },
+        {
+          "alias": "paired-unreachable-03",
+          "index_status": {
+            "reachable": false
+          },
+          "conversation_bodies": "unavailable",
+          "gap": "remote_runtime_unavailable; no login or connection attempted"
         }
       ],
       "orca_index": {
         "enabled": true,
-        "phase": "degraded",
+        "phase": "current",
         "filesFailed": 0,
-        "degradedRoots": 2,
+        "degradedRoots": 0,
+        "filesIndexed": 5730,
+        "messagesIndexed": 164329,
         "sessionsByAgent": {
-          "antigravity": 2,
-          "claude": 232,
-          "codex": 742,
-          "cursor": 40,
+          "antigravity": 6,
+          "claude": 55,
+          "codex": 737,
+          "cursor": 10,
           "devin": 100,
-          "droid": 1292,
-          "grok": 757,
-          "omp": 204,
+          "droid": 1298,
+          "grok": 1034,
+          "omp": 1,
           "opencode2": 1,
-          "pi": 45,
+          "pi": 141,
           "rovo": 2
         }
       },
       "promotion_policy": "reinforce_or_tentative_only",
       "official_interfaces": {
-        "codex_cloud": {
-          "pages_read": 1,
-          "task_ids_inventoried": 0,
-          "pagination_exhausted": true,
-          "errors": [],
-          "body_coverage": "unavailable; CLI list/status/diff are not paginated conversation bodies"
+        "codex_index": {
+          "mislabeled_source_files": 19,
+          "handling": "read by actual file format, agent label not treated as authorship"
         },
         "devin": {
-          "current_directory_records": 50,
           "limitation": "directory-scoped list, no full-history cursor or body reader; readonly database and all local exports required"
         }
       },
-      "remote_route": "Three saved paired environments audited separately; aliases are anonymized and not a stable cross-run mapping. All three indexes enabled and current. Complete remote session body route unavailable; one configured ssh target not connected and not attempted; no new login, connection, recorder or setting change.",
+      "remote_route": "Four saved paired Orca environments audited separately; aliases are anonymized and not a stable cross-run mapping. One reachable with an enabled, current index but no complete session body route; three returned remote_runtime_unavailable. No new login, connection, recorder or setting change.",
       "semantic_review_complete": false,
+      "bounded_semantic_sample": {
+        "performed": true,
+        "scope": "full length bucketing plus equidistant sampling of the residual non-scheduled candidates, read in memory only",
+        "raw_content_stored": false,
+        "buckets": {
+          "long_prompt_gt800": 266,
+          "other": 71,
+          "short_approval_le12": 34,
+          "scheduled_task_text": 22
+        },
+        "finding": "Grok contributes 269 of 393 new candidates, 263 of them >800 characters; the high structural counts (real_surface_evidence 288, delivery_closeout 302) are almost entirely Grok long-form records. Residual non-Grok hits are explicit_correction 5, real_surface_evidence 10, simplify_control_plane 0, bounded_scope_cost 3, delivery_closeout 16, supervised_delegation 2.",
+        "unclassified_non_personal_input": "harness probes, Orca scheduled-task dispatch text, and delegated factory/subagent work packages appear as user-role records but are not personal wording",
+        "promoted_rules": 0
+      },
       "independent_contexts_confirmed": 0,
       "independent_fresh_context_reviewer": false,
       "unresolved_historical_gaps": [
@@ -679,11 +674,12 @@
         }
       ],
       "source_format_corrections": [
-        "Orca agent labels were not treated as authorship: 19 Codex-labeled source files still have Claude/Pi formats and are covered by their actual readers.",
-        "The local OMP home is absent this run; 204 stale index rows point to missing paths. OMP is unavailable, not empty, and zero local records do not imply zero personal use.",
-        "Antigravity appears in the index with 2 rows pointing to an absent brain transcript path; unavailable, not empty.",
-        "Codex Cloud official listing completes with zero tasks; this is not full Codex App or multi-device coverage.",
-        "OpenCode2 local index points to an absent session database; it is unavailable, not empty."
+        "The local OMP source became readable again this run (1 session, 4 window user-role records); the previous run's 204 stale index rows pointed to absent paths. Availability changed, not inferred usage.",
+        "Antigravity moved from unavailable to empty: 6 indexed rows, 6 files and 1890 records read, zero window user-role records. Readable but empty is not evidence of zero use.",
+        "The local Orca index left the degraded phase; both previously unlistable roots are now current.",
+        "Cursor exposes only 1 window session and 10 untimed user-role records; 55 SDK blobs are read but not semantically decodable.",
+        "Grok window records rely on rewind-checkpoint derived timestamps; 3525 user-role records carry no native message time. Grok also dominates this week's new candidates with long-form records, so its structural pattern hits must not be read as personal wording.",
+        "OpenCode has no local index rows and OpenCode2 points to an absent session database; both are unavailable, not empty."
       ]
     },
     "candidate_signals": [
@@ -692,12 +688,13 @@
         "evidence_class": "本人输入候选的否定及改向结构；未逐情境确认",
         "confidence": "低；仅结构匹配",
         "independent_contexts": 0,
-        "candidate_messages": 7,
-        "candidate_session_contexts": 6,
+        "candidate_messages": 19,
+        "candidate_session_contexts": 19,
         "sources": [
           "claude local direct-input candidate",
-          "codex local direct-input candidate",
-          "devin local direct-input candidate"
+          "devin local direct-input candidate",
+          "grok local direct-input candidate",
+          "pi local direct-input candidate"
         ],
         "treatment": "tentative week signal only; no stable promotion or confidence increase"
       },
@@ -706,13 +703,11 @@
         "evidence_class": "本人输入候选的验证词及现场结果线索；不以代理结论作证",
         "confidence": "低；仅结构匹配",
         "independent_contexts": 0,
-        "candidate_messages": 40,
-        "candidate_session_contexts": 39,
+        "candidate_messages": 288,
+        "candidate_session_contexts": 287,
         "sources": [
           "claude local direct-input candidate",
-          "codex local direct-input candidate",
           "devin local direct-input candidate",
-          "droid local direct-input candidate",
           "grok local direct-input candidate",
           "pi local direct-input candidate"
         ],
@@ -720,14 +715,13 @@
       },
       {
         "paraphrase": "存在压缩复杂度、复用现有实现或真源的结构线索",
-        "evidence_class": "本人输入候选的简化及复用结构；可能混入转贴任务",
+        "evidence_class": "本人输入候选的简化及复用结构；样本过小",
         "confidence": "低；仅结构匹配",
         "independent_contexts": 0,
-        "candidate_messages": 7,
-        "candidate_session_contexts": 7,
+        "candidate_messages": 1,
+        "candidate_session_contexts": 1,
         "sources": [
-          "devin local direct-input candidate",
-          "droid local direct-input candidate"
+          "pi local direct-input candidate"
         ],
         "treatment": "tentative week signal only; no stable promotion or confidence increase"
       },
@@ -736,8 +730,8 @@
         "evidence_class": "本人输入候选的范围限制结构；不等于长期权限",
         "confidence": "低；仅结构匹配",
         "independent_contexts": 0,
-        "candidate_messages": 7,
-        "candidate_session_contexts": 7,
+        "candidate_messages": 25,
+        "candidate_session_contexts": 25,
         "sources": [
           "devin local direct-input candidate",
           "pi local direct-input candidate"
@@ -746,16 +740,14 @@
       },
       {
         "paraphrase": "存在提交、交付及最终收口的结构线索",
-        "evidence_class": "本人输入候选的结果与收口结构；模板可能造成命中",
+        "evidence_class": "本人输入候选的结果与收口结构；短确认词与模板可能造成命中",
         "confidence": "低；仅结构匹配",
         "independent_contexts": 0,
-        "candidate_messages": 58,
-        "candidate_session_contexts": 52,
+        "candidate_messages": 302,
+        "candidate_session_contexts": 299,
         "sources": [
           "claude local direct-input candidate",
-          "codex local direct-input candidate",
           "devin local direct-input candidate",
-          "droid local direct-input candidate",
           "grok local direct-input candidate",
           "pi local direct-input candidate"
         ],
@@ -770,7 +762,7 @@
         "candidate_session_contexts": 2,
         "sources": [
           "devin local direct-input candidate",
-          "pi local direct-input candidate"
+          "grok local direct-input candidate"
         ],
         "treatment": "tentative week signal only; no stable promotion or confidence increase"
       }
@@ -789,7 +781,7 @@
       "duration_seconds": 133968,
       "covered": false
     },
-    "missed_gap_note": "No new gap between this run and the previous run: this seven-day window starts before the previous window end, so the runs connect and the overlap is deduplicated by fingerprint. This gap and the earlier August gap remain open and are not claimed as covered.",
+    "missed_gap_note": "No new gap between this run and the previous run: the window start is aligned to the previous window end, so the runs connect exactly. The September 27-28 gap and the earlier August gap remain open and are not claimed as covered.",
     "retained": [
       "aggregate counts",
       "sanitized paraphrases",
@@ -808,21 +800,22 @@
     "autonomy_change": "none",
     "schema_note": "Legacy latest_refresh and codex_sessions fields retain original Codex-only meanings and values; per-harness coverage is isolated to this supplemental object. Per-harness source_coverage keys are not Codex counts.",
     "incremental_dedup": {
-      "previous_fingerprints": 1443,
-      "overlap_fingerprints": 531,
-      "prior_window_overlap_seconds": 133961,
-      "new_fingerprints": 366,
-      "historical_scan_overlap_fingerprints": 49,
+      "previous_fingerprints": 897,
+      "overlap_fingerprints": 45,
+      "prior_window_overlap_seconds": 0,
+      "new_fingerprints": 550,
+      "historical_scan_overlap_fingerprints": 48,
       "runtime_memory_missing": false,
-      "new_manual_candidates": 149,
+      "new_manual_candidates": 393,
       "confirmed_new_manual_evidence": 0
     },
     "review_limits": [
       "All located supported source records read; all candidate bodies structurally classified without recent-N sampling.",
       "User-role records and mechanically eligible candidates are not verified first-party input.",
       "Semantic transfer-chain deduplication and independent context attribution remain incomplete.",
+      "A bounded stratified sample of new candidates was read in memory for characterization only; it is not a full semantic review and promotes nothing.",
       "Independent fresh-context reply/decision/adversarial/drift reviewer not performed; automated gates are not a substitute.",
-      "OMP and Antigravity local sources were unavailable this run; other devices and cloud history remain unverified."
+      "One paired host index was readable but no remote session body route exists; three paired hosts were unreachable. Other devices and cloud history remain unverified."
     ]
   },
   "cleanup": {
@@ -2615,6 +2608,689 @@
         "User-role records and mechanically eligible candidates are not verified first-party input.",
         "Semantic transfer-chain deduplication and independent context attribution remain incomplete.",
         "Independent fresh-context reply/decision/adversarial/drift reviewer not performed; automated gates are not a substitute."
+      ]
+    },
+    {
+      "run_at": "2026-10-11T08:01:03+08:00",
+      "window": {
+        "start": "2026-10-04T08:01:03+08:00",
+        "end": "2026-10-11T08:01:03+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "source_system": "authorized_multi_harness_local_sessions",
+      "authorization": "current_user_request_expanding_weekly_collection_scope",
+      "status": "partial",
+      "raw_content_stored": false,
+      "inventory": {
+        "harnesses_discovered": 13,
+        "window_user_role_records": 1169,
+        "deduplicated_content_context_fingerprints": 897,
+        "fingerprints_merged": 272,
+        "manual_input_candidates": 439,
+        "historical_content_context_overlap": 49,
+        "prior_window_ledger_fingerprints": 1443,
+        "prior_window_content_context_overlap": 531,
+        "prior_window_ledger_present": true,
+        "new_manual_input_candidates": 149
+      },
+      "source_coverage": {
+        "claude": {
+          "files_read": 416,
+          "records_read": 79530,
+          "user_records_read": 10084,
+          "user_characters_read": 4081376,
+          "window_user_messages": 280,
+          "timestamp_native": 280,
+          "nontext_user_records": 9314,
+          "duplicate_timed_bodies": 50,
+          "files_without_session_id": 9,
+          "duplicate_message_ids": 2,
+          "cross_copy_duplicates": 60,
+          "eligible_unique_candidates": 34,
+          "sessions_inventoried": 231,
+          "window_sessions": 19,
+          "first_window_message": "2026-10-04T11:44:07.990000+08:00",
+          "last_window_message": "2026-10-10T22:06:33.273000+08:00",
+          "status": "complete",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {
+            "system_template_or_probe": 112,
+            "manual_candidate": 49,
+            "ambiguous_long_or_forwarded": 2,
+            "delegated": 115,
+            "automation": 2
+          },
+          "gaps": [],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "codex": {
+          "databases_read": 3,
+          "database_pages_read": 248,
+          "database_items_read": 247021,
+          "index_label_format_mismatch": 19,
+          "recorder_journal_paths_located": 44,
+          "files_read": 3418,
+          "records_read": 939646,
+          "user_records_read": 11122,
+          "user_characters_read": 53993038,
+          "event_response_mirrors": 539,
+          "duplicate_timed_bodies": 2717,
+          "duplicate_message_ids": 1745,
+          "window_user_messages": 95,
+          "timestamp_native": 95,
+          "cross_copy_duplicates": 24,
+          "eligible_unique_candidates": 31,
+          "sessions_inventoried": 7863,
+          "window_sessions": 38,
+          "first_window_message": "2026-10-04T19:45:46.013000+08:00",
+          "last_window_message": "2026-10-11T08:00:53.138000+08:00",
+          "status": "complete",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {
+            "system_template_or_probe": 6,
+            "automation": 31,
+            "manual_candidate": 46,
+            "self_refresh_excluded": 2,
+            "delegated": 4,
+            "ambiguous_long_or_forwarded": 6
+          },
+          "gaps": [],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "devin": {
+          "files_read": 100,
+          "records_read": 2850,
+          "user_records_read": 4377,
+          "user_characters_read": 43883302,
+          "window_user_messages": 162,
+          "timestamp_native": 162,
+          "databases_read": 1,
+          "database_pages_read": 150,
+          "database_items_read": 149083,
+          "duplicate_message_ids": 1670,
+          "duplicate_timed_bodies": 863,
+          "cross_copy_duplicates": 89,
+          "eligible_unique_candidates": 28,
+          "sessions_inventoried": 548,
+          "window_sessions": 109,
+          "first_window_message": "2026-10-04T11:48:09.626525+08:00",
+          "last_window_message": "2026-10-11T08:00:55.297987+08:00",
+          "status": "complete",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {
+            "manual_candidate": 146,
+            "ambiguous_long_or_forwarded": 15,
+            "self_refresh_excluded": 1
+          },
+          "gaps": [],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "pi": {
+          "files_read": 63,
+          "records_read": 3590,
+          "user_records_read": 77,
+          "user_characters_read": 32376,
+          "window_user_messages": 61,
+          "timestamp_native": 61,
+          "cross_copy_duplicates": 43,
+          "eligible_unique_candidates": 12,
+          "sessions_inventoried": 63,
+          "window_sessions": 53,
+          "first_window_message": "2026-10-04T08:30:04.054000+08:00",
+          "last_window_message": "2026-10-10T08:30:07.539000+08:00",
+          "status": "complete",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {
+            "manual_candidate": 52,
+            "ambiguous_long_or_forwarded": 9
+          },
+          "gaps": [],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "droid": {
+          "files_read": 1292,
+          "records_read": 109234,
+          "user_records_read": 67160,
+          "user_characters_read": 30525864,
+          "nontext_user_records": 64259,
+          "window_user_messages": 380,
+          "timestamp_native": 380,
+          "cross_copy_duplicates": 54,
+          "eligible_unique_candidates": 36,
+          "sessions_inventoried": 1292,
+          "window_sessions": 151,
+          "first_window_message": "2026-10-04T08:09:07.943000+08:00",
+          "last_window_message": "2026-10-10T08:31:43.333000+08:00",
+          "status": "complete",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {
+            "automation": 51,
+            "manual_candidate": 123,
+            "system_template_or_probe": 195,
+            "ambiguous_long_or_forwarded": 10,
+            "ambiguous_work_package": 1
+          },
+          "gaps": [],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "cursor": {
+          "files_read": 40,
+          "records_read": 1200,
+          "user_records_read": 169,
+          "user_characters_read": 156783,
+          "untimed_user_records": 94,
+          "databases_read": 14,
+          "database_pages_read": 31,
+          "database_items_read": 16222,
+          "legacy_chat_containers_read": 24,
+          "sdk_events_read": 204,
+          "sdk_blobs_read": 55,
+          "sdk_blob_bytes_read": 223945,
+          "sdk_blobs_not_semantically_decoded": 36,
+          "nightly_application_roots_checked": 1,
+          "nightly_session_databases_present": 0,
+          "sessions_inventoried": 100,
+          "window_sessions": 0,
+          "first_window_message": null,
+          "last_window_message": null,
+          "status": "partial",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {},
+          "gaps": [
+            "transcripts_or_application_records_have_no_original_message_timestamps",
+            "sdk_binary_blobs_read_but_not_semantically_decoded"
+          ],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "grok": {
+          "files_read": 2190,
+          "records_read": 88372,
+          "user_records_read": 4213,
+          "user_characters_read": 34712827,
+          "untimed_user_records": 2871,
+          "window_user_messages": 191,
+          "timestamp_rewind_checkpoint_derived": 191,
+          "cross_copy_duplicates": 2,
+          "eligible_unique_candidates": 8,
+          "sessions_inventoried": 757,
+          "window_sessions": 188,
+          "first_window_message": "2026-10-04T08:31:12.619573+08:00",
+          "last_window_message": "2026-10-10T08:31:51.823126+08:00",
+          "status": "partial",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {
+            "ambiguous_long_or_forwarded": 18,
+            "manual_candidate": 158,
+            "automation": 6,
+            "system_template_or_probe": 9
+          },
+          "gaps": [
+            "user_records_without_native_time; checkpoint_time_is_derived_not_original_message_time"
+          ],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "omp": {
+          "databases_read": 1,
+          "database_pages_read": 1,
+          "database_items_read": 204,
+          "index_rows": 204,
+          "index_rows_absent": 204,
+          "sessions_inventoried": 0,
+          "window_sessions": 0,
+          "first_window_message": null,
+          "last_window_message": null,
+          "status": "unavailable",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {},
+          "gaps": [
+            "session_root_absent",
+            "all_indexed_omp_sources_absent; local OMP home removed, moved, or never installed this run",
+            "known_session_database_absent"
+          ],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "rovo": {
+          "files_read": 3,
+          "records_read": 34,
+          "user_records_read": 5,
+          "user_characters_read": 80,
+          "sessions_inventoried": 3,
+          "window_sessions": 0,
+          "first_window_message": null,
+          "last_window_message": null,
+          "status": "empty",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {},
+          "gaps": [],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "amp": {
+          "files_read": 28,
+          "records_read": 59,
+          "user_records_read": 31,
+          "user_characters_read": 358,
+          "nontext_user_records": 6,
+          "sessions_inventoried": 28,
+          "window_sessions": 0,
+          "first_window_message": null,
+          "last_window_message": null,
+          "status": "empty",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {},
+          "gaps": [],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "opencode": {
+          "sessions_inventoried": 0,
+          "window_sessions": 0,
+          "first_window_message": null,
+          "last_window_message": null,
+          "status": "unavailable",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {},
+          "gaps": [
+            "no_local_index_rows; paired_host_index_records_sessions_but_complete_remote_body_reader_unavailable"
+          ],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "opencode2": {
+          "sessions_inventoried": 0,
+          "window_sessions": 0,
+          "first_window_message": null,
+          "last_window_message": null,
+          "status": "unavailable",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {},
+          "gaps": [
+            "local_index_points_to_absent_session_database; paired_host_bodies_unavailable"
+          ],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        },
+        "antigravity": {
+          "databases_read": 1,
+          "database_pages_read": 1,
+          "database_items_read": 2,
+          "indexed_source_paths_absent": 2,
+          "sessions_inventoried": 0,
+          "window_sessions": 0,
+          "first_window_message": null,
+          "last_window_message": null,
+          "status": "unavailable",
+          "coverage_scope": "verified local sources only; no remote or cloud completeness implied",
+          "classes": {},
+          "gaps": [
+            "indexed_antigravity_sources_absent; no readable local source"
+          ],
+          "errors": {
+            "read_errors": 0,
+            "parse_errors": 0,
+            "database_errors": 0,
+            "unsupported_records": 0,
+            "missing_session_id": 0
+          }
+        }
+      },
+      "coverage": {
+        "hosts": [
+          {
+            "alias": "local",
+            "index_status": {
+              "enabled": true,
+              "phase": "degraded",
+              "filesFailed": 0,
+              "degradedRoots": [
+                "~/.gemini/antigravity-cli/brain unlistable",
+                "~/.omp/agent/sessions unlistable"
+              ],
+              "sessionsByAgent": {
+                "antigravity": 2,
+                "claude": 232,
+                "codex": 742,
+                "cursor": 40,
+                "devin": 100,
+                "droid": 1292,
+                "grok": 757,
+                "omp": 204,
+                "opencode2": 1,
+                "pi": 45,
+                "rovo": 2
+              }
+            },
+            "conversation_bodies": "local_files_read",
+            "gap": "index_phase_degraded_two_roots_unlistable; antigravity_and_omp_indexed_sources_absent"
+          },
+          {
+            "alias": "paired-01",
+            "index_status": {
+              "enabled": true,
+              "phase": "current",
+              "filesFailed": 0,
+              "degradedRoots": [],
+              "sessionsByAgent": {
+                "claude": 3,
+                "codex": 41,
+                "cursor": 10,
+                "droid": 71,
+                "grok": 530,
+                "pi": 36
+              }
+            },
+            "conversation_bodies": "unavailable",
+            "gap": "index_readable_but_CLI_has_no_complete_session_body_reader"
+          },
+          {
+            "alias": "paired-02",
+            "index_status": {
+              "enabled": true,
+              "phase": "current",
+              "filesFailed": 0,
+              "degradedRoots": [],
+              "sessionsByAgent": {
+                "claude": 10,
+                "codex": 621,
+                "cursor": 249,
+                "devin": 53,
+                "droid": 2576,
+                "grok": 366,
+                "omp": 1,
+                "pi": 91
+              }
+            },
+            "conversation_bodies": "unavailable",
+            "gap": "index_readable_but_CLI_has_no_complete_session_body_reader"
+          },
+          {
+            "alias": "paired-03",
+            "index_status": {
+              "enabled": true,
+              "phase": "current",
+              "filesFailed": 0,
+              "degradedRoots": [],
+              "sessionsByAgent": {
+                "claude": 50,
+                "codex": 69,
+                "cursor": 1118,
+                "devin": 36,
+                "droid": 25,
+                "grok": 204,
+                "omp": 9,
+                "opencode": 12,
+                "opencode2": 3,
+                "pi": 57
+              }
+            },
+            "conversation_bodies": "unavailable",
+            "gap": "index_readable_but_CLI_has_no_complete_session_body_reader"
+          }
+        ],
+        "orca_index": {
+          "enabled": true,
+          "phase": "degraded",
+          "filesFailed": 0,
+          "degradedRoots": 2,
+          "sessionsByAgent": {
+            "antigravity": 2,
+            "claude": 232,
+            "codex": 742,
+            "cursor": 40,
+            "devin": 100,
+            "droid": 1292,
+            "grok": 757,
+            "omp": 204,
+            "opencode2": 1,
+            "pi": 45,
+            "rovo": 2
+          }
+        },
+        "promotion_policy": "reinforce_or_tentative_only",
+        "official_interfaces": {
+          "codex_cloud": {
+            "pages_read": 1,
+            "task_ids_inventoried": 0,
+            "pagination_exhausted": true,
+            "errors": [],
+            "body_coverage": "unavailable; CLI list/status/diff are not paginated conversation bodies"
+          },
+          "devin": {
+            "current_directory_records": 50,
+            "limitation": "directory-scoped list, no full-history cursor or body reader; readonly database and all local exports required"
+          }
+        },
+        "remote_route": "Three saved paired environments audited separately; aliases are anonymized and not a stable cross-run mapping. All three indexes enabled and current. Complete remote session body route unavailable; one configured ssh target not connected and not attempted; no new login, connection, recorder or setting change.",
+        "semantic_review_complete": false,
+        "independent_contexts_confirmed": 0,
+        "independent_fresh_context_reviewer": false,
+        "unresolved_historical_gaps": [
+          {
+            "start": "2026-08-31T12:05:24+08:00",
+            "end": "2026-09-19T23:05:00+08:00",
+            "duration_seconds": 1681176,
+            "covered": false
+          },
+          {
+            "start": "2026-09-27T08:00:56+08:00",
+            "end": "2026-09-28T21:13:44+08:00",
+            "duration_seconds": 133968,
+            "covered": false
+          }
+        ],
+        "source_format_corrections": [
+          "Orca agent labels were not treated as authorship: 19 Codex-labeled source files still have Claude/Pi formats and are covered by their actual readers.",
+          "The local OMP home is absent this run; 204 stale index rows point to missing paths. OMP is unavailable, not empty, and zero local records do not imply zero personal use.",
+          "Antigravity appears in the index with 2 rows pointing to an absent brain transcript path; unavailable, not empty.",
+          "Codex Cloud official listing completes with zero tasks; this is not full Codex App or multi-device coverage.",
+          "OpenCode2 local index points to an absent session database; it is unavailable, not empty."
+        ]
+      },
+      "candidate_signals": [
+        {
+          "paraphrase": "存在改向、重新核对及否定既有方案的结构线索",
+          "evidence_class": "本人输入候选的否定及改向结构；未逐情境确认",
+          "confidence": "低；仅结构匹配",
+          "independent_contexts": 0,
+          "candidate_messages": 7,
+          "candidate_session_contexts": 6,
+          "sources": [
+            "claude local direct-input candidate",
+            "codex local direct-input candidate",
+            "devin local direct-input candidate"
+          ],
+          "treatment": "tentative week signal only; no stable promotion or confidence increase"
+        },
+        {
+          "paraphrase": "存在要求验证、实际观察及验收结果的结构线索",
+          "evidence_class": "本人输入候选的验证词及现场结果线索；不以代理结论作证",
+          "confidence": "低；仅结构匹配",
+          "independent_contexts": 0,
+          "candidate_messages": 40,
+          "candidate_session_contexts": 39,
+          "sources": [
+            "claude local direct-input candidate",
+            "codex local direct-input candidate",
+            "devin local direct-input candidate",
+            "droid local direct-input candidate",
+            "grok local direct-input candidate",
+            "pi local direct-input candidate"
+          ],
+          "treatment": "tentative week signal only; no stable promotion or confidence increase"
+        },
+        {
+          "paraphrase": "存在压缩复杂度、复用现有实现或真源的结构线索",
+          "evidence_class": "本人输入候选的简化及复用结构；可能混入转贴任务",
+          "confidence": "低；仅结构匹配",
+          "independent_contexts": 0,
+          "candidate_messages": 7,
+          "candidate_session_contexts": 7,
+          "sources": [
+            "devin local direct-input candidate",
+            "droid local direct-input candidate"
+          ],
+          "treatment": "tentative week signal only; no stable promotion or confidence increase"
+        },
+        {
+          "paraphrase": "存在先核对、只读或限制执行范围与成本的结构线索",
+          "evidence_class": "本人输入候选的范围限制结构；不等于长期权限",
+          "confidence": "低；仅结构匹配",
+          "independent_contexts": 0,
+          "candidate_messages": 7,
+          "candidate_session_contexts": 7,
+          "sources": [
+            "devin local direct-input candidate",
+            "pi local direct-input candidate"
+          ],
+          "treatment": "tentative week signal only; no stable promotion or confidence increase"
+        },
+        {
+          "paraphrase": "存在提交、交付及最终收口的结构线索",
+          "evidence_class": "本人输入候选的结果与收口结构；模板可能造成命中",
+          "confidence": "低；仅结构匹配",
+          "independent_contexts": 0,
+          "candidate_messages": 58,
+          "candidate_session_contexts": 52,
+          "sources": [
+            "claude local direct-input candidate",
+            "codex local direct-input candidate",
+            "devin local direct-input candidate",
+            "droid local direct-input candidate",
+            "grok local direct-input candidate",
+            "pi local direct-input candidate"
+          ],
+          "treatment": "tentative week signal only; no stable promotion or confidence increase"
+        },
+        {
+          "paraphrase": "存在有监督的并行与多代理工作的结构线索",
+          "evidence_class": "本人输入候选的委派结构；源链独立性不足",
+          "confidence": "低；仅结构匹配",
+          "independent_contexts": 0,
+          "candidate_messages": 2,
+          "candidate_session_contexts": 2,
+          "sources": [
+            "devin local direct-input candidate",
+            "pi local direct-input candidate"
+          ],
+          "treatment": "tentative week signal only; no stable promotion or confidence increase"
+        }
+      ],
+      "deduplication_limits": [
+        "Every source record processed; structural pattern analysis is not semantic authorship confirmation.",
+        "No candidate is promoted to a stable rule from automated pattern counts.",
+        "Transferred or forked distinct sessions may not be independent contexts.",
+        "Natural voice is not inferred from long templates, submissions or agent-authored text.",
+        "The prior-week fingerprint ledger deduplicates overlapping window content mechanically; a repeat is not re-counted as new evidence and is not semantic identity.",
+        "New fingerprints and new candidates are bounded to non-overlapping, non-historical content only within this week's sources; absent local sources remain unavailable rather than empty."
+      ],
+      "missed_gap": {
+        "start": "2026-09-27T08:00:56+08:00",
+        "end": "2026-09-28T21:13:44+08:00",
+        "duration_seconds": 133968,
+        "covered": false
+      },
+      "missed_gap_note": "No new gap between this run and the previous run: this seven-day window starts before the previous window end, so the runs connect and the overlap is deduplicated by fingerprint. This gap and the earlier August gap remain open and are not claimed as covered.",
+      "retained": [
+        "aggregate counts",
+        "sanitized paraphrases",
+        "confidence and coverage limits",
+        "opaque dedup fingerprints in private runtime only"
+      ],
+      "excluded": [
+        "raw or quoted private conversation",
+        "credentials and personal identifiers",
+        "browser history and shell history",
+        "mail",
+        "automation and delegated text as natural voice",
+        "current and prior refresh prompts and receipts as personality evidence"
+      ],
+      "model_update": "stable_model_no_change; tentative_structural_week_signals_only",
+      "autonomy_change": "none",
+      "schema_note": "Legacy latest_refresh and codex_sessions fields retain original Codex-only meanings and values; per-harness coverage is isolated to this supplemental object. Per-harness source_coverage keys are not Codex counts.",
+      "incremental_dedup": {
+        "previous_fingerprints": 1443,
+        "overlap_fingerprints": 531,
+        "prior_window_overlap_seconds": 133961,
+        "new_fingerprints": 366,
+        "historical_scan_overlap_fingerprints": 49,
+        "runtime_memory_missing": false,
+        "new_manual_candidates": 149,
+        "confirmed_new_manual_evidence": 0
+      },
+      "review_limits": [
+        "All located supported source records read; all candidate bodies structurally classified without recent-N sampling.",
+        "User-role records and mechanically eligible candidates are not verified first-party input.",
+        "Semantic transfer-chain deduplication and independent context attribution remain incomplete.",
+        "Independent fresh-context reply/decision/adversarial/drift reviewer not performed; automated gates are not a substitute.",
+        "OMP and Antigravity local sources were unavailable this run; other devices and cloud history remain unverified."
       ]
     }
   ]
