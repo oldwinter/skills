@@ -13,9 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: check-readme-map
-        run: python3 scripts/check-readme-map
-      - name: check-skill-contracts
-        run: python3 scripts/check-skill-contracts
-      - name: test-check-readme-map
-        run: bash scripts/test-check-readme-map
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
+      - name: check
+        run: just check
+      - name: doctor
+        run: just doctor
+      - name: test-skills
+        run: just test-skills
