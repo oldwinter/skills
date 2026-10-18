@@ -38,13 +38,33 @@ python3 (Join-Path $repo "scripts/check-skill-contracts") $fixture 1> (Join-Path
 "contracts exit=$LASTEXITCODE"
 ```
 
+```bash
+fixture="$repo/.scratch/verify-$stamp-fixture"
+mkdir -p "$fixture"
+cp -R "$repo/scripts" "$repo/README.md" "$fixture/"
+for d in "$repo"/*/; do [ -f "$d/SKILL.md" ] && cp -R "$d" "$fixture/"; done
+cp -R "$repo/obsidian-skills" "$fixture/"
+
+bad="$fixture/done/SKILL.md"
+perl -pi -e 's/description: "(.+)"/description: $1/' "$bad"   # -i with no backup suffix; GNU/BSD safe
+
+(
+  cd "$fixture"
+  npx --yes skills@latest add . --list -y > "$ev/fixture-list.txt"
+)
+echo "fixture list exit=$?"
+
+python3 "$repo/scripts/check-skill-contracts" "$fixture" > "$ev/fixture-contracts.txt" 2>&1
+echo "contracts exit=$?"
+```
+
 Observable end state that proves it works:
 
 - `fixture-list.txt` exits `0` and no longer lists `done` (count drops by one) — the silent skip, reproduced;
 - `fixture-contracts.txt` exits non-zero with `unquoted description with ': ' (invalid YAML, skipped by installers): done/SKILL.md`;
 - the real checkout is untouched: `git -C $repo status --short` shows no change to `done/SKILL.md`.
 
-Cleanup: `Remove-Item -Recurse -Force $fixture`. Keep `$ev`.
+Cleanup: `Remove-Item -Recurse -Force $fixture` (`rm -rf "$fixture"`). Keep `$ev`.
 
 ## Gotchas
 

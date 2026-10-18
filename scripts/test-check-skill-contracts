@@ -150,4 +150,46 @@ write_skill demo demo "A desktop note that must not leak a device path."
 printf '\nTemp is C:\\Users\\%s\\AppData.\n' "$user" >>"$scratch/demo/SKILL.md"
 expect_failure "Windows home path" "personal machine path" demo
 
+# agents/openai.yaml is optional; when present it must parse and advertise.
+reset
+write_skill demo demo "A demo skill used by the contract fixtures."
+mkdir -p "$scratch/demo/agents"
+cat >"$scratch/demo/agents/openai.yaml" <<'YAML'
+interface:
+  display_name: "Demo"
+  short_description: "A demo skill"
+  default_prompt: "Use $demo for fixture coverage."
+
+policy:
+  allow_implicit_invocation: true
+YAML
+"$py" "$check" "$scratch" >/dev/null || fail "a well-formed agents/openai.yaml should pass"
+
+reset
+write_skill demo demo "A demo skill used by the contract fixtures."
+mkdir -p "$scratch/demo/agents"
+printf 'interface:\n  display_name Demo\n' >"$scratch/demo/agents/openai.yaml"
+expect_failure "unparseable openai.yaml" "invalid agents/openai.yaml" demo
+
+reset
+write_skill demo demo "A demo skill used by the contract fixtures."
+mkdir -p "$scratch/demo/agents"
+printf 'interface:\n  display_name: "Demo"\n' >"$scratch/demo/agents/openai.yaml"
+expect_failure "openai.yaml missing keys" "missing interface.default_prompt" demo
+
+reset
+write_skill demo demo "A demo skill used by the contract fixtures."
+mkdir -p "$scratch/demo/agents"
+cat >"$scratch/demo/agents/openai.yaml" <<'YAML'
+interface:
+  display_name: "Demo"
+  short_description: "A demo skill"
+  default_prompt: "Use $other for fixture coverage."
+
+policy:
+  allow_implicit_invocation: maybe
+YAML
+expect_failure "wrong-name prompt and non-boolean flag" "does not invoke" demo
+grep -q 'must be true or false' "$tmp/err" || fail "should also report the non-boolean flag"
+
 echo "test-check-skill-contracts: ok"

@@ -22,7 +22,16 @@ New-Item -ItemType Directory -Force $run, $ev | Out-Null
 "$repo`n$run`n$ev"
 ```
 
-The CLI installs project-scope skills into the current working directory (`<cwd>/.claude/skills/<name>`), so running it from `$run` is what keeps the repo untouched. A short-lived command needs no server: each drive is one isolated `npx` invocation in `$run`.
+```bash
+repo=$(git rev-parse --show-toplevel)
+stamp=$(date +%Y%m%d-%H%M%S)
+run="$repo/.scratch/verify-$stamp"            # installs land here; deleted at cleanup
+ev="$repo/.scratch/verify-evidence/$stamp"    # proof; survives cleanup
+mkdir -p "$run" "$ev"
+printf '%s\n' "$repo" "$run" "$ev"
+```
+
+The CLI installs project-scope skills into the current working directory (`<cwd>/.claude/skills/<name>`), so running it from `$run` is what keeps the repo untouched. A short-lived command needs no server: each drive is one isolated `npx` invocation in `$run`. Every PowerShell block in this skill and its feature files has a bash twin; run whichever the shell provides.
 
 ## Doctor
 
@@ -34,6 +43,14 @@ git -C $repo rev-parse --show-toplevel | Tee-Object (Join-Path $ev "repo-root.tx
 git -C $repo rev-parse HEAD           | Tee-Object (Join-Path $ev "head.txt")
 git -C $repo status --short           | Tee-Object (Join-Path $ev "git-status.txt")
 npx --yes skills@latest --version     | Tee-Object (Join-Path $ev "cli-version.txt")
+```
+
+```bash
+just doctor | tee "$ev/doctor.txt"
+git -C "$repo" rev-parse --show-toplevel | tee "$ev/repo-root.txt"
+git -C "$repo" rev-parse HEAD           | tee "$ev/head.txt"
+git -C "$repo" status --short           | tee "$ev/git-status.txt"
+npx --yes skills@latest --version       | tee "$ev/cli-version.txt"
 ```
 
 Worth driving when: the last `doctor` line reads `0 fail`, the resolved root is the repo you mean to prove, `head.txt` plus `git-status.txt` name the exact tree the evidence covers, and the CLI prints a version (`1.7.2` is the version this skill was proven against; any newer version re-checks the gotchas below). A `FAIL` row, a different root, or no CLI version means fix the instance before driving.
@@ -55,6 +72,16 @@ try {
 } finally { Pop-Location }
 ```
 
+```bash
+(
+  cd "$run"
+  npx --yes skills@latest add "$repo" --skill done --agent claude-code --copy -y --json \
+      > "$ev/install.json" 2> "$ev/install.err"
+)
+echo "install exit=$?" | tee "$ev/install-exit.txt"
+find "$run" -type f -exec ls -l {} + | sort -k9 > "$ev/tree.txt"
+```
+
 Assert all four:
 
 - exit code `0` and `install.json` carries `"status": "installed"` for the requested name;
@@ -72,7 +99,15 @@ try {
 } finally { Pop-Location }
 ```
 
-Assert shallow finds 12 names, `--full-depth` finds 15 including `canvas-atlas`, `to-note`, and `vault-moc`, and those 15 equal the skill directories under the repo (README Statistics say 15 / 15).
+```bash
+(
+  cd "$repo"
+  npx --yes skills@latest add . --list -y             > "$ev/list-shallow.txt"
+  npx --yes skills@latest add . --list -y --full-depth > "$ev/list-full-depth.txt"
+)
+```
+
+Assert the names match sets derived from this tree — never a hardcoded count: shallow equals the root-level skills plus the convention roots the CLI scans anyway (`.claude/skills`, `.agents/skills`, `.codex/skills`, so `verify` itself is listed), and `--full-depth` scans the whole tree including hidden dirs, so it adds the nested `obsidian-skills/` entries and any SKILL.md left under `.scratch/` — run this before drives that create those. The published set — the CLI set minus every hidden path — equals the README Statistics numbers. The full derivation and name-parsing helpers are in [features/list-skills.md](features/list-skills.md); the count there is intentionally not written down.
 
 Repo gates (maintainer path; run these for every content change):
 
@@ -80,6 +115,12 @@ Repo gates (maintainer path; run these for every content change):
 just check       1> (Join-Path $ev "check.txt")       2> (Join-Path $ev "check.err");       "check exit=$LASTEXITCODE"
 just doctor      1> (Join-Path $ev "doctor.txt")      2> (Join-Path $ev "doctor.err");       "doctor exit=$LASTEXITCODE"
 just test-skills 1> (Join-Path $ev "test-skills.txt") 2> (Join-Path $ev "test-skills.err"); "test-skills exit=$LASTEXITCODE"
+```
+
+```bash
+just check       > "$ev/check.txt"       2> "$ev/check.err";       echo "check exit=$?"
+just doctor      > "$ev/doctor.txt"      2> "$ev/doctor.err";      echo "doctor exit=$?"
+just test-skills > "$ev/test-skills.txt" 2> "$ev/test-skills.err"; echo "test-skills exit=$?"
 ```
 
 `just check` covers the README map, frontmatter/link/personal-path audit, and the check scripts' fixture tests; `just test-skills` runs the five skill unittest suites (slower, not part of `check`). Assert exit `0` for each and capture the success lines.
@@ -120,6 +161,10 @@ Proof standards for this repo:
 Remove-Item -Recurse -Force $run
 ```
 
+```bash
+rm -rf "$run"
+```
+
 - Remove only `$run` (and any temp repo copy a feature created). Never `Remove-Item` `$ev`, `.scratch/verify-evidence/`, or `$repo/.claude`.
 - After cleanup, confirm the proof still exists: list `$ev` and check the expected files are present. A cleanup that eats evidence fails the run.
 - Never install with `--global` against the real home: it writes `<home>/.agents/skills` and the global lock. If a feature must exercise global scope, point `HOME` and `USERPROFILE` at a temp directory for that one process and capture the diff.
@@ -135,7 +180,7 @@ No scripts ship with this skill; the commands above are copy-paste ready. Add a 
 - `--json` cannot be combined with `--list` on `skills` 1.7.2 (`The --json flag cannot be combined with --list.`). Use text for listing, `--json` for install.
 - PowerShell wraps native stderr as `NativeCommandError` even on success. Always redirect stderr to `install.err` and trust exit codes plus files, never red console text.
 - Pass `$repo` as an absolute path: the lock file records the source relative to `$run` (`../..`), and a relative `add` path from `.scratch/verify-*` resolves to the wrong tree.
-- Shallow `--list` returns 12 skills. `obsidian-skills/` is nested, so `canvas-atlas`, `to-note`, and `vault-moc` only appear with `--full-depth`; the README states 15.
+- Shallow `--list` counts the root skills plus the harness convention roots (`.claude/skills`, `.agents/skills`, `.codex/skills`), so `verify` is listed to consumers although the repo gates prune it. `--full-depth` scans everything including hidden dirs, so `.scratch/` installs and fixtures inflate it — run listing drives first. `obsidian-skills/` is nested, so `canvas-atlas`, `to-note`, and `vault-moc` only appear with `--full-depth`. Never write the counts down — derive them from the tree per [features/list-skills.md](features/list-skills.md); they move every time a skill is added or retired.
 - The installer sends telemetry and needs the npm registry on a cold cache. A slow first `npx` is not a failure; a non-zero exit is.
 - Always pass `--copy`: without it the CLI may link into agent directories, and symlink behavior on Windows is not a stable thing to assert.
 - `done` carries `disable-model-invocation: true`, so it installs and is listed but the model cannot invoke it. Verify it by file presence and frontmatter, not by running it.

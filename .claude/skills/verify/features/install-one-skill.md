@@ -34,12 +34,22 @@ try {
 } finally { Pop-Location }
 ```
 
+```bash
+(
+  cd "$run"
+  npx --yes skills@latest add "$repo" --skill done --agent claude-code --copy -y --json \
+      > "$ev/install.json" 2> "$ev/install.err"
+)
+echo "install exit=$?" | tee "$ev/install-exit.txt"
+find "$run" -type f -exec ls -l {} + | sort -k9 > "$ev/tree.txt"
+```
+
 Observable end state that proves it works:
 
 - `install.json` reports `"status": "installed"` with `"mode": "copy"` and `"scope": "project"`;
 - `$run/.claude/skills/done/SKILL.md` exists, is a real directory under `$run`, and its frontmatter is `name: done`;
 - `$run/skills-lock.json` has `"sourceType": "local"` and a `computedHash`;
-- `Test-Path ~/.agents/skills/done` is `False` and `~/.agents/.skill-lock.json` keeps its old mtime.
+- `Test-Path ~/.agents/skills/done` is `False` (`test ! -e ~/.agents/skills/done` in bash) and `~/.agents/.skill-lock.json` keeps its old mtime.
 
 ## Gotchas
 
