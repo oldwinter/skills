@@ -1,6 +1,7 @@
 ---
 name: agent-autoresearch
 description: Autoresearch loop for any coding agent harness (Claude Code, Codex, pi, others with a shell) - repeatedly edit, measure, keep or revert, and log experiments that push one numeric metric (speed, size, score, loss, error count) toward a goal, unattended for hours if needed. Use to start an autoresearch or overnight optimization run, or to check, resume, or report an existing one. Not for grading or optimizing SKILL.md files; use darwin-skill for that.
+disable-model-invocation: true
 ---
 
 # Agent Autoresearch

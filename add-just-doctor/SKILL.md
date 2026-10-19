@@ -1,6 +1,7 @@
 ---
 name: add-just-doctor
 description: Add and run a repository-level just doctor command that validates the canonical local environment file and its configured service dependencies. Use when asked to add, repair, or run a repository health-check or doctor command.
+disable-model-invocation: true
 ---
 
 # Add Just Doctor
