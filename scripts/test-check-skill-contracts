@@ -192,4 +192,59 @@ YAML
 expect_failure "wrong-name prompt and non-boolean flag" "does not invoke" demo
 grep -q 'must be true or false' "$tmp/err" || fail "should also report the non-boolean flag"
 
+# Invocation is a two-marker contract that must agree across harnesses:
+# SKILL.md `disable-model-invocation: true` (Claude Code) pairs with
+# agents/openai.yaml `policy.allow_implicit_invocation: false` (Codex).
+reset
+mkdir -p "$scratch/demo/agents"
+printf '%s\n' '---' 'name: demo' 'description: "A demo skill used by the contract fixtures."' 'disable-model-invocation: true' '---' >"$scratch/demo/SKILL.md"
+cat >"$scratch/demo/agents/openai.yaml" <<'YAML'
+interface:
+  display_name: "Demo"
+  short_description: "A demo skill"
+  default_prompt: "Use $demo for fixture coverage."
+
+policy:
+  allow_implicit_invocation: false
+YAML
+"$py" "$check" "$scratch" >/dev/null || fail "a user-invoked skill with both markers should pass"
+
+reset
+mkdir -p "$scratch/demo/agents"
+printf '%s\n' '---' 'name: demo' 'description: "A demo skill used by the contract fixtures."' 'disable-model-invocation: true' '---' >"$scratch/demo/SKILL.md"
+cat >"$scratch/demo/agents/openai.yaml" <<'YAML'
+interface:
+  display_name: "Demo"
+  short_description: "A demo skill"
+  default_prompt: "Use $demo for fixture coverage."
+
+policy:
+  allow_implicit_invocation: true
+YAML
+expect_failure "user-invoked skill with implicit invocation allowed" "invocation markers disagree" demo
+
+reset
+write_skill demo demo "A demo skill used by the contract fixtures."
+mkdir -p "$scratch/demo/agents"
+cat >"$scratch/demo/agents/openai.yaml" <<'YAML'
+interface:
+  display_name: "Demo"
+  short_description: "A demo skill"
+  default_prompt: "Use $demo for fixture coverage."
+
+policy:
+  allow_implicit_invocation: false
+YAML
+expect_failure "implicit invocation disallowed without the SKILL.md marker" "invocation markers disagree" demo
+
+reset
+mkdir -p "$scratch/demo"
+printf '%s\n' '---' 'name: demo' 'description: "A demo skill used by the contract fixtures."' 'disable-model-invocation: true' '---' >"$scratch/demo/SKILL.md"
+expect_failure "user-invoked skill without agents/openai.yaml" "needs agents/openai.yaml" demo
+
+reset
+mkdir -p "$scratch/demo"
+printf '%s\n' '---' 'name: demo' 'description: "A demo skill used by the contract fixtures."' 'disable-model-invocation: false' '---' >"$scratch/demo/SKILL.md"
+expect_failure "disable-model-invocation that is not true" "disable-model-invocation must be true" demo
+
 echo "test-check-skill-contracts: ok"

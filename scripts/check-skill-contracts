@@ -22,6 +22,7 @@ from urllib.parse import unquote
 
 
 NAME_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+MANUAL_RE = re.compile(r"^disable-model-invocation:[ \t]*(.*)$", re.MULTILINE)
 FENCE_RE = re.compile(r"^\s*(```|~~~)")
 LINK_RE = re.compile(r"\[[^\]]*\]\(\s*([^)\s]+)(?:\s+[^)]*)?\)")
 SCHEME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")
@@ -105,7 +106,10 @@ def check_relative_links(skill_file: Path, rel: Path, content: str) -> None:
             fail(f"missing relative link: {rel}: {match.group(1)}")
 
 
-def check_skill(skill_file: Path, rel: Path) -> None:
+def check_skill(skill_file: Path, rel: Path) -> bool | None:
+    """Validate SKILL.md; return True when the skill is user-invoked
+    (`disable-model-invocation: true`), False when model-invoked, or None
+    when a fatal frontmatter error already failed the file."""
     content = skill_file.read_text(encoding="utf-8")
     if not content.startswith("---\n"):
         fail(f"missing frontmatter: {rel}")
@@ -144,7 +148,15 @@ def check_skill(skill_file: Path, rel: Path) -> None:
         fail(f"angle bracket in description: {rel}")
     elif len(value) > DESCRIPTION_LIMIT:
         fail(f"description too long: {rel}: {len(value)} > {DESCRIPTION_LIMIT} chars")
+    manual = False
+    marker = MANUAL_RE.search(block)
+    if marker:
+        if marker.group(1).strip().strip("'\"").lower() != "true":
+            fail(f"disable-model-invocation must be true when present: {rel}")
+        else:
+            manual = True
     check_relative_links(skill_file, rel, content)
+    return manual
 
 
 def parse_yaml_subset(text: str) -> dict | None:
@@ -179,11 +191,18 @@ def parse_yaml_subset(text: str) -> dict | None:
     return root
 
 
-def check_openai_yaml(skill_file: Path, rel: Path) -> None:
+def check_openai_yaml(skill_file: Path, rel: Path, manual: bool | None) -> None:
     """Validate agents/openai.yaml when present: it must parse and advertise
-    the skill's display name, default prompt, and implicit-invocation policy."""
+    the skill's display name, default prompt, and implicit-invocation policy.
+    The policy must agree with the SKILL.md marker: a user-invoked skill sets
+    both, a model-invoked skill sets neither."""
     yaml_path = skill_file.parent / "agents" / "openai.yaml"
     if not yaml_path.is_file():
+        if manual:
+            fail(
+                "user-invoked skill needs agents/openai.yaml with "
+                f"policy.allow_implicit_invocation: false: {rel.parent}/agents/openai.yaml"
+            )
         return
     label = f"{rel.parent}/agents/openai.yaml"
     data = parse_yaml_subset(read_text(yaml_path) or "")
@@ -203,6 +222,12 @@ def check_openai_yaml(skill_file: Path, rel: Path) -> None:
     flag = str(policy.get("allow_implicit_invocation", "")).strip("\"' ").lower()
     if flag not in ("true", "false"):
         fail(f"agents/openai.yaml policy.allow_implicit_invocation must be true or false: {label}")
+        return
+    if manual is not None and manual != (flag == "false"):
+        fail(
+            "invocation markers disagree (SKILL.md disable-model-invocation vs "
+            f"agents/openai.yaml policy.allow_implicit_invocation): {label}"
+        )
 
 
 def check_personal_paths(repo: Path) -> None:
@@ -216,8 +241,8 @@ def main() -> int:
     repo = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]
     for skill_file in skill_files(repo):
         rel = skill_file.relative_to(repo)
-        check_skill(skill_file, rel)
-        check_openai_yaml(skill_file, rel)
+        manual = check_skill(skill_file, rel)
+        check_openai_yaml(skill_file, rel, manual)
     check_personal_paths(repo)
     if FAILURES:
         for message in sorted(FAILURES):
