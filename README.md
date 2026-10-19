@@ -6,11 +6,13 @@
 
 按需安装单个 skill，不要整包安装：这个仓库只收在用的 skill，整包会把互为替代的条目一起装进去。
 
+根目录的 skill 不需要 `--full-depth`：
+
 ```bash
-npx --yes skills@latest add oldwinter/skills --skill done change-evidence --full-depth
+npx --yes skills@latest add oldwinter/skills --skill done change-evidence
 ```
 
-`obsidian-skills/` 是嵌套目录，装其中的 skill 必须带 `--full-depth`；要指定 harness 加 `--agent`，要装到全局加 `--global`：
+只有 `obsidian-skills/` 是嵌套目录，装其中的 skill 才需要带 `--full-depth`；要指定 harness 加 `--agent`，要装到全局加 `--global`：
 
 ```bash
 npx --yes skills@latest add oldwinter/skills --skill to-note vault-moc canvas-atlas --global --agent claude-code --full-depth
@@ -124,6 +126,7 @@ git checkout archive/2026-10-13 -- <path>
 ## 校验
 
 ```bash
+just check-all   # 全部门禁：check + test-skills，提 PR 前跑这个
 just check        # README 列表、frontmatter/描述/相对链接/openai.yaml/个人路径审计 + 脚本夹具测试
 just doctor       # 本地工具链健康：python3 / bash / git / just / CLAUDE.md 符号链接
 just test-skills  # skill 自带的 unittest 套件（agent-autoresearch、canvas-atlas、longform-fiction、loop-kit、loop-triage-github）

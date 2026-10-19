@@ -5,6 +5,9 @@ default: check
 # README map, skill contracts, fixture tests, and doctor all pass
 check: check-readme-map check-skill-contracts test-readme-map test-skill-contracts test-doctor
 
+# Full gates: fast contracts plus slower skill unit tests (run before PR)
+check-all: check test-skills
+
 # Local toolchain health: python3, resolved bash path, git, just, CLAUDE.md symlink
 doctor:
     python3 scripts/doctor
@@ -24,7 +27,7 @@ test-skill-contracts:
 test-doctor:
     bash scripts/test-doctor
 
-# Skill test suites (unittest; slower, not part of check)
+# Skill test suites (unittest; slower, part of check-all, not part of check)
 test-skills:
     python3 -m unittest discover -s agent-autoresearch/tests -q
     python3 -m unittest discover -s obsidian-skills/canvas-atlas/tests -q
