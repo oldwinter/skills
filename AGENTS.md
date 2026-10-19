@@ -15,7 +15,20 @@ This repo owns reusable Skill implementations only. Device inventory, consumer e
 
 - Keep every skill usable outside this owner's machines: no credentials, private sessions, personal memory, private hostnames, or hardcoded device paths; use placeholders or public interfaces in examples.
 - `SKILL.md` frontmatter is parsed by scripts: `---` delimited, `name:` and `description:` as single-line scalars (no `>` block scalars), no angle brackets in `description`. A description containing `: ` must be quoted: an unquoted one is invalid YAML, and the install CLI skips that skill silently, so the install looks like it worked while the skill is missing.
-- `agents/openai.yaml`, when present, advertises the display name, default prompt, and implicit-invocation policy to harnesses that read it; `disable-model-invocation: true` marks a skill explicit-only. Both are harness-advisory metadata, not behavior. The checker validates it when present: `interface.display_name` / `interface.short_description` / `interface.default_prompt` (which must invoke `$<skill-name>`) and a boolean `policy.allow_implicit_invocation`.
+- `agents/openai.yaml`, when present, advertises the display name, default prompt, and implicit-invocation policy to harnesses that read it. The checker validates it when present: `interface.display_name` / `interface.short_description` / `interface.default_prompt` (which must invoke `$<skill-name>`) and a boolean `policy.allow_implicit_invocation` that must agree with the SKILL.md marker (see Skill invocation).
+
+## Skill invocation
+
+Every skill is exactly one of two kinds, and the split is mechanical so a new skill cannot drift:
+
+- **自动引用 / model-invoked** — the model may fire it on its own. Omit `disable-model-invocation` from `SKILL.md` frontmatter and set `policy.allow_implicit_invocation: true` in `agents/openai.yaml`.
+- **手动引用 / user-invoked** — only the human can reach it, by typing `/name` or `$name`; no other skill can call it. Set `disable-model-invocation: true` in `SKILL.md` frontmatter and `policy.allow_implicit_invocation: false` in `agents/openai.yaml`.
+
+Both markers always agree — a skill is user-invoked in every harness or in none — and `just check` enforces the pairing, including that a user-invoked skill ships an `agents/openai.yaml`. This mirrors the [mattpocock/skills](https://github.com/mattpocock/skills/blob/main/.agents/invocation.md) convention.
+
+Decide the kind when you add or edit a skill, by one test: **could the model usefully reach for this autonomously?** If yes, it is model-invoked (the default). Mark it user-invoked only when auto-firing would be wrong or unsafe — the skill performs an irreversible or outward-facing action (commit, push, merge, post, spend), starts a long unattended run, or must be a command the human starts on purpose.
+
+The `description` follows the kind: a model-invoked skill keeps trigger phrasing ("Use when …") so auto-invocation fires; a user-invoked skill reads human-facing — a one-line summary, with the trigger list stripped. Group both in the README under 自动引用 / 手动引用.
 
 ## Verify
 

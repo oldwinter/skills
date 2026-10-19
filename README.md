@@ -47,30 +47,32 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 
 ## Skills
 
-### Standalone Skills
+每个 skill 二选一，规则和两处标记见 [AGENTS.md](AGENTS.md) 的 **Skill invocation**：
 
-- **add-just-doctor** — 给仓库加 `just doctor`，检查本地 env 文件和它依赖的服务。
-- **agent-autoresearch** — 与 harness 无关的 autoresearch 循环：改、量、留或回退、记录。
+- **自动引用**（model-invoked）——模型可在合适时机自行触发；`SKILL.md` 不写 `disable-model-invocation`，`agents/openai.yaml` 里 `policy.allow_implicit_invocation: true`。
+- **手动引用**（user-invoked）——只有你显式 `/name` 或 `$name` 才会跑；`SKILL.md` 写 `disable-model-invocation: true`，`agents/openai.yaml` 里 `policy.allow_implicit_invocation: false`。
+
+### 自动引用（模型可自行触发）
+
 - **agent-harness-repair** — 诊断并修复本机 coding-agent CLI/harness 安装：自更新、npm/pnpm 鉴权、hook、PATH、MCP、配置解析。
 - **change-evidence** — 给 UI/UX 和前端改动录屏取证，覆盖复现、改后行为和验收。
-- **done** — 收尾一次改动：验证、提交、开并合并 PR/MR、对齐 issue（只在 `$done` / `/done` 时用）。
 - **longform-fiction** — 长篇小说规划、起草与扩写：故事圣经、章节合同、并行写手、连续性合并、字数验收门。
 - **tdd-pstack** — pstack 的 bug 修复 TDD：先写失败的回归测试再修（pstack-claude `tdd` 的改名 fork；与上游 `tdd` 二选一安装）。
 - **teach-pstack** — pstack 的 teach：借 `how` 和 `why` 把代码讲明白（pstack-claude `teach` 的改名 fork；与上游 `teach` 二选一安装）。
 - **windows-leftover-cleanup** — 清理已卸载软件或已消失磁盘留下的 Windows 残留：卸载项、Steam 库配置、防火墙规则、服务注册、文件关联、路径缓存和空目录。
+- **canvas-atlas** — 把代码仓库、笔记或研究材料整理成可逐层阅读的 Obsidian Canvas 知识地图。
+- **to-note** — 把内容存成 Obsidian 库里的 Markdown 笔记。
+- **vault-moc** — 在已有 Obsidian 库中生成或刷新 MOC 索引笔记，用真实 wikilink/backlink 取证。
 
-### Loop Skills
+### 手动引用（只在显式 `/name` 或 `$name` 时触发）
 
+- **done** — 收尾一次改动：验证、提交、开并合并 PR/MR、对齐 issue（只在 `$done` / `/done` 时用）。
+- **add-just-doctor** — 给仓库加 `just doctor`，检查本地 env 文件和它依赖的服务。
+- **agent-autoresearch** — 与 harness 无关的 autoresearch 循环：改、量、留或回退、记录。
 - **loop-kit** — 维护循环的公共底座：写 `.loop/config.json`、生成 `LESSONS.md` 与验收规则模板、接线 `AGENTS.md`，带 Reply Desk（对外动作的人工审批闸门）、`doctor` 自检和 tick 锁。装 loop 套装的第一个入口。
 - **loop-triage-github** — GitHub 维护循环的一拍：只读自己的 PR，先复现、先写会失败的测试再修，跟到 CI/评审/合并，所有对外动作先落 Reply Desk 等批准；附事件监听脚本 `watch-prs.py`。
 - **loop-watch-social** — 社区反馈循环的一拍：X/Discord/Reddit 先收集，用小模型过滤后再进主会话，修复真正上线后才回帖；对外回复同样走 Reply Desk。
 - **loop-nightly-review** — 复盘循环的一拍：每晚看合并进 main 的提交，把踩过的坑写进 `LESSONS.md`，同一教训在 3 个不同日子出现就升级成硬规则，并顺手开一次清理 PR。
-
-### Obsidian Skills
-
-- **canvas-atlas** — 把代码仓库、笔记或研究材料整理成可逐层阅读的 Obsidian Canvas 知识地图。
-- **to-note** — 把内容存成 Obsidian 库里的 Markdown 笔记。
-- **vault-moc** — 在已有 Obsidian 库中生成或刷新 MOC 索引笔记，用真实 wikilink/backlink 取证。
 
 ## Statistics
 
