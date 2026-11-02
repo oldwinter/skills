@@ -59,6 +59,7 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 - **agent-harness-repair** — 诊断并修复本机 coding-agent CLI/harness 安装：自更新、npm/pnpm 鉴权、hook、PATH、MCP、配置解析。
 - **skills-doctor** — 诊断 skill 执行所需的工具、身份、权限与运行时依赖；默认离线扫描，支持明确授权的只读探测，方便把工作流交给同事。
 - **change-evidence** — 给 UI/UX 和前端改动录屏取证，覆盖复现、改后行为和验收。
+- **ci-speed** — 审计 CI 的 queue/setup/work 三段耗时，再按数据削掉最大的一段：runner 与 job 图、更快的 lint/typecheck、测试分片、cache 预热、只跑受影响范围；附 `scripts/ci_audit.py`。
 - **longform-fiction** — 长篇小说规划、起草与扩写：故事圣经、章节合同、并行写手、连续性合并、字数验收门。
 - **tdd-pstack** — pstack 的 bug 修复 TDD：先写失败的回归测试再修（pstack-claude `tdd` 的改名 fork；与上游 `tdd` 二选一安装）。
 - **teach-pstack** — pstack 的 teach：借 `how` 和 `why` 把代码讲明白（pstack-claude `teach` 的改名 fork；与上游 `teach` 二选一安装）。
@@ -79,8 +80,8 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 
 ## Statistics
 
-- **Skill directories**: 17
-- **Unique names**: 17
+- **Skill directories**: 18
+- **Unique names**: 18
 
 ## 归档
 
