@@ -31,6 +31,7 @@ test-doctor:
 test-skills:
     python3 -m unittest discover -s skills-doctor/tests -q
     python3 -m unittest discover -s agent-autoresearch/tests -q
+    python3 -m unittest discover -s ci-speed/tests -q
     python3 -m unittest discover -s obsidian-skills/canvas-atlas/tests -q
     python3 -m unittest discover -s longform-fiction/tests -q
     python3 -m unittest discover -s loop-kit/tests -q

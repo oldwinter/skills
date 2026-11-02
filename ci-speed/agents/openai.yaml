@@ -1,0 +1,7 @@
+interface:
+  display_name: "CI Speed"
+  short_description: "Audit and cut CI queue, setup, and test time"
+  default_prompt: "Use $ci-speed to audit this repository's CI and cut the largest bucket of PR wall time."
+
+policy:
+  allow_implicit_invocation: true
