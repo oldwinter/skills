@@ -29,6 +29,7 @@ test-doctor:
 
 # Skill test suites (unittest; slower, part of check-all, not part of check)
 test-skills:
+    python3 -m unittest discover -s skills-doctor/tests -q
     python3 -m unittest discover -s agent-autoresearch/tests -q
     python3 -m unittest discover -s obsidian-skills/canvas-atlas/tests -q
     python3 -m unittest discover -s longform-fiction/tests -q

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Skills Doctor"
+  short_description: "Diagnose skill tools, identities, and permission gaps"
+  default_prompt: "Use $skills-doctor to diagnose the tools, runtime dependencies and operator permissions needed for these skills without executing their business workflows."
+
+policy:
+  allow_implicit_invocation: true

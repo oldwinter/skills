@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "capabilities": {
+    "github-membership-admin": {
+      "tools": ["gh"],
+      "permission": "Active organization owner with organization-member write permission.",
+      "owner": "Selected organization owner",
+      "remediation": "Use an operator-owned identity and scoped token; fine-grained permissions may require manual verification.",
+      "probe": "github-org",
+      "approval": "A real invitation needs explicit authorization for its recipient and scope.",
+      "runtime": []
+    }
+  },
+  "skills": {
+    "example": {
+      "sources": [".claude/skills/example/SKILL.md"],
+      "profiles": {
+        "invite": ["github-membership-admin"]
+      }
+    }
+  }
+}
