@@ -113,6 +113,12 @@ class CatalogTests(unittest.TestCase):
         self.data = data
         self.assertEqual(self.load(), data)
 
+    def test_catalog_cannot_read_env_file_as_evidence(self):
+        (self.root / ".env").write_text("FIXTURE_SENSITIVE_MARKER", encoding="utf-8")
+        self.data["skills"]["example"]["sources"].append(".env")
+        with self.assertRaisesRegex(CatalogError, "Markdown documentation"):
+            self.load()
+
 
 class DiagnosisTests(unittest.TestCase):
     def setUp(self):

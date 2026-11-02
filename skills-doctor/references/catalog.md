@@ -35,8 +35,9 @@ Supported probes:
 - `gitlab-read`, `gitlab-admin`, `github-org`.
 - `aws-identity`, `kube-read`, `kube-write`.
 
-Each skill has exactly `sources` and `profiles`. Sources must exist inside the
-target checkout and include the discovered `SKILL.md`. A profile is an AND list
+Each skill has exactly `sources` and `profiles`. Sources must be Markdown
+documentation inside the target checkout and include the discovered `SKILL.md`;
+environment/configuration files are not accepted as evidence. A profile is an AND list
 of required capability IDs; a nested list represents OR alternatives:
 
 ```json

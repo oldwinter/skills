@@ -119,6 +119,8 @@ def load_catalog(root: Path, path: Path, discovered: dict[str, Path]) -> dict:
                 resolved = (root / source).resolve()
                 if not resolved.is_relative_to(root.resolve()) or not resolved.is_file():
                     raise CatalogError(f"Missing or external evidence source: {name}")
+                if resolved.suffix.lower() != ".md":
+                    raise CatalogError(f"Evidence must be Markdown documentation: {name}")
             for profile, requirements in spec["profiles"].items():
                 if not NAME.fullmatch(profile) or not isinstance(requirements, list) or not requirements:
                     raise CatalogError(f"Invalid profile: {name}")
