@@ -123,7 +123,7 @@ just doctor      > "$ev/doctor.txt"      2> "$ev/doctor.err";      echo "doctor 
 just test-skills > "$ev/test-skills.txt" 2> "$ev/test-skills.err"; echo "test-skills exit=$?"
 ```
 
-`just check` covers the README map, frontmatter/link/personal-path audit, and the check scripts' fixture tests; `just test-skills` runs the five skill unittest suites (slower, not part of `check`). Assert exit `0` for each and capture the success lines.
+`just check` covers the README map, frontmatter/link/personal-path audit, and the check scripts' fixture tests; `just test-skills` runs the skill unittest suites declared in `justfile` (slower, not part of `check`). Assert exit `0` for each and capture the success lines.
 
 ## Evidence
 

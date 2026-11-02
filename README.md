@@ -57,6 +57,7 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 ### 自动引用（模型可自行触发）
 
 - **agent-harness-repair** — 诊断并修复本机 coding-agent CLI/harness 安装：自更新、npm/pnpm 鉴权、hook、PATH、MCP、配置解析。
+- **skills-doctor** — 诊断 skill 执行所需的工具、身份、权限与运行时依赖；默认离线扫描，支持明确授权的只读探测，方便把工作流交给同事。
 - **change-evidence** — 给 UI/UX 和前端改动录屏取证，覆盖复现、改后行为和验收。
 - **longform-fiction** — 长篇小说规划、起草与扩写：故事圣经、章节合同、并行写手、连续性合并、字数验收门。
 - **tdd-pstack** — pstack 的 bug 修复 TDD：先写失败的回归测试再修（pstack-claude `tdd` 的改名 fork；与上游 `tdd` 二选一安装）。
@@ -78,8 +79,8 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 
 ## Statistics
 
-- **Skill directories**: 16
-- **Unique names**: 16
+- **Skill directories**: 17
+- **Unique names**: 17
 
 ## 归档
 
@@ -129,7 +130,7 @@ git checkout archive/2026-10-13 -- <path>
 just check-all   # 全部门禁：check + test-skills，提 PR 前跑这个
 just check        # README 列表、frontmatter/描述/相对链接/openai.yaml/个人路径审计 + 脚本夹具测试
 just doctor       # 本地工具链健康：python3 / bash / git / just / CLAUDE.md 符号链接
-just test-skills  # skill 自带的 unittest 套件（agent-autoresearch、canvas-atlas、longform-fiction、loop-kit、loop-triage-github）
+just test-skills  # 运行 justfile 登记的所有 skill unittest 套件
 ```
 
 `doctor` 每行一个检查项，状态为 `PASS` / `WARN` / `FAIL` / `SKIP`；有任何 `FAIL` 时退出码非零。`bash` 行会显示实际解析到的路径：Windows 上跑 `scripts/test-*` 用 Git Bash，WSL 的 `bash` 不共享文件系统。本仓库没有本地环境文件和环境化服务，对应行恒为 `SKIP`。
