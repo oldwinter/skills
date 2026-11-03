@@ -71,6 +71,7 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 ### 手动引用（只在显式 `/name` 或 `$name` 时触发）
 
 - **done** — 收尾一次改动：验证、提交、开并合并 PR/MR、对齐 issue（只在 `$done` / `/done` 时用）。
+- **deck-style-gallery** — 把一套中英双语 PPT 做成 HTML→PNG：先出第 1 页约 10 种风格让你挑，再把选中的风格做满全部页并打包 PPTX。用 Opus 5.5 效果最好，在 Codex 里用时记得切模型。
 - **add-just-doctor** — 给仓库加 `just doctor`，检查本地 env 文件和它依赖的服务。
 - **agent-autoresearch** — 与 harness 无关的 autoresearch 循环：改、量、留或回退、记录。
 - **loop-kit** — 维护循环的公共底座：写 `.loop/config.json`、生成 `LESSONS.md` 与验收规则模板、接线 `AGENTS.md`，带 Reply Desk（对外动作的人工审批闸门）、`doctor` 自检和 tick 锁。装 loop 套装的第一个入口。
@@ -80,8 +81,8 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 
 ## Statistics
 
-- **Skill directories**: 18
-- **Unique names**: 18
+- **Skill directories**: 19
+- **Unique names**: 19
 
 ## 归档
 

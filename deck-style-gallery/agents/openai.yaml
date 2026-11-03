@@ -1,0 +1,7 @@
+interface:
+  display_name: "Deck Style Gallery"
+  short_description: "Explore ~10 slide styles, pick, then build the full deck (best on Opus 5.5)"
+  default_prompt: "Use $deck-style-gallery to design this deck: a gallery of styles on slide one, then the full deck in the styles I pick."
+
+policy:
+  allow_implicit_invocation: false
