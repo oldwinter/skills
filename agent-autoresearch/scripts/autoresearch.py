@@ -321,8 +321,13 @@ class Lock:
 
 def pid_alive(pid: int) -> bool:
     if os.name == "nt":
-        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True).stdout
-        return str(pid) in out
+        # tasklist writes the OEM code page. text=True under PYTHONUTF8
+        # decodes that as UTF-8, raises, and leaves stdout None.
+        proc = subprocess.run(
+            ["tasklist", "/FI", f"PID eq {pid}", "/NH"],
+            capture_output=True,
+        )
+        return str(pid).encode("ascii") in proc.stdout
     try:
         os.kill(pid, 0)
     except ProcessLookupError:

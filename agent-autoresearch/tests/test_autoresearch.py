@@ -59,6 +59,13 @@ def git(repo: Path, *args: str) -> str:
     return subprocess.run(["git", "-C", str(repo), *args], check=True, capture_output=True, text=True).stdout.strip()
 
 
+class PidAliveTest(unittest.TestCase):
+    @unittest.skipUnless(os.name == "nt", "tasklist encoding only bites on Windows")
+    def test_tasklist_oem_code_page_does_not_crash(self) -> None:
+        self.assertTrue(autoresearch.pid_alive(os.getpid()))
+        self.assertFalse(autoresearch.pid_alive(2_147_483_647))
+
+
 class ControllerTest(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
