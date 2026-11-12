@@ -67,6 +67,7 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 - **canvas-atlas** — 把代码仓库、笔记或研究材料整理成可逐层阅读的 Obsidian Canvas 知识地图。
 - **to-note** — 把内容存成 Obsidian 库里的 Markdown 笔记。
 - **vault-moc** — 在已有 Obsidian 库中生成或刷新 MOC 索引笔记，用真实 wikilink/backlink 取证。
+- **orch-claude-pi-codex** — Claude 做架构设计与总指挥，多个 pi worker 并行实现，codex 独立 review，Claude 收口汇总；适用于多文件改动、需要独立审查的并行实现。
 
 ### 手动引用（只在显式 `/name` 或 `$name` 时触发）
 
@@ -81,8 +82,8 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 
 ## Statistics
 
-- **Skill directories**: 19
-- **Unique names**: 19
+- **Skill directories**: 20
+- **Unique names**: 20
 
 ## 归档
 

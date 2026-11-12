@@ -1,0 +1,7 @@
+interface:
+  display_name: "Orch Claude Pi Codex"
+  short_description: "Claude architects, pi workers implement, codex reviews"
+  default_prompt: "Use $orch-claude-pi-codex to architect this task, run parallel pi workers, and gate the result through a codex review."
+
+policy:
+  allow_implicit_invocation: true
