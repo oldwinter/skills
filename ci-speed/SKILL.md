@@ -1,74 +1,68 @@
 ---
 name: ci-speed
-description: Make CI and PR checks fast by measuring whether wall time goes to queue, setup, or work, then fixing the largest bucket with runner and job-graph changes, faster tooling, test sharding, cache seeding, and fail-closed skip guards. Use when PR checks are slow, agents keep waiting on CI, or a pipeline needs a speed audit.
+description: Make CI, PR/MR pipelines, and local verification gates fast by measuring whether wall time goes to queue, setup, or work, then fixing the largest bucket with runner and job-graph changes, cache/mirror fixes, hotspot profiling, sharding, and double fail-closed skip guards. Use when PR checks are slow, make check takes minutes, agents keep waiting on CI, or a pipeline needs a speed audit.
 ---
 
 # CI Speed
 
-CI is the loop coding agents wait on. An agent that waits 20 minutes per push pays it dozens of times a day. Treat CI as a product: measure the wall time, fix the largest bucket, re-measure, and keep the evidence.
+CI and local check gates form the loop coding agents wait on. Treat both as one product: measure where wall time goes, fix the largest bucket, re-measure, and keep the evidence.
 
 `<skill-dir>` is the directory containing this file.
 
 ## Route the request
 
 - **Audit** ("why is CI slow", "where does the time go"): run Measure, report the three buckets, change nothing.
-- **Optimize** ("make CI faster", "cut PR time"): Measure, apply the levers the numbers name, verify with a second audit, open a PR with before/after numbers.
-- **One known bottleneck** ("tests take 4 minutes"): measure that job first. The claim may be true and still not be the critical path.
+- **Optimize** ("make CI faster", "cut PR time", "make check is slow"): Measure, apply the levers the numbers name, verify with a second audit, and ship before/after numbers.
+- **One known bottleneck** ("tests take 4 minutes"): measure that job and its steps first. The named step may not be the critical path.
 
 ## Measure
 
-Run the bundled audit from the repository root. It needs `gh` authenticated for the repo and nothing else:
+Run the bundled audit from the repository root using `gh` (GitHub Actions) or `glab` (GitLab CI):
 
 ```bash
 python3 <skill-dir>/scripts/ci_audit.py --workflow CI --limit 30
+python3 <skill-dir>/scripts/ci_audit.py --forge gitlab --repo group/project --limit 30
 ```
 
 It splits every completed job into three buckets:
 
-- **queue**: waiting for a runner, `started_at - job.created_at`
-- **setup**: checkout, tool setup, dependency install, uploads
-- **work**: the steps that produce the result
+- **queue**: waiting for a runner (`started_at - created_at` or GitLab `queued_duration`)
+- **setup**: checkout, container prep, tool/mirror installs, cache restore/upload
+- **work**: test, lint, typecheck, and build execution
 
-Rank jobs by queue plus work. Save the table. It is the baseline the change cites.
+Rank jobs by `queue + work`, save the baseline output (use `--json`), and inspect the slowest steps. When CI invokes a monolithic local script (such as `make check`), instrument its lanes and run `--durations` or `cProfile` on one slow test/linter before adding workers.
 
-Then find the slowest single step in the slowest job. `--json` gives the same data for scripting:
-
-```bash
-python3 <skill-dir>/scripts/ci_audit.py --repo owner/name --limit 50 --json > baseline.json
-```
-
-When queue is the largest bucket, count runners and jobs before touching test commands. A five-second job that waits ten minutes for a machine is a ten-minute job, and it also holds a slot the next run needs.
+Completion criterion: a saved baseline showing pipeline wall time, bucket breakdown, and the top critical-path bottleneck.
 
 ## Fix, in measured order
 
-Read [references/levers.md](references/levers.md) for the full playbook. Apply one lever, verify it, then take the next. The buckets name the lever:
+Read [references/levers.md](references/levers.md) for tactics. Apply one lever, measure, then take the next:
 
-1. **Queue dominates**: change the runner supply or the job graph. Move every job, including tiny ones, to faster or self-hosted runners. With a fixed runner pool, merge or delete short jobs that spend most of their life waiting, and keep the number of concurrent jobs at or below the pool size.
-2. **Setup dominates**: warm the dependency cache, seed it from the default branch, use a blobless clone, and cache the package directory rather than reinstalling. Audit which jobs actually restore a cache; a cache that is scoped per branch is cold on every PR.
-3. **Work dominates**: use the fastest linter and typechecker available, shard the test suite, stop reloading the whole app per test file, run independent stages in parallel, and skip work the change does not touch.
-4. **Everything is balanced but still slow**: the run length is the slowest lane. Split work out of that lane, or merge a short lane into it and delete a scheduling wave.
+1. **Queue / graph dominates**: match concurrent jobs to runner slots, cancel superseded runs, eliminate duplicate feature-branch `push` + PR/MR pipelines, and move multi-seed soak/stability matrices to schedules plus manual opt-in.
+2. **Setup dominates**: align cache paths with the active installer (`UV_CACHE_DIR`, `GOCACHE`, `.mypy_cache`, OS package archives), ensure self-hosted runner slots populate caches (`pull-push` rather than leaving extra slots `pull`-only), rank mirrors by runner latency, and cap mirror attempts with short timeouts.
+3. **Work dominates**: pick fast linters/typecheckers, profile in-process bottlenecks (uncached reflection/schema/JSON decoding, $O(N^2)$+ AST walks, heavy plugins replaceable with stdlib checks), shard to available cores, parallelize independent lanes/builds, drop unused coverage renders, use affected-only selection, and split `<10s` `pre-commit` hooks from fingerprint-cached `pre-push` gates.
+4. **Everything balanced**: split work out of the critical-path lane, or merge tiny lanes so fewer runner slots hold up the pipeline.
 
-Before shipping, add a fail-closed guard for any skip logic. Prove it: hide a change from the selector on purpose, confirm the run goes red, then restore it.
+For any skip logic or diff selector, enforce a **double fail-closed** contract: return a dedicated sentinel exit code (for example `10`) for a verified safe skip so both `0` and any crash/tool error (`1`, `2`, `127`) run the full suite, omit full-gate pass stamps on skipped runs, and prove the guard red with a negative test before restoring.
+
+Completion criterion: the dominant bucket shrunk measurably, skip logic passes a negative test, and no test coverage or failure signal was silently dropped.
 
 ## Verify
 
-Run the audit again on runs from the new pipeline and compare the same table:
+Re-run the audit on post-fix runs (or isolated clean/docs-only probes for local gates) and compare against the baseline:
 
-- report one primary number in `before -> after` form with its unit (run wall time, or the lane's duration)
-- keep the raw audit output as an artifact in the PR
-- check that the test count is unchanged when you only changed scheduling; a shard that silently loses tests is a regression wearing a speedup
-- check that skipped and failed tests still fail the run
-
-Do not report a speedup from one lucky run. Compare medians over at least five runs, or the same job's scheduler timing across both configurations.
+- report primary metrics in `before -> after` form with units (pipeline wall time, cold/warm gate duration, setup seconds)
+- verify test counts and coverage floors match on unaffected code
+- compare medians across multiple runs rather than one lucky run (or compare fixed-state scheduler runs when runner noise varies)
 
 ## Pitfalls
 
-- **Tests that assume a quiet machine.** Sharding adds CPU contention. Fixtures with hard 2-3 second startup deadlines start failing. Widen the fixture's startup budget, or freeze the clock for timestamp-sensitive assertions. Never widen the assertion that proves the product behavior.
-- **Sharing state between shards.** Tests that write a fixed path, a shared port, or a shared temp directory collide once they run concurrently. Find the shared path and make it shard-specific before raising the shard count.
-- **More shards is not more speed.** Measure. On an 8-core box with subprocess-heavy tests, four shards beat eight; the extra processes spend their time competing.
-- **A green run that tested less.** Skip logic and shard filters can both drop tests. Guard them with a count check and a deliberate negative test.
-- **Cost is part of the answer.** Faster runners and more shards raise the bill. State the new cost, as the original playbook does, so the trade is visible.
+- **Tests that assume a quiet machine**: parallel workers add CPU contention and trip tight fixture startup deadlines (2–5s). Widen fixture startup/poll budgets without relaxing product behavior assertions.
+- **Cold per-slot caches**: self-hosted runners often store caches per worker slot; restricting `push` to one fast job leaves other slots permanently cold.
+- **Mirror timeouts**: throttled package mirrors that hang instead of failing fast burn a 300s timeout before fallback triggers.
+- **Green runs that tested less**: skip selectors that return `0` on parse/git failure silently report green; require a non-zero sentinel code for skips.
+- **Cost visibility**: faster runners, more shards, and extra concurrency change infrastructure cost; record trade-offs explicitly.
 
 ## Finish
 
-Report the baseline bucket, the change, the post-fix number, and the artifact path. When the work lands in a repository, open a PR with the before/after table and the audit output attached.
+Report the baseline bottleneck, each trade-off and change, `before -> after` numbers, and verified negative-test/suite checks in the PR/MR description.
