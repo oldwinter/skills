@@ -1,0 +1,7 @@
+interface:
+  display_name: "oldwinter-mode"
+  short_description: "oldwinter's agent working style and execution discipline"
+  default_prompt: "Use $oldwinter-mode to apply oldwinter's working style and execution discipline."
+
+policy:
+  allow_implicit_invocation: false

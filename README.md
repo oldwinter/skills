@@ -72,6 +72,7 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 ### 手动引用（只在显式 `/name` 或 `$name` 时触发）
 
 - **done** — 收尾一次改动：验证、提交、开并合并 PR/MR、对齐 issue（只在 `$done` / `/done` 时用）。
+- **oldwinter-mode** — oldwinter 的 agent 工作风格：极简中文指令、端到端执行、外科手术式改动、证据驱动验证与真源纪律（只在 `/oldwinter-mode` / `$oldwinter-mode` 时用）。
 - **deck-style-gallery** — 把一套中英双语 PPT 做成 HTML→PNG：先出第 1 页约 10 种风格让你挑，再把选中的风格做满全部页并打包 PPTX。用 Opus 5.5 效果最好，在 Codex 里用时记得切模型。
 - **add-just-doctor** — 给仓库加 `just doctor`，检查本地 env 文件和它依赖的服务。
 - **agent-autoresearch** — 与 harness 无关的 autoresearch 循环：改、量、留或回退、记录。
@@ -82,8 +83,8 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 
 ## Statistics
 
-- **Skill directories**: 20
-- **Unique names**: 20
+- **Skill directories**: 21
+- **Unique names**: 21
 
 ## 归档
 
@@ -95,7 +96,6 @@ python3 .claude/skills/loop-kit/scripts/loopkit.py doctor
 - [`chendongdong-digital-twin`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/chendongdong-digital-twin) — Evidence-based Chen Dongdong operating perspective for drafting colleague replies, executing work in his preferred workflow…
 - [`herdr-worktrunk`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/herdr-worktrunk) — Automate task environments with Worktrunk and Herdr: prepare dependencies through project hooks, start and health-check…
 - [`lark-reimbursement`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/lark-reimbursement) — 采购报销前提醒并核验采购申请已获批准，再根据飞书文档和凭证创建或修正费用报销单，上传附件并回读核验。普通审批处理使用 lark-approval。
-- [`oldwinter-mode`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/oldwinter-mode) — oldwinter's agent style.
 - [`planning-with-files-zh`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/planning-with-files-zh) — 基于 Manus 风格的文件规划系统，用于组织和跟踪复杂任务的进度。创建 task_plan.md、findings.md 和 progress.md 三个文件。当用户要求规划、拆解或组织多步骤项目、研究任务或需要超过5次工具调用的工作时使用。支持…
 - [`windows-storage-audit`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/windows-storage-audit) — Scan Windows disks from their roots, explain physical storage use and cleanup feasibility, then execute scoped cleanup with…
 - [`yansu-agent-cli`](https://github.com/oldwinter/skills/tree/archive/2026-10-13/yansu-agent-cli) — Use the bundled Yansu CLI to sync project knowledge/context/skills and run Yansu workflow commands.
